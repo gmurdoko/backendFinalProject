@@ -4,6 +4,6 @@ import (
 	"database/sql"
 )
 
-type AssetReportRepoImpl struct {
+type ProviderAssetReportRepoImpl struct {
 	db *sql.DB
 }
