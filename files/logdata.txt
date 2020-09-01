@@ -9,3 +9,6 @@
 2020-09-01 15:52:32 Accessing path /auth with application PostmanRuntime/7.26.3
 2020-09-01 15:54:13 Accessing path /auth with application PostmanRuntime/7.26.3
 2020-09-01 16:06:39 Accessing path /auth with application PostmanRuntime/7.26.3
+2020-09-01 16:15:03 Accessing path /user/saldo177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-01 16:16:14 Accessing path /user/saldo177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-01 16:16:59 Accessing path /user/saldo/177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
