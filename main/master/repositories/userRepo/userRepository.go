@@ -3,6 +3,7 @@ package userRepo
 import "finalproject/main/master/models"
 
 type UserRepository interface {
+	GetUser(*models.UserModel) (bool, error)
 	CreateUser(*models.UserModel) (*models.UserModel, error)
 	GetSaldo(string) (int, error)
 	DeleteUserPhoto(string) error

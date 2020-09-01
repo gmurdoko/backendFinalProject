@@ -17,6 +17,19 @@ type UserRepoImpl struct {
 func InitUserRepoImpl(db *sql.DB) UserRepository {
 	return &UserRepoImpl{db: db}
 }
+func (ur *UserRepoImpl) GetUser(user *models.UserModel) (bool, error) {
+	row := ur.db.QueryRow(utils.SELECT_USER, user.Username, user.Password)
+	var users = models.UserModel{}
+	err := row.Scan(&users.Username, &users.Password)
+	if err != nil {
+		return false, err
+	}
+	if user.Username == user.Username && user.Password == user.Password {
+		return true, nil
+	} else {
+		return false, err
+	}
+}
 func (ur *UserRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel, error) {
 	var wallet models.WalletModel
 	user.ID = uuid.New().String()
@@ -33,9 +46,8 @@ func (ur *UserRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel, e
 		tx.Rollback()
 		return nil, err
 	}
-	user.IdWallet = wallet.ID
 
-	_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet, user.Username,
+	_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet.ID, user.Username,
 		user.Password, user.Email, user.Fullname, user.PhoneNumber,
 		user.CreatedAt)
 	if err != nil {

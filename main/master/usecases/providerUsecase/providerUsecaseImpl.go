@@ -19,3 +19,10 @@ func (pu *ProviderUsecaseImpl) CreateProvider(provider *models.ProviderModel) (*
 	}
 	return data, nil
 }
+func (pu *ProviderUsecaseImpl) CreateProviderAsset(provider *models.AssetModel) (*models.AssetModel, error) {
+	data, err := pu.providerRepo.CreateAssetProvider(provider)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

@@ -13,6 +13,13 @@ func InitUserUsecase(userRepo userRepo.UserRepository) UserUsecase {
 	return &UserUsecaseImpl{userRepo: userRepo}
 }
 
+func (uc *UserUsecaseImpl) GetUser(user *models.UserModel) (bool, error) {
+	isValid, err := uc.userRepo.GetUser(user)
+	if err != nil {
+		return false, err
+	}
+	return isValid, nil
+}
 func (uc *UserUsecaseImpl) CreateUser(user *models.UserModel) (*models.UserModel, error) {
 	data, err := uc.userRepo.CreateUser(user)
 	if err != nil {

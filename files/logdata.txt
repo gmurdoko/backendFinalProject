@@ -5,3 +5,7 @@
 2020-09-01 14:07:22 Accessing path /user with application PostmanRuntime/7.26.3
 2020-09-01 14:07:56 Accessing path /user with application PostmanRuntime/7.26.3
 2020-09-01 14:09:54 Accessing path /user with application PostmanRuntime/7.26.3
+2020-09-01 15:51:58 Accessing path /auth with application PostmanRuntime/7.26.3
+2020-09-01 15:52:32 Accessing path /auth with application PostmanRuntime/7.26.3
+2020-09-01 15:54:13 Accessing path /auth with application PostmanRuntime/7.26.3
+2020-09-01 16:06:39 Accessing path /auth with application PostmanRuntime/7.26.3

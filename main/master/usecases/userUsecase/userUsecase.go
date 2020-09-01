@@ -3,6 +3,7 @@ package userUsecase
 import "finalproject/main/master/models"
 
 type UserUsecase interface {
+	GetUser(*models.UserModel) (bool, error)
 	CreateUser(*models.UserModel) (*models.UserModel, error)
 	GetSaldo(string) (int, error)
 	DeleteUserPhoto(string) error
