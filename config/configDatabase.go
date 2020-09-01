@@ -14,10 +14,10 @@ import (
 func EnvConn() *sql.DB {
 	dbEngine := getEnv.ViperGetEnv("DB_ENGINE", "mysql") //mysql
 	dbUser := getEnv.ViperGetEnv("DB_USER", "root")      //root
-	dbPassword := getEnv.ViperGetEnv("DB_PASSWORD", "password")
+	dbPassword := getEnv.ViperGetEnv("DB_PASSWORD", "juan121014")
 	dbHost := getEnv.ViperGetEnv("DB_HOST", "localhost") //localhost
 	dbPort := getEnv.ViperGetEnv("DB_PORT", "3306")      //3306
-	dbSchema := getEnv.ViperGetEnv("DB_SCHEMA", "schema")
+	dbSchema := getEnv.ViperGetEnv("DB_SCHEMA", "final_project")
 
 	dbSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbHost, dbPort, dbSchema)
 	db, err := sql.Open(dbEngine, dbSource)

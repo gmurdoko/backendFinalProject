@@ -17,8 +17,8 @@ func CreateRouter() *mux.Router {
 
 //RunServer running the server
 func RunServer(router *mux.Router) {
-	appHost := getEnv.ViperGetEnv("APP_HOST", "urhost")
-	appPort := getEnv.ViperGetEnv("APP_PORT", "urport")
+	appHost := getEnv.ViperGetEnv("APP_HOST", "localhost")
+	appPort := getEnv.ViperGetEnv("APP_PORT", "8080")
 	hostListen := fmt.Sprintf("%v:%v", appHost, appPort)
 	log.Printf("Ready to listen on %v", hostListen)
 	err := http.ListenAndServe(hostListen, router)
