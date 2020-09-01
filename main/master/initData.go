@@ -2,25 +2,21 @@ package master
 
 import (
 	"database/sql"
+	"finalproject/main/master/controller"
+	"finalproject/main/master/repository/ticketrepository"
+	"finalproject/main/master/usecase/ticketusecase"
+	"finalproject/main/middleware"
 
 	"github.com/gorilla/mux"
 )
 
 // Init app
 func Init(r *mux.Router, db *sql.DB) {
-	//Rooms
-	roomRepo := repositories.InitRoomRepoImpl(db)
-	roomUsecase := usecases.InitRoomUsecaseImpl(roomRepo)
-	controllers.RoomController(r, roomUsecase)
+	//Ticket
+	ticketRepo := ticketrepository.InitTicketRepositoryImpl(db)
+	ticketUsecase := ticketusecase.InitTicketUsecaseImpl(ticketRepo)
+	controller.TicketController(r, ticketUsecase)
 
-	//Transaction
-	reserveRepo := repositories.InitReserveRepoImpl(db)
-	reserveUsecase := usecases.InitReserveUsecaseImpl(reserveRepo)
-	controllers.ReserveController(r, reserveUsecase)
-
-	//Auth
-	userRepo := repositories.InitUserRepoImpl(db)
-	userUsecase := usecases.InitUserUsecaseImpl(userRepo)
-	controllers.UserController(r, userUsecase)
-	r.Use(logger.ActivityLogMiddleware)
+	//Activity Log Middleware
+	r.Use(middleware.ActivityLogMiddleware)
 }
