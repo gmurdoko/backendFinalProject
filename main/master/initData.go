@@ -3,8 +3,8 @@ package master
 import (
 	"database/sql"
 	"finalproject/main/master/controller"
-	"finalproject/main/master/repository/ticketrepository"
-	"finalproject/main/master/usecase/ticketusecase"
+	"finalproject/main/master/repository/user/ticketrepository"
+	"finalproject/main/master/usecase/user/ticketusecase"
 	"finalproject/main/middleware"
 
 	"github.com/gorilla/mux"

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"finalproject/config"
-	"finalproject/main/master/usecase/ticketusecase"
+	"finalproject/main/master/usecase/user/ticketusecase"
 	"finalproject/main/middleware"
 	"finalproject/utils/response"
 	"log"

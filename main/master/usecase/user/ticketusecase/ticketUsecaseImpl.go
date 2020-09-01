@@ -1,6 +1,6 @@
 package ticketusecase
 
-import "finalproject/main/master/repository/ticketrepository"
+import "finalproject/main/master/repository/user/ticketrepository"
 
 //TicketUsecaseImpl app
 type TicketUsecaseImpl struct {
