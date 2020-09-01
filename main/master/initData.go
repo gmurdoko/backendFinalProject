@@ -2,25 +2,24 @@ package master
 
 import (
 	"database/sql"
+	"finalproject/main/master/controllers"
+	"finalproject/main/master/repositories/providerRepo"
+	"finalproject/main/master/repositories/userRepo"
+	"finalproject/main/master/usecases/providerUsecase"
+	"finalproject/main/master/usecases/userUsecase"
+	"finalproject/main/middleware"
 
 	"github.com/gorilla/mux"
 )
 
-// Init app
-func Init(r *mux.Router, db *sql.DB) {
-	//Rooms
-	// roomRepo := repositories.InitRoomRepoImpl(db)
-	// roomUsecase := usecases.InitRoomUsecaseImpl(roomRepo)
-	// controllers.RoomController(r, roomUsecase)
-
-	// //Transaction
-	// reserveRepo := repositories.InitReserveRepoImpl(db)
-	// reserveUsecase := usecases.InitReserveUsecaseImpl(reserveRepo)
-	// controllers.ReserveController(r, reserveUsecase)
-
-	// //Auth
-	// userRepo := repositories.InitUserRepoImpl(db)
-	// userUsecase := usecases.InitUserUsecaseImpl(userRepo)
-	// controllers.UserController(r, userUsecase)
-	// r.Use(logger.ActivityLogMiddleware)
+func Init(r *mux.Router, db *sql.DB, activityLog bool) {
+	providerRepo := providerRepo.InitProviderRepoImpl(db)
+	providerUsecase := providerUsecase.InitProviderUsecase(providerRepo)
+	controllers.ProviderController(r, providerUsecase)
+	userRepo := userRepo.InitUserRepoImpl(db)
+	userUsecase := userUsecase.InitUserUsecase(userRepo)
+	controllers.UserController(r, userUsecase)
+	if activityLog == true {
+		r.Use(middleware.ActivityLogMiddleware)
+	}
 }
