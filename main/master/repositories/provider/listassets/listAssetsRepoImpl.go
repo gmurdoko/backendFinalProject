@@ -1,8 +1,9 @@
-package listassetsrepo
+package providerlistassetsrepo
 
 import (
 	"database/sql"
 	"finalproject/main/master/models"
+	constanta "finalproject/utils/constant"
 	"log"
 )
 
@@ -10,12 +11,12 @@ type ListAssetsRepoImpl struct {
 	db *sql.DB
 }
 
-func InitListAssetsRepoImpl(db *sql.DB) ListAssetsRepo {
-	return &ListAssetsRepoImpl{db: db}
+func InitListAssetsRepoImpl(mydb *sql.DB) ListAssetsRepo {
+	return &ListAssetsRepoImpl{db: mydb}
 }
 
 func (s *ListAssetsRepoImpl) GetAllAssets(userId string) ([]*models.Assets, error) {
-	query := constanta
+	query := constanta.GETALLASSETSPERPROVIDER
 	rows, err := s.db.Query(query, userId)
 	if err != nil {
 		log.Println(err)
