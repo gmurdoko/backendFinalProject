@@ -1,10 +1,13 @@
 package main
 
-import "finalproject/config"
+import (
+	"finalproject/config"
+	"finalproject/main/master"
+)
 
 func main() {
 	db := config.EnvConn()
 	router := config.CreateRouter()
-	masters.Init(router, db)
+	master.Init(router, db)
 	config.RunServer(router)
 }
