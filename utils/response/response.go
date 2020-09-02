@@ -8,10 +8,10 @@ import (
 
 // Response header for data
 type Response struct {
-	Status     int         `json:"status"`
-	Message    string      `json:"message"`
-	TotalField int         `json:"totalField"`
-	Data       interface{} `json:"result"`
+	Status  int         `json:"status"`
+	Message string      `json:"message"`
+	Token   string      `json:"token"`
+	Data    interface{} `json:"result"`
 }
 
 //ResponseWrite app
