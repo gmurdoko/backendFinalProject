@@ -16,7 +16,7 @@ func ActivityLogMiddleware(next http.Handler) http.Handler {
 		wrt := fmt.Sprintf("%v Accessing path %v with application %v\n", logTime, r.RequestURI, userAgent)
 		log.Printf("Accessing path %v with application %v\n", r.RequestURI, userAgent)
 
-		file, err := os.OpenFile("../../files/logdata.txt", os.O_APPEND|os.O_WRONLY, 0644)
+		file, err := os.OpenFile("./../files/logdata.txt", os.O_APPEND|os.O_WRONLY, 0644)
 		if err != nil {
 			log.Println(err)
 		}

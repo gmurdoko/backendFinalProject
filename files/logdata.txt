@@ -53,3 +53,4 @@
 2020-09-02 14:36:55 Accessing path /wallet/payment with application PostmanRuntime/7.26.3
 2020-09-02 14:38:11 Accessing path /ticket/556169b9-eccc-11ea-83bf-b4a9fc958140 with application PostmanRuntime/7.26.3
 2020-09-02 14:38:14 Accessing path /tickets/history?page=0&limit=2&user_id=177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 20:02:29 Accessing path /user with application PostmanRuntime/7.26.3

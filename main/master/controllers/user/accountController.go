@@ -42,7 +42,7 @@ func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 	var userRequest *models.UserModel
 	_ = json.NewDecoder(r.Body).Decode(&userRequest)
-	_, err := uh.userUsecase.CreateUser(userRequest)
+	data, err := uh.userUsecase.CreateUser(userRequest)
 	if err != nil {
 		var response response.Response
 		response.Status = http.StatusOK
@@ -53,7 +53,7 @@ func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 		var response response.Response
 		response.Status = http.StatusOK
 		response.Message = "Success"
-		response.Data = userRequest
+		response.Data = data
 		byteData, err := json.Marshal(response)
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))
