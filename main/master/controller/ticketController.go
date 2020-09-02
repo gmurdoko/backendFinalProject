@@ -36,6 +36,9 @@ func detailTicketController(tickets, ticket *mux.Router, ticketHandler TicketHan
 	// tickets.HandleFunc("", ticketHandler.Listtickets).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods(http.MethodGet)
 	// tickets.HandleFunc("/available", ticketHandler.ListAvailabletickets).Methods(http.MethodGet)
 	// tickets.HandleFunc("/booked", ticketHandler.ListBookedtickets).Methods(http.MethodGet)
+
+	tickets.HandleFunc("/history", ticketHandler.HistoryTickets).Queries("page", "{page}", "limit", "{limit}", "user_id", "{user_id}").Methods(http.MethodGet)
+
 	//Satuan
 	// ticket.HandleFunc("/{id}", ticketHandler.ticket).Methods(http.MethodGet)
 	// ticket.HandleFunc("", ticketHandler.Postticket).Methods(http.MethodPost)
@@ -60,4 +63,26 @@ func (s *TicketHandler) DeleteTicket(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Endpoint hit: Delete Ticket")
+}
+
+//HistoryTickets app
+func (s *TicketHandler) HistoryTickets(w http.ResponseWriter, r *http.Request) {
+	offset := mux.Vars(r)["page"]
+	limit := mux.Vars(r)["limit"]
+	id := mux.Vars(r)["user_id"]
+
+	println("INI CONTROLLER", offset, limit, id)
+	tickets, totalField, err := s.ticketUsecase.GetHistoryTicketByID(offset, limit, id)
+	var ticketsResponse response.Response
+	w.Header().Set("content-type", "application/json")
+	if err != nil {
+		ticketsResponse = response.Response{Status: http.StatusNotFound, Message: "Not Found", TotalField: *totalField, Data: err.Error()}
+		response.ResponseWrite(&ticketsResponse, w)
+		log.Println(err)
+	} else {
+		ticketsResponse = response.Response{Status: http.StatusOK, Message: "Get History Tickets Success", TotalField: *totalField, Data: tickets}
+		response.ResponseWrite(&ticketsResponse, w)
+	}
+	log.Println("Endpoint hit: Get History Tickets")
+
 }

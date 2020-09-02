@@ -15,4 +15,7 @@ type WalletRepository interface {
 
 	//Cek Harga Parkir Perjam
 	CheckFeePerHour(id string) (*int, error)
+
+	//Update ticket to transaction done
+	TransactionDone(ticket *model.Tickets) error
 }
