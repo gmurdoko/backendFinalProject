@@ -174,3 +174,9 @@
 2020-09-02 21:49:49 Accessing path /user/photo/bf968c9f-49aa-4724-9db5-640a0f7f2d3f with application PostmanRuntime/7.26.3
 2020-09-02 21:50:31 Accessing path /user/photo/bf968c9f-49aa-4724-9db5-640a0f7f2d3f with application PostmanRuntime/7.26.3
 2020-09-02 21:51:18 Accessing path /user/photo/bf968c9f-49aa-4724-9db5-640a0f7f2d3f with application PostmanRuntime/7.26.3
+2020-09-02 22:12:43 Accessing path /provider/asset with application PostmanRuntime/7.26.3
+2020-09-02 22:27:38 Accessing path /provider/asset with application PostmanRuntime/7.26.3
+2020-09-02 22:30:42 Accessing path /provider/asset with application PostmanRuntime/7.26.3
+2020-09-02 22:32:48 Accessing path /provider/asset with application PostmanRuntime/7.26.3
+2020-09-02 22:34:21 Accessing path /provider/asset with application PostmanRuntime/7.26.3
+2020-09-02 22:36:38 Accessing path /provider/asset with application PostmanRuntime/7.26.3
