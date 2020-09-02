@@ -7,6 +7,6 @@ type UserHome interface {
 	DeleteUserPhoto(string) error
 	UpdateUserData(*models.UserModel, string) (*models.UserModel, error)
 	UpdateUserSaldoTopUp(*models.Wallets, string) (int, error)
-	GetUserPhoto(string) (string, error)
-	// UpdateUserPhoto(*models.UserModel, string) (*models.UserModel, error)
+	GetUserPhoto(string) (*string, error)
+	UpdateUserPhoto(string, string) error
 }
