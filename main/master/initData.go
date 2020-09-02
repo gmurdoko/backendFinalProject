@@ -24,6 +24,9 @@ import (
 	"finalproject/main/master/usecases/user/userAccountUsecase"
 	"finalproject/main/master/usecases/user/userHomeUsecase"
 
+	"finalproject/main/master/controller"
+	"finalproject/main/master/repository/user/ticketrepository"
+	"finalproject/main/master/usecase/user/ticketusecase"
 	"finalproject/main/middleware"
 
 	"github.com/gorilla/mux"
@@ -60,6 +63,10 @@ func Init(r *mux.Router, db *sql.DB, activityLog bool) {
 	userHomeRepo := userHomeRepo.InitUserHomeRepoImpl(db)
 	userHomeUsecase := userHomeUsecase.InitUserHomeUsecase(userHomeRepo)
 	user.UserHomeController(r, userHomeUsecase)
+
+	ticketRepo := ticketrepository.InitTicketRepositoryImpl(db)
+	ticketUsecase := ticketusecase.InitTicketUsecaseImpl(ticketRepo)
+	controller.TicketController(r, ticketUsecase)
 
 	if activityLog == true {
 		r.Use(middleware.ActivityLogMiddleware)
