@@ -1,4 +1,4 @@
-package review
+package repositories
 
 import (
 	"database/sql"
