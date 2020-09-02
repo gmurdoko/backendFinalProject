@@ -7,7 +7,7 @@ import (
 
 func main() {
 	db := config.EnvConn()
-	useActivityLog := config.AuthSwitch()
+	useActivityLog := config.UseLogActivity()
 	router := config.CreateRouter()
 	master.Init(router, db, useActivityLog)
 	config.RunServer(router)
