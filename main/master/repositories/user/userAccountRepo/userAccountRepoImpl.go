@@ -20,7 +20,7 @@ func InitUserAccRepoImpl(db *sql.DB) UserAccount {
 	return &UserAccRepoImpl{db: db}
 }
 func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, bool, error) {
-	row := ur.db.QueryRow(utils.SELECT_USER, user.Username)
+	row := ur.db.QueryRow(utils.SELECT_USER_LOGIN, user.Username)
 	var users = models.UserModel{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
@@ -37,7 +37,6 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 
 	if user.Username == users.Username && isPwdValid {
 		data, _ := ur.GetUserById(users.ID)
-		fmt.Println("repo", data)
 		return data, true, nil
 	} else {
 		return nil, false, err

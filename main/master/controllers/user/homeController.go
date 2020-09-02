@@ -5,8 +5,11 @@ import (
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/userHomeUsecase"
 	"finalproject/utils/response"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/gorilla/mux"
 )
@@ -21,9 +24,9 @@ func UserHomeController(r *mux.Router, service userHomeUsecase.UserHome) {
 	user.HandleFunc("/{id}", userHandler.UpdateUserData).Methods(http.MethodPut)
 	user.HandleFunc("/saldo/{id}", userHandler.GetSaldo).Methods(http.MethodGet)
 	user.HandleFunc("/saldo/{id}", userHandler.UpdateUserSaldoTopUp).Methods(http.MethodPut)
-	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodPut)
+	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodDelete)
 	user.HandleFunc("/photo/{id}", userHandler.GetUserPhoto).Methods(http.MethodGet)
-	// user.HandleFunc("/photo/{id}", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
+	user.HandleFunc("/photo", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
 }
 func (uh *UserHomeHandler) GetSaldo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -106,44 +109,45 @@ func (uh *UserHomeHandler) UpdateUserSaldoTopUp(w http.ResponseWriter, r *http.R
 	w.Write(byteData)
 }
 func (uh *UserHomeHandler) GetUserPhoto(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	id := params["id"]
-	data, err := uh.userUsecase.GetUserPhoto(id)
+	dir, err := os.Getwd()
+	println("PHOTOCONTROLLER")
 	if err != nil {
-		w.Write([]byte("Data Not Found!"))
+		log.Println(err)
+		println("MASUK ERROR")
+		// return
 	}
-	var response response.Response
-	response.Status = http.StatusOK
-	response.Message = "Success"
-	response.Data = data
-	byteData, err := json.Marshal(response)
-	if err != nil {
-		w.Write([]byte("Something Wrong on Marshalling Data"))
-	}
-	w.Header().Set("Content-type", "application/json")
-	w.Write(byteData)
+	ex := mux.Vars(r)
+	id := ex["id"]
+	photo, err := uh.userUsecase.GetUserPhoto(id)
+	fmt.Println("photoooooooooo")
+	fileLocation := filepath.Join(dir, "files", *photo)
+	fmt.Println(fileLocation)
+	w.Header().Set("Content-Type", "image/jpeg")
+	http.ServeFile(w, r, fileLocation)
 }
 
-// func (uh *UserHomeHandler) UpdateUserPhoto(w http.ResponseWriter, r *http.Request) {
-// 	params := mux.Vars(r)
-// 	id := params["id"]
+func (uh *UserHomeHandler) UpdateUserPhoto(w http.ResponseWriter, r *http.Request) {
+	id := r.FormValue("id")
+	var providerResponse response.Response
+	w.Header().Set("content-type", "application/json")
+	r.ParseMultipartForm(1024) // ini untuk batesin file size nya biar maks 1 MB
+	photo, handler, err := r.FormFile("photo")
+	if err != nil {
+		log.Println(`Error while parsing file`, err)
+		w.WriteHeader(http.StatusInternalServerError)
+		// json.NewEncoder(w).Encode(message.Respone("Upload Photos Failed", http.StatusInternalServerError, err.Error()))
+		// return
+	}
+	defer photo.Close()
+	err = uh.userUsecase.UpdateUserPhoto(photo, handler, id)
+	if err != nil {
+		providerResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()}
+		response.ResponseWrite(&providerResponse, w)
+		log.Println(err)
+	} else {
+		providerResponse = response.Response{Status: http.StatusAccepted, Message: "Update Provider Foto Success", Data: id}
+		response.ResponseWrite(&providerResponse, w)
+	}
 
-// 	var data models.UserModel
-// 	_ = json.NewDecoder(r.Body).Decode(&data)
-
-// 	photo, err := uh.userUsecase.UpdateUserPhoto(&data, id)
-// 	if err != nil {
-// 		log.Println(err)
-// 		w.Write([]byte("Update Data Failed!"))
-// 	}
-// 	var response response.Response
-// 	response.Status = http.StatusOK
-// 	response.Message = "Success"
-// 	response.Data = photo
-// 	byteData, err := json.Marshal(response)
-// 	if err != nil {
-// 		w.Write([]byte("Something Wrong on Marshalling Data"))
-// 	}
-// 	w.Header().Set("Content-type", "application/json")
-// 	w.Write(byteData)
-// }
+	log.Println("Endpoint hit: Update Provider Foto")
+}

@@ -25,15 +25,24 @@ func ProviderAccController(r *mux.Router, service providerAccountUsecase.Provide
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
 	var data models.ProviderModel
 	_ = json.NewDecoder(r.Body).Decode(&data)
-	isValid, _ := ph.providerAccUsecase.GetProvider(&data)
+	provider, isValid, _ := ph.providerAccUsecase.GetProvider(&data)
 
 	if isValid {
-		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-type", "application/json")
 		token, err := jwt.JwtEncoder(data.Username, "rahasiadong")
 		if err != nil {
 			http.Error(w, "Failed token generation", http.StatusUnauthorized)
 		} else {
-			w.Write([]byte(token))
+			var response response.Response
+			response.Status = http.StatusOK
+			response.Message = "Success"
+			response.Token = token
+			response.Data = provider
+			byteData, err := json.Marshal(response)
+			if err != nil {
+				w.Write([]byte("Something Wrong on Marshalling Data"))
+			}
+			w.Write(byteData)
 		}
 	} else {
 		http.Error(w, "Invalid login", http.StatusUnauthorized)

@@ -3,8 +3,8 @@ package utils
 const (
 	SELECT_NEW_USER     = `SELECT * FROM m_user_account WHERE id=?`
 	SELECT_NEW_PROVIDER = `SELECT * FROM m_provider_account WHERE id=?`
-	SELECT_USER         = `SELECT * FROM m_user_account WHERE username=? `
-	SELECT_PROVIDER     = `SELECT username,password FROM m_provider_account WHERE username=?`
+	SELECT_USER_LOGIN   = `SELECT * FROM m_user_account WHERE username=?`
+	SELECT_PROVIDER     = `SELECT * FROM m_provider_account WHERE username=?`
 	INSERT_USER_ACCOUNT = `INSERT INTO m_user_account (id,id_wallet,username,password,email,fullname,phone_number,created_at) 
 	VALUES (?,?,?,?,?,?,?,?)`
 	INSERT_PROVIDER_ACCOUNT = `INSERT INTO m_provider_account (id,username,password,email,fullname,phone_number,created_at) 
@@ -17,7 +17,7 @@ const (
 	SELECT_PHOTO_USER         = `SELECT photo FROM m_user_account WHERE id=?`
 	UPDATE_PHOTO_USER         = `UPDATE m_user_account SET photo=?,edited_at=? WHERE id=?`
 	DELETE_PHOTO_USER         = `UPDATE m_user_account SET photo =' ',deleted_at=? WHERE id=?`
-	UPDATE_DATA_USER          = `UPDATE m_user_account SET address =?, borndate=?,photo=?,edited_at=? WHERE id =?`
+	UPDATE_DATA_USER          = `UPDATE m_user_account SET address =?, borndate=?,edited_at=? WHERE id =?`
 	SELECT_UPDATED_SALDO_USER = "SELECT saldo FROM m_wallet WHERE id=?"
 	SELECT_PROVIDER_SALDO     = `SELECT SUM(mw.saldo) FROM m_asset AS ma JOIN m_wallet mw ON ma.id_wallet = mw.id JOIN 
 	m_provider_account mpa on ma.provider_id = mpa.id WHERE mpa.id = ?`

@@ -5,6 +5,7 @@ import (
 	"finalproject/main/master/models"
 	"finalproject/utils"
 	"finalproject/utils/pwd"
+	"fmt"
 	"log"
 	"time"
 
@@ -18,18 +19,25 @@ type ProviderRepoAccountImpl struct {
 func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 	return &ProviderRepoAccountImpl{db: db}
 }
-func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (bool, error) {
+func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (*models.ProviderModel, bool, error) {
 	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username)
-	var providers = models.UserModel{}
-	err := row.Scan(&providers.Username, &providers.Password)
+	var providers = models.ProviderModel{}
+	var bornDate, editedAt, deletedAt sql.NullString
+	err := row.Scan(&providers.ID, &providers.Username, &providers.Password,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
+		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
+	providers.BornDate = bornDate.String
+	providers.EditedAt = editedAt.String
+	providers.DeletedAt = deletedAt.String
 	if err != nil {
-		return false, err
+		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(provider.Password, providers.Password)
 	if provider.Username == provider.Username && isPwdValid {
-		return true, nil
+		data, _ := pr.GetProviderById(providers.ID)
+		return data, true, nil
 	} else {
-		return false, err
+		return nil, false, err
 	}
 }
 func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.ProviderModel) (*models.ProviderModel, error) {
@@ -50,5 +58,22 @@ func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.ProviderModel
 		return nil, err
 	}
 	tx.Commit()
-	return provider, nil
+	providers, _ := pr.GetProviderById(provider.ID)
+	return providers, nil
+}
+func (pr *ProviderRepoAccountImpl) GetProviderById(id string) (*models.ProviderModel, error) {
+	providers := new(models.ProviderModel)
+	var bornDate, editedAt, deletedAt sql.NullString
+
+	err := pr.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
+		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
+	providers.BornDate = bornDate.String
+	providers.EditedAt = editedAt.String
+	providers.DeletedAt = deletedAt.String
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return providers, nil
 }
