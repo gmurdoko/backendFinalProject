@@ -1,14 +1,18 @@
 package ticketusecase
 
-import "finalproject/main/master/repository/user/ticketrepository"
+import (
+	"finalproject/main/master/model"
+	"finalproject/main/master/repository/user/ticketrepository"
+	"fmt"
+)
 
-//TicketUsecaseImpl app
-type TicketUsecaseImpl struct {
+//ticketUsecaseImpl app
+type ticketUsecaseImpl struct {
 	ticketRepository ticketrepository.TicketRepository
 }
 
 //DeleteTicket app
-func (s TicketUsecaseImpl) DeleteTicket(id string) error {
+func (s ticketUsecaseImpl) DeleteTicket(id string) error {
 	err := s.ticketRepository.Delete(id)
 	if err != nil {
 		return err
@@ -16,7 +20,18 @@ func (s TicketUsecaseImpl) DeleteTicket(id string) error {
 	return nil
 }
 
+//GetHistoryTicketByID app
+func (s ticketUsecaseImpl) GetHistoryTicketByID(offset, limit, id string) ([]*model.TicketView, *int, error) {
+	println("INI USECASE", offset, limit, id)
+	ticketView, totalField, err := s.ticketRepository.SelectHistoryTicketByUserID(offset, limit, id)
+	if err != nil {
+		return nil, nil, err
+	}
+	fmt.Println("useCase", *totalField)
+	return ticketView, totalField, nil
+}
+
 //InitTicketUsecaseImpl app
 func InitTicketUsecaseImpl(ticketRepository ticketrepository.TicketRepository) TicketUsecase {
-	return &TicketUsecaseImpl{ticketRepository}
+	return &ticketUsecaseImpl{ticketRepository}
 }

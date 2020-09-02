@@ -3,6 +3,8 @@ package walletrepository
 import (
 	"database/sql"
 	"finalproject/main/master/model"
+	"finalproject/utils/converter"
+	"fmt"
 	"time"
 )
 
@@ -14,10 +16,12 @@ type walletRepositoryImpl struct {
 //Payment app
 func (s walletRepositoryImpl) Payment(Wallet *model.Wallets) error {
 	tx, err := s.db.Begin()
+	fmt.Println("PAYMENT")
 	Wallet.EditedAt = time.Now().Format(`2006-01-02 15:04:05`)
 	if err != nil {
 		return err
 	}
+	fmt.Println("PAYMENT")
 	query := "UPDATE m_wallet SET kredit = ?, saldo = ?, edited_at =? WHERE id = ?;"
 	_, err = tx.Exec(query, Wallet.Kredit, Wallet.Saldo, Wallet.EditedAt, Wallet.ID)
 	if err != nil {
@@ -37,7 +41,7 @@ func (s walletRepositoryImpl) Receive(Wallet *model.Wallets) error {
 		return err
 	}
 	query := "UPDATE m_wallet SET debit = ?, saldo = ?, edited_at =? WHERE id = ?;"
-	_, err = tx.Exec(query, Wallet.Kredit, Wallet.Saldo, Wallet.EditedAt, Wallet.ID)
+	_, err = tx.Exec(query, Wallet.Debit, Wallet.Saldo, Wallet.EditedAt, Wallet.ID)
 	if err != nil {
 		tx.Rollback()
 		return err
@@ -49,8 +53,12 @@ func (s walletRepositoryImpl) Receive(Wallet *model.Wallets) error {
 
 //SelectWalletByID app
 func (s walletRepositoryImpl) SelectWalletByID(id string) (*model.Wallets, error) {
+	fmt.Println("wallet by ID")
 	var wallet = new(model.Wallets)
-	err := s.db.QueryRow("SELECT * FROM m_wallet WHERE id = ?", id).Scan(&wallet.ID, &wallet.Saldo, &wallet.Debit, &wallet.Kredit, &wallet.CreatedAt, &wallet.EditedAt, &wallet.DeletedAt, &wallet.Status)
+	var newEditedAt, newDeletedAt sql.NullString
+	err := s.db.QueryRow("SELECT * FROM m_wallet WHERE id = ?", id).Scan(&wallet.ID, &wallet.Saldo, &wallet.Debit, &wallet.Kredit, &wallet.CreatedAt, &newEditedAt, &newDeletedAt, &wallet.Status)
+	wallet.EditedAt = converter.NullStringToString(newEditedAt)
+	wallet.DeletedAt = converter.NullStringToString(newDeletedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +67,7 @@ func (s walletRepositoryImpl) SelectWalletByID(id string) (*model.Wallets, error
 
 //CheckWalletIDByAssetID For Checking Amount Fee By ID
 func (s walletRepositoryImpl) CheckWalletIDByAssetID(id string) (*string, error) {
+	fmt.Println("wallet by asset ID")
 	var idWallet = new(string)
 	err := s.db.QueryRow("SELECT id_wallet FROM m_asset WHERE id = ?", id).Scan(idWallet)
 	if err != nil {
@@ -69,6 +78,7 @@ func (s walletRepositoryImpl) CheckWalletIDByAssetID(id string) (*string, error)
 
 //CheckWalletIDByUserID For Checking Amount Fee By ID
 func (s walletRepositoryImpl) CheckWalletIDByUserID(id string) (*string, error) {
+	fmt.Println("wallet by user ID")
 	var idWallet = new(string)
 	err := s.db.QueryRow("SELECT id_wallet FROM m_user_account WHERE id = ?", id).Scan(idWallet)
 	if err != nil {
@@ -79,12 +89,30 @@ func (s walletRepositoryImpl) CheckWalletIDByUserID(id string) (*string, error) 
 
 //CheckFeePerHour For Checking Amount Fee By ID
 func (s walletRepositoryImpl) CheckFeePerHour(id string) (*int, error) {
+	fmt.Println("fee per hour")
+
 	var feePerHour = new(int)
 	err := s.db.QueryRow("SELECT fee FROM m_fee WHERE id = ?", id).Scan(feePerHour)
 	if err != nil {
 		return nil, err
 	}
 	return feePerHour, nil
+}
+
+func (s walletRepositoryImpl) TransactionDone(ticket *model.Tickets) error {
+	tx, err := s.db.Begin()
+	if err != nil {
+		return err
+	}
+	query := "UPDATE m_ticket SET finished_at = ?, status = 'I' WHERE id = ?;"
+	_, err = tx.Exec(query, ticket.FinishedAt, ticket.ID)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	tx.Commit()
+	return nil
 }
 
 //InitWalletRepositoryImpl is init gate for repository

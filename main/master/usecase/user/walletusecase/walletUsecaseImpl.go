@@ -1,8 +1,10 @@
 package walletusecase
 
 import (
+	"errors"
 	"finalproject/main/master/model"
 	"finalproject/main/master/repository/user/walletrepository"
+	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -16,8 +18,14 @@ type walletUsecaseImpl struct {
 
 //TransactionPayment app
 func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
+	//
+	if ticket.Status != "A" {
+		return errors.New("Ticket Not Active")
+	}
 	//TimeDifferent
 	layout := `2006-01-02 15:04:05`
+	// Update ticket add FinishedAt
+	ticket.FinishedAt = time.Now().Format(`2006-01-02 15:04:05`)
 	startAt, err := time.Parse(layout, ticket.StartAt)
 	if err != nil {
 		return err
@@ -27,7 +35,7 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
 		return err
 	}
 	//HourDifferent
-	HourDifferent := int(math.Ceil(startAt.Sub(finishAt).Seconds()) / 3600)
+	HourDifferent := int(math.Ceil(finishAt.Sub(startAt).Seconds()) / 3600)
 	//Looking for fee per hour
 	feePerHour, err := s.walletRepository.CheckFeePerHour(ticket.FeeID)
 	if err != nil {
@@ -35,7 +43,9 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
 	}
 	// Total Payment
 	paymentMoney := *feePerHour * HourDifferent
-
+	fmt.Println("Payment Money:", paymentMoney)
+	fmt.Println("Fee Per Hour", feePerHour)
+	fmt.Println("HourDifferent:", HourDifferent)
 	//Updating Wallet User
 	userWalletID, err := s.walletRepository.CheckWalletIDByUserID(ticket.UserID)
 	if err != nil {
@@ -49,22 +59,31 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("kredit+payment", kreditInt+paymentMoney)
 	kreditInt += paymentMoney
+	fmt.Println("Kredit", kreditInt)
+
 	kreditFinal := strconv.Itoa(kreditInt)
 	userWallet.Kredit = kreditFinal
 	saldoInt, err := strconv.Atoi(userWallet.Saldo)
 	if err != nil {
 		return err
 	}
+	if saldoInt-paymentMoney < 0 {
+		return errors.New("Saldo tidak mencukupi")
+	}
 	saldoInt -= paymentMoney
 	saldoFinal := strconv.Itoa(saldoInt)
 	userWallet.Saldo = saldoFinal
+
+	fmt.Println("bisa sampai sini")
 
 	//Updating Wallet Asset
 	assetWalletID, err := s.walletRepository.CheckWalletIDByAssetID(ticket.AssetID)
 	if err != nil {
 		return err
 	}
+
 	assetWallet, err := s.walletRepository.SelectWalletByID(*assetWalletID)
 	if err != nil {
 		return err
@@ -91,6 +110,16 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
 		return err
 	}
 	err = s.walletRepository.Receive(assetWallet)
+	if err != nil {
+		return err
+	}
+
+	//Update transaction
+	err = s.walletRepository.TransactionDone(ticket)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
