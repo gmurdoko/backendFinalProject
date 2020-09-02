@@ -10,5 +10,5 @@ type UserRepository interface {
 	UpdateUserData(*models.UserModel, string) (*models.UserModel, error)
 	UpdateUserSaldoTopUp(*models.WalletModel, string) (int, error)
 	GetUserPhoto(string) (string, error)
-	UpdateUserPhoto(*models.UserModel, string) (string, error)
+	// UpdateUserPhoto(*models.UserModel, string) (*models.UserModel, error)
 }

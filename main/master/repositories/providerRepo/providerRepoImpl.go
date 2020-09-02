@@ -17,9 +17,22 @@ type ProviderRepoImpl struct {
 func InitProviderRepoImpl(db *sql.DB) ProviderRepository {
 	return &ProviderRepoImpl{db: db}
 }
+func (pr *ProviderRepoImpl) GetProvider(provider *models.ProviderModel) (bool, error) {
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username, provider.Password)
+	var users = models.UserModel{}
+	err := row.Scan(&users.Username, &users.Password)
+	if err != nil {
+		return false, err
+	}
+	if provider.Username == provider.Username && provider.Password == provider.Password {
+		return true, nil
+	} else {
+		return false, err
+	}
+}
 func (pr *ProviderRepoImpl) CreateProvider(provider *models.ProviderModel) (*models.ProviderModel, error) {
 	provider.ID = uuid.New().String()
-	provider.CreatedAt = time.Now().Format(`2006-01-02 15:04:05`)
+	provider.CreatedAt = time.Now().Format(utils.DATE_FORMAT)
 	tx, err := pr.db.Begin()
 	if err != nil {
 		log.Println(err)
@@ -36,11 +49,20 @@ func (pr *ProviderRepoImpl) CreateProvider(provider *models.ProviderModel) (*mod
 	tx.Commit()
 	return provider, nil
 }
+func (pr *ProviderRepoImpl) GetProviderSaldo(id string) (int, error) {
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER_SALDO, id)
+	var saldo int
+	err := row.Scan(&saldo)
+	if err != nil {
+		return 0, err
+	}
+	return saldo, nil
+}
 func (pr *ProviderRepoImpl) CreateAssetProvider(asset *models.AssetModel) (*models.AssetModel, error) {
 	var wallet models.WalletModel
 	asset.ID = uuid.New().String()
 	wallet.ID = uuid.New().String()
-	asset.CreatedAt = time.Now().Format(`2006-01-02 15:04:05`)
+	asset.CreatedAt = time.Now().Format(utils.DATE_FORMAT)
 	tx, err := pr.db.Begin()
 	if err != nil {
 		log.Println(err)

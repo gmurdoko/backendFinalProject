@@ -6,6 +6,7 @@ import (
 	"finalproject/main/master/usecases/userUsecase"
 	"finalproject/utils/jwt"
 	"finalproject/utils/response"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -24,7 +25,7 @@ func UserController(r *mux.Router, service userUsecase.UserUsecase) {
 	user.HandleFunc("/saldo/{id}", userHandler.UpdateUserSaldoTopUp).Methods(http.MethodPut)
 	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodDelete)
 	user.HandleFunc("/photo/{id}", userHandler.GetUserPhoto).Methods(http.MethodGet)
-	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodPut)
+	// user.HandleFunc("/photo/{id}", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
 	auth := r.PathPrefix("/auth").Subrouter()
 	auth.HandleFunc("", userHandler.GetUser).Methods(http.MethodPost)
 }
@@ -126,29 +127,27 @@ func (uh *UserHandler) UpdateUserData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 func (uh *UserHandler) UpdateUserSaldoTopUp(w http.ResponseWriter, r *http.Request) {
-	var userRequest *models.WalletModel
 	params := mux.Vars(r)
 	id := params["id"]
-	_ = json.NewDecoder(r.Body).Decode(&userRequest)
-	saldo, err := uh.userUsecase.UpdateUserSaldoTopUp(userRequest, id)
+
+	var data models.WalletModel
+	_ = json.NewDecoder(r.Body).Decode(&data)
+
+	saldo, err := uh.userUsecase.UpdateUserSaldoTopUp(&data, id)
 	if err != nil {
-		var response response.Response
-		response.Status = http.StatusOK
-		response.Message = "Success"
-		response.Data = "Fail"
-		w.Write([]byte("Cannot Update Data"))
-	} else {
-		var response response.Response
-		response.Status = http.StatusOK
-		response.Message = "Success"
-		response.Data = saldo
-		byteData, err := json.Marshal(response)
-		if err != nil {
-			w.Write([]byte("Something Wrong on Marshalling Data"))
-		}
-		w.Header().Set("Content-type", "application/json")
-		w.Write(byteData)
+		log.Println(err)
+		w.Write([]byte("Update Data Failed!"))
 	}
+	var response response.Response
+	response.Status = http.StatusOK
+	response.Message = "Success"
+	response.Data = saldo
+	byteData, err := json.Marshal(response)
+	if err != nil {
+		w.Write([]byte("Something Wrong on Marshalling Data"))
+	}
+	w.Header().Set("Content-type", "application/json")
+	w.Write(byteData)
 }
 func (uh *UserHandler) GetUserPhoto(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
@@ -168,28 +167,27 @@ func (uh *UserHandler) GetUserPhoto(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-type", "application/json")
 	w.Write(byteData)
 }
-func (uh *UserHandler) UpdateUserPhoto(w http.ResponseWriter, r *http.Request) {
-	var userRequest *models.UserModel
-	params := mux.Vars(r)
-	id := params["id"]
-	_ = json.NewDecoder(r.Body).Decode(&userRequest)
-	photo, err := uh.userUsecase.UpdateUserPhoto(userRequest, id)
-	if err != nil {
-		var response response.Response
-		response.Status = http.StatusOK
-		response.Message = "Success"
-		response.Data = "Fail"
-		w.Write([]byte("Cannot Update Data"))
-	} else {
-		var response response.Response
-		response.Status = http.StatusOK
-		response.Message = "Success"
-		response.Data = photo
-		byteData, err := json.Marshal(response)
-		if err != nil {
-			w.Write([]byte("Something Wrong on Marshalling Data"))
-		}
-		w.Header().Set("Content-type", "application/json")
-		w.Write(byteData)
-	}
-}
+
+// func (uh *UserHandler) UpdateUserPhoto(w http.ResponseWriter, r *http.Request) {
+// 	params := mux.Vars(r)
+// 	id := params["id"]
+
+// 	var data models.UserModel
+// 	_ = json.NewDecoder(r.Body).Decode(&data)
+
+// 	photo, err := uh.userUsecase.UpdateUserPhoto(&data, id)
+// 	if err != nil {
+// 		log.Println(err)
+// 		w.Write([]byte("Update Data Failed!"))
+// 	}
+// 	var response response.Response
+// 	response.Status = http.StatusOK
+// 	response.Message = "Success"
+// 	response.Data = photo
+// 	byteData, err := json.Marshal(response)
+// 	if err != nil {
+// 		w.Write([]byte("Something Wrong on Marshalling Data"))
+// 	}
+// 	w.Header().Set("Content-type", "application/json")
+// 	w.Write(byteData)
+// }

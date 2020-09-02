@@ -59,10 +59,11 @@ func (uc *UserUsecaseImpl) GetUserPhoto(id string) (string, error) {
 	}
 	return data, nil
 }
-func (uc *UserUsecaseImpl) UpdateUserPhoto(user *models.UserModel, id string) (string, error) {
-	data, err := uc.userRepo.UpdateUserPhoto(user, id)
-	if err != nil {
-		return "", err
-	}
-	return data, nil
-}
+
+// func (uc *UserUsecaseImpl) UpdateUserPhoto(user *models.UserModel, id string) (*models.UserModel, error) {
+// 	data, err := uc.userRepo.UpdateUserPhoto(user, id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return data, nil
+// }

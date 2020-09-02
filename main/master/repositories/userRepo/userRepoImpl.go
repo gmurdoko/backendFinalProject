@@ -34,7 +34,7 @@ func (ur *UserRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel, e
 	var wallet models.WalletModel
 	user.ID = uuid.New().String()
 	wallet.ID = uuid.New().String()
-	user.CreatedAt = time.Now().Format(`2006-01-02 15:04:05`)
+	user.CreatedAt = time.Now().Format(utils.DATE_FORMAT)
 	tx, err := ur.db.Begin()
 	if err != nil {
 		log.Println(err)
@@ -65,7 +65,6 @@ func (ur *UserRepoImpl) GetSaldo(id string) (int, error) {
 	if err != nil {
 		return 0, err
 	}
-	log.Print(saldo)
 	return saldo, nil
 }
 func (ur *UserRepoImpl) DeleteUserPhoto(id string) error {
@@ -87,7 +86,7 @@ func (ur *UserRepoImpl) UpdateUserData(user *models.UserModel, id string) (*mode
 	if err != nil {
 		return nil, err
 	}
-	_, err = tx.Exec(utils.UPDATE_DATA_USER, user.Address, user.BornDate, editedAt, id)
+	_, err = tx.Exec(utils.UPDATE_DATA_USER, user.Address, user.BornDate, user.Photo, editedAt, id)
 	if err != nil {
 		tx.Rollback()
 		return nil, err
@@ -96,14 +95,21 @@ func (ur *UserRepoImpl) UpdateUserData(user *models.UserModel, id string) (*mode
 }
 func (ur *UserRepoImpl) UpdateUserSaldoTopUp(wallet *models.WalletModel, id string) (int, error) {
 	editedAt := time.Now()
-	row := ur.db.QueryRow(utils.UPDATE_USER_SALDO_TOPUP, wallet.Debit, editedAt, id)
+	tx, err := ur.db.Begin()
+	_, err = tx.Exec(utils.UPDATE_USER_SALDO_TOPUP, wallet.Debit, editedAt, id)
+	if err != nil {
+		tx.Rollback()
+		return 0, err
+	}
+	row := ur.db.QueryRow(utils.SELECT_UPDATED_SALDO_USER, id)
+
 	var saldo int
-	err := row.Scan(&saldo)
+	err = row.Scan(&saldo)
 	if err != nil {
 		return 0, err
 	}
-	log.Print(saldo)
-	return saldo, nil
+
+	return saldo, tx.Commit()
 }
 func (ur *UserRepoImpl) GetUserPhoto(id string) (string, error) {
 	row := ur.db.QueryRow(utils.SELECT_PHOTO_USER, id)
@@ -115,14 +121,14 @@ func (ur *UserRepoImpl) GetUserPhoto(id string) (string, error) {
 	log.Print(photo)
 	return photo, nil
 }
-func (ur *UserRepoImpl) UpdateUserPhoto(user *models.UserModel, id string) (string, error) {
-	editedAt := time.Now()
-	row := ur.db.QueryRow(utils.UPDATE_PHOTO_USER, user.Photo, editedAt, id)
-	var photo string
-	err := row.Scan(&photo)
-	if err != nil {
-		return "", err
-	}
-	log.Print(photo)
-	return photo, nil
-}
+
+// func (ur *UserRepoImpl) UpdateUserPhoto(user *models.UserModel, id string) (*models.UserModel, error) {
+// 	editedAt := time.Now()
+// 	tx, err := ur.db.Begin()
+// 	_, err = tx.Exec(utils.UPDATE_USER_SALDO_TOPUP, user.Photo, editedAt, id)
+// 	if err != nil {
+// 		tx.Rollback()
+// 		return nil, err
+// 	}
+// 	return user, tx.Commit()
+// }
