@@ -2,9 +2,9 @@ package models
 
 type WalletModel struct {
 	ID        string `json:"id"`
-	Saldo     int    `json:"saldo"`
-	Debit     int    `json:"debit"`
-	Kredit    int    `json:"kredit"`
+	Saldo     string `json:"saldo"`
+	Debit     string `json:"debit"`
+	Kredit    string `json:"kredit"`
 	CreatedAt string `json:"created_at"`
 	EditedAt  string `json:"edited_at"`
 	DeletedAt string `json:"deleted_at"`

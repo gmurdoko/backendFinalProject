@@ -19,7 +19,7 @@ func (s providerUsecaseImpl) DeleteProviderFoto(id string) error {
 	return nil
 }
 
-func (s providerUsecaseImpl) UpdateDataProvider(Provider *models.Providers) error {
+func (s providerUsecaseImpl) UpdateDataProvider(Provider *models.ProviderModel) error {
 	err := s.providerRepository.UpdateDataProvider(Provider)
 	if err != nil {
 		return err

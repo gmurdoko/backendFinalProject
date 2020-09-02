@@ -26,13 +26,13 @@ func (s providerRepositorytImpl) DeletePhotoProvider(id string) error {
 	return nil
 }
 
-func (s providerRepositorytImpl) UpdateDataProvider(Provider *models.Providers) error {
+func (s providerRepositorytImpl) UpdateDataProvider(Provider *models.ProviderModel) error {
 	tx, err := s.db.Begin()
 	if err != nil {
 		return err
 	}
 	query := "UPDATE m_provider_account SET address =?, borndate=? WHERE id =?"
-	_, err = tx.Exec(query, Provider.Address, Provider.Borndate, Provider.ID)
+	_, err = tx.Exec(query, Provider.Address, Provider.BornDate, Provider.ID)
 	if err != nil {
 		tx.Rollback()
 		return err
