@@ -20,7 +20,7 @@ func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 	return &ProviderRepoAccountImpl{db: db}
 }
 func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (*models.ProviderModel, bool, error) {
-	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username)
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER_LOGIN, provider.Username)
 	var providers = models.ProviderModel{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&providers.ID, &providers.Username, &providers.Password,
@@ -33,7 +33,7 @@ func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (
 		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(provider.Password, providers.Password)
-	if provider.Username == provider.Username && isPwdValid {
+	if provider.Username == providers.Username && isPwdValid {
 		data, _ := pr.GetProviderById(providers.ID)
 		return data, true, nil
 	} else {
@@ -65,7 +65,7 @@ func (pr *ProviderRepoAccountImpl) GetProviderById(id string) (*models.ProviderM
 	providers := new(models.ProviderModel)
 	var bornDate, editedAt, deletedAt sql.NullString
 
-	err := pr.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
+	err := pr.db.QueryRow(utils.SELECT_NEW_PROVIDER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
 		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
 	providers.BornDate = bornDate.String

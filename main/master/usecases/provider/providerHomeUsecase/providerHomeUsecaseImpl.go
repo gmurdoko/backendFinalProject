@@ -53,11 +53,6 @@ func (pu *ProviderHomeUsecaseImpl) CreateAssetProvider(photo multipart.File, han
 		return nil, err
 	}
 	return data, nil
-	// data, err := pu.providerRepo.CreateAssetProvider(provider)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// return data, nil
 }
 func (pu *ProviderHomeUsecaseImpl) GetProviderSaldo(id string) (int, error) {
 	data, err := pu.providerRepo.GetProviderSaldo(id)

@@ -180,3 +180,15 @@
 2020-09-02 22:32:48 Accessing path /provider/asset with application PostmanRuntime/7.26.3
 2020-09-02 22:34:21 Accessing path /provider/asset with application PostmanRuntime/7.26.3
 2020-09-02 22:36:38 Accessing path /provider/asset with application PostmanRuntime/7.26.3
+2020-09-02 22:41:18 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:41:54 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:42:16 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:44:04 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:44:44 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:47:46 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:48:35 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 22:50:33 Accessing path /authProvider/login with application PostmanRuntime/7.26.3
+2020-09-02 22:53:10 Accessing path /authProvider/login with application PostmanRuntime/7.26.3
+2020-09-02 22:59:22 Accessing path /authProvider/login with application PostmanRuntime/7.26.3
+2020-09-02 23:01:53 Accessing path /authProvider/register with application PostmanRuntime/7.26.3
+2020-09-02 23:02:11 Accessing path /authProvider/login with application PostmanRuntime/7.26.3

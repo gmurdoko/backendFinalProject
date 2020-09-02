@@ -17,18 +17,18 @@ type ProviderAccHandler struct {
 
 func ProviderAccController(r *mux.Router, service providerAccountUsecase.ProviderAccount) {
 	providerHandler := ProviderAccHandler{providerAccUsecase: service}
-	provider := r.PathPrefix("/provider").Subrouter()
-	provider.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
 	auth := r.PathPrefix("/authProvider").Subrouter()
-	auth.HandleFunc("login", providerHandler.GetProvider).Methods(http.MethodPost)
+	auth.HandleFunc("/login", providerHandler.GetProvider).Methods(http.MethodPost)
+	auth.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
+
 }
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
 	var data models.ProviderModel
 	_ = json.NewDecoder(r.Body).Decode(&data)
 	provider, isValid, _ := ph.providerAccUsecase.GetProvider(&data)
+	w.Header().Set("Content-type", "application/json")
 
 	if isValid {
-		w.Header().Set("Content-type", "application/json")
 		token, err := jwt.JwtEncoder(data.Username, "rahasiadong")
 		if err != nil {
 			http.Error(w, "Failed token generation", http.StatusUnauthorized)
@@ -51,7 +51,7 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 func (ph *ProviderAccHandler) CreateProviders(w http.ResponseWriter, r *http.Request) {
 	var providerRequest *models.ProviderModel
 	_ = json.NewDecoder(r.Body).Decode(&providerRequest)
-	_, err := ph.providerAccUsecase.CreateProvider(providerRequest)
+	data, err := ph.providerAccUsecase.CreateProvider(providerRequest)
 	if err != nil {
 		var response response.Response
 		response.Status = http.StatusOK
@@ -62,7 +62,7 @@ func (ph *ProviderAccHandler) CreateProviders(w http.ResponseWriter, r *http.Req
 		var response response.Response
 		response.Status = http.StatusOK
 		response.Message = "Success"
-		response.Data = providerRequest
+		response.Data = data
 		byteData, err := json.Marshal(response)
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))
