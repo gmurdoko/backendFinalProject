@@ -5,7 +5,7 @@ const (
 	READ_LOCATION_ASSET = `SELECT asset_name, longitude, latitude FROM m_asset WHERE status="A";`
 
 	// Ticket reservation
-	CREATE_NEW_TICKET   = `INSERT INTO m_ticket (id, user_id, asset_id, fee_id, vehicle_id, license_plate, book_at, status) VALUES (?,?,?,?,?,?,?);`
+	CREATE_NEW_TICKET   = `INSERT INTO m_ticket (id, user_id, asset_id, fee_id, vehicle_id, license_plate, status) VALUES (?,?,?,?,?,?,"B");`
 	UPDATE_TICKET_START_PARKING = `UPDATE m_ticket SET status="A", start_at=NOW() WHERE id=?;`
 	UPDATE_TICKET_FINISH_PARKING = `UPDATE m_ticket SET status="I", finished_at=NOW() WHERE id=?;`
 

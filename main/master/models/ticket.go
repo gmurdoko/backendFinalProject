@@ -7,6 +7,5 @@ type Ticket struct {
 	FeeID        string `json:"fee_id"`
 	VehicleID    string `json:"vehicle_id"`
 	LicensePlate string `json:"license_plate"`
-	BookAt       string `json:"book_at"`
 	Status       string `json:"status"`
 }
