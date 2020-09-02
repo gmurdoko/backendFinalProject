@@ -26,7 +26,7 @@ func (pu *ProviderUsecaseAccImpl) CreateProvider(provider *models.Providers) (*m
 	}
 	return data, nil
 }
-func (pu *ProviderUsecaseAccImpl) GetProviderById(id string) (*models.ProviderModel, error) {
+func (pu *ProviderUsecaseAccImpl) GetProviderById(id string) (*models.Providers, error) {
 	data, err := pu.providerRepo.GetProviderById(id)
 	if err != nil {
 		return nil, err

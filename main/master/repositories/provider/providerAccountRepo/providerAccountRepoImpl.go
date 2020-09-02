@@ -21,12 +21,12 @@ func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 }
 func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (*models.Providers, bool, error) {
 	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username)
-	var providers = models.ProviderModel{}
+	var providers = models.Providers{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&providers.ID, &providers.Username, &providers.Password,
 		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
-	providers.BornDate = bornDate.String
+	providers.Borndate = bornDate.String
 	providers.EditedAt = editedAt.String
 	providers.DeletedAt = deletedAt.String
 	if err != nil {
@@ -62,13 +62,13 @@ func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.Providers) (*
 	return providers, nil
 }
 func (pr *ProviderRepoAccountImpl) GetProviderById(id string) (*models.Providers, error) {
-	providers := new(models.ProviderModel)
+	providers := new(models.Providers)
 	var bornDate, editedAt, deletedAt sql.NullString
 
 	err := pr.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
 		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
-	providers.BornDate = bornDate.String
+	providers.Borndate = bornDate.String
 	providers.EditedAt = editedAt.String
 	providers.DeletedAt = deletedAt.String
 	if err != nil {
