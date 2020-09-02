@@ -9,6 +9,8 @@ import (
 	"finalproject/utils/response"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/gorilla/mux"
 )
@@ -43,7 +45,7 @@ func detailProviderController(providers, provider *mux.Router, providerHandler P
 	// provider.HandleFunc("", providerHandler.Postprovider).Methods(http.MethodPost)
 	// provider.HandleFunc("", providerHandler.Putprovider).Methods(http.MethodPut)
 	provider.HandleFunc("/photo/", providerHandler.GetProviderPhoto).Queries("id", "{id}").Methods(http.MethodGet)
-	provider.HandleFunc("/photo/", providerHandler.UpdateProviderPhoto).Queries("photo", "{photo}", "id", "{id}").Methods(http.MethodPut)
+	provider.HandleFunc("/photo/", providerHandler.UpdateProviderPhoto).Queries("id", "{id}").Methods(http.MethodPut)
 	provider.HandleFunc("/photo/", providerHandler.DeleteProviderPhoto).Queries("id", "{id}").Methods(http.MethodDelete)
 	provider.HandleFunc("/data/", providerHandler.PutDataProvider).Queries("id", "{id}").Methods(http.MethodPut)
 
@@ -95,11 +97,20 @@ func (s *ProviderHandler) PutDataProvider(w http.ResponseWriter, r *http.Request
 
 //UpdateProviderPhoto app
 func (s *ProviderHandler) UpdateProviderPhoto(w http.ResponseWriter, r *http.Request) {
-	photo := mux.Vars(r)["photo"]
-	id := mux.Vars(r)["id"]
+	// photo := mux.Vars(r)["photo"]
+	id := r.FormValue("id")
 	var providerResponse response.Response
 	w.Header().Set("content-type", "application/json")
-	err := s.providerUsecase.UpdateProviderFoto(photo, id)
+	r.ParseMultipartForm(1024) // ini untuk batesin file size nya biar maks 1 MB
+	photo, handler, err := r.FormFile("photo")
+	if err != nil {
+		log.Println(`Error while parsing file`, err)
+		w.WriteHeader(http.StatusInternalServerError)
+		// json.NewEncoder(w).Encode(message.Respone("Upload Photos Failed", http.StatusInternalServerError, err.Error()))
+		// return
+	}
+	defer photo.Close()
+	err = s.providerUsecase.UpdateProviderFoto(photo, handler, id)
 	if err != nil {
 		providerResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()}
 		response.ResponseWrite(&providerResponse, w)
@@ -114,19 +125,29 @@ func (s *ProviderHandler) UpdateProviderPhoto(w http.ResponseWriter, r *http.Req
 
 // GetProviderPhoto app
 func (s *ProviderHandler) GetProviderPhoto(w http.ResponseWriter, r *http.Request) {
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	ex := mux.Vars(r)
 	id := ex["id"]
-	var providerResponse response.Response
-	w.Header().Set("content-type", "application/json")
 	photo, err := s.providerUsecase.GetPhotoByID(id)
-	if err != nil {
-		providerResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()}
-		response.ResponseWrite(&providerResponse, w)
-		log.Println(err)
-	} else {
-		providerResponse = response.Response{Status: http.StatusAccepted, Message: "Get Provider Foto Success", Data: photo}
-		response.ResponseWrite(&providerResponse, w)
-	}
+	fileLocation := filepath.Join(dir, "files", *photo)
 
-	log.Println("Endpoint hit: Get Provider Foto")
+	w.Header().Set("Content-Type", "image/jpeg")
+	http.ServeFile(w, r, fileLocation)
+	// var providerResponse response.Response
+	// w.Header().Set("content-type", "application/json")
+	// photo, err := s.providerUsecase.GetPhotoByID(id)
+	// if err != nil {
+	// 	providerResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()}
+	// 	response.ResponseWrite(&providerResponse, w)
+	// 	log.Println(err)
+	// } else {
+	// 	providerResponse = response.Response{Status: http.StatusAccepted, Message: "Get Provider Foto Success", Data: photo}
+	// 	response.ResponseWrite(&providerResponse, w)
+	// }
+
+	// log.Println("Endpoint hit: Get Provider Foto")
 }
