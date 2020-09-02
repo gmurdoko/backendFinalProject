@@ -18,10 +18,10 @@ type UserHomeHandler struct {
 func UserHomeController(r *mux.Router, service userHomeUsecase.UserHome) {
 	userHandler := UserHomeHandler{userUsecase: service}
 	user := r.PathPrefix("/user").Subrouter()
-	user.HandleFunc("", userHandler.UpdateUserData).Methods(http.MethodPut)
+	user.HandleFunc("/{id}", userHandler.UpdateUserData).Methods(http.MethodPut)
 	user.HandleFunc("/saldo/{id}", userHandler.GetSaldo).Methods(http.MethodGet)
 	user.HandleFunc("/saldo/{id}", userHandler.UpdateUserSaldoTopUp).Methods(http.MethodPut)
-	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodDelete)
+	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodPut)
 	user.HandleFunc("/photo/{id}", userHandler.GetUserPhoto).Methods(http.MethodGet)
 	// user.HandleFunc("/photo/{id}", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
 }

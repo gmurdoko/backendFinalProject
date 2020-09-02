@@ -42,8 +42,8 @@ func (pr *ProviderHomeRepoImpl) CreateAssetProvider(asset *models.AssetModel) (*
 		tx.Rollback()
 		return nil, err
 	}
-
-	_, err = tx.Exec(utils.INSERT_ASSET, asset.ID, asset.IdWallet.ID, asset.ProviderId.ID,
+	asset.IdWallet = wallet.ID
+	_, err = tx.Exec(utils.INSERT_ASSET, asset.ID, asset.IdWallet, asset.ProviderId,
 		asset.AssetName, asset.AssetArea, asset.Longitude, asset.Latitude,
 		asset.CarCapacity, asset.MotorcycleCapacity, asset.BicycleCapacity,
 		asset.Photo, asset.CreatedAt)

@@ -46,8 +46,8 @@ func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel
 		tx.Rollback()
 		return nil, err
 	}
-
-	_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet.ID, user.Username,
+	user.IdWallet = wallet.ID
+	_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet, user.Username,
 		user.Password, user.Email, user.Fullname, user.PhoneNumber,
 		user.CreatedAt)
 	if err != nil {

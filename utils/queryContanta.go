@@ -14,7 +14,7 @@ const (
 	UPDATE_USER_SALDO_TOPUP   = `UPDATE m_wallet SET debit=?, saldo=saldo+debit, edited_at=? WHERE id=?`
 	SELECT_PHOTO_USER         = `SELECT photo FROM m_user_account WHERE id=?`
 	UPDATE_PHOTO_USER         = `UPDATE m_user_account SET photo=?,edited_at=? WHERE id=?`
-	DELETE_PHOTO_USER         = `UPDATE m_user_account SET photo = null,deleted_at=? WHERE id=?`
+	DELETE_PHOTO_USER         = `UPDATE m_user_account SET photo =' ',deleted_at=? WHERE id=?`
 	UPDATE_DATA_USER          = `UPDATE m_user_account SET address =?, borndate=?,photo=?,edited_at=? WHERE id =?`
 	SELECT_UPDATED_SALDO_USER = "SELECT saldo FROM m_wallet WHERE id=?"
 	SELECT_PROVIDER_SALDO     = `SELECT SUM(mw.saldo) FROM m_asset AS ma JOIN m_wallet mw ON ma.id_wallet = mw.id JOIN 

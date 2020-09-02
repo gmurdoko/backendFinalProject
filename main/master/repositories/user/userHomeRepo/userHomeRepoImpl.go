@@ -58,6 +58,7 @@ func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.WalletModel, id 
 		tx.Rollback()
 		return 0, err
 	}
+	tx.Commit()
 	row := ur.db.QueryRow(utils.SELECT_UPDATED_SALDO_USER, id)
 
 	var saldo int
@@ -66,7 +67,7 @@ func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.WalletModel, id 
 		return 0, err
 	}
 
-	return saldo, tx.Commit()
+	return saldo, nil
 }
 func (ur *UserHomeRepoImpl) GetUserPhoto(id string) (string, error) {
 	row := ur.db.QueryRow(utils.SELECT_PHOTO_USER, id)

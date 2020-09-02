@@ -19,12 +19,6 @@ import (
 )
 
 func Init(r *mux.Router, db *sql.DB, activityLog bool) {
-	// providerRepo := providerRepo.InitProviderRepoImpl(db)
-	// providerUsecase := providerUsecase.InitProviderUsecase(providerRepo)
-	// controllers.ProviderController(r, providerUsecase)
-	// userRepo := userRepo.InitUserRepoImpl(db)
-	// userUsecase := userUsecase.InitUserUsecase(userRepo)
-	// controllers.UserController(r, userUsecase)
 	providerAccRepo := providerAccountRepo.InitProviderRepoAccImpl(db)
 	providerAccUsecase := providerAccountUsecase.InitProviderAccUsecase(providerAccRepo)
 	provider.ProviderAccController(r, providerAccUsecase)
