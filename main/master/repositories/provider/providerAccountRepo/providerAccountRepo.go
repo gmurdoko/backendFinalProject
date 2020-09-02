@@ -1,10 +1,8 @@
-package providerUsecase
+package providerAccountRepo
 
 import "finalproject/main/master/models"
 
-type ProviderUsecase interface {
+type ProviderAccount interface {
 	GetProvider(*models.ProviderModel) (bool, error)
-	GetProviderSaldo(string) (int, error)
 	CreateProvider(*models.ProviderModel) (*models.ProviderModel, error)
-	CreateProviderAsset(*models.AssetModel) (*models.AssetModel, error)
 }

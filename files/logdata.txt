@@ -57,3 +57,4 @@
 2020-09-01 19:22:06 Accessing path /user/photo/74f35944-18de-4f22-9565-8dd746dffa35 with application PostmanRuntime/7.26.3
 2020-09-01 19:22:07 Accessing path /user/photo/74f35944-18de-4f22-9565-8dd746dffa35 with application PostmanRuntime/7.26.3
 2020-09-01 19:22:41 Accessing path /user/photo/74f35944-18de-4f22-9565-8dd746dffa35 with application PostmanRuntime/7.26.3
+2020-09-02 10:58:19 Accessing path /provider with application PostmanRuntime/7.26.3
