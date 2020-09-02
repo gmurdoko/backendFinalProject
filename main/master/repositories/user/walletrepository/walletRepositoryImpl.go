@@ -2,7 +2,7 @@ package walletrepository
 
 import (
 	"database/sql"
-	"finalproject/main/master/model"
+	"finalproject/main/master/models"
 	"finalproject/utils/converter"
 	"fmt"
 	"time"
@@ -14,7 +14,7 @@ type walletRepositoryImpl struct {
 }
 
 //Payment app
-func (s walletRepositoryImpl) Payment(Wallet *model.Wallets) error {
+func (s walletRepositoryImpl) Payment(Wallet *models.WalletModel) error {
 	tx, err := s.db.Begin()
 	fmt.Println("PAYMENT")
 	Wallet.EditedAt = time.Now().Format(`2006-01-02 15:04:05`)
@@ -34,7 +34,7 @@ func (s walletRepositoryImpl) Payment(Wallet *model.Wallets) error {
 }
 
 //Receive app
-func (s walletRepositoryImpl) Receive(Wallet *model.Wallets) error {
+func (s walletRepositoryImpl) Receive(Wallet *models.WalletModel) error {
 	tx, err := s.db.Begin()
 	Wallet.EditedAt = time.Now().Format(`2006-01-02 15:04:05`)
 	if err != nil {
@@ -52,9 +52,9 @@ func (s walletRepositoryImpl) Receive(Wallet *model.Wallets) error {
 }
 
 //SelectWalletByID app
-func (s walletRepositoryImpl) SelectWalletByID(id string) (*model.Wallets, error) {
+func (s walletRepositoryImpl) SelectWalletByID(id string) (*models.WalletModel, error) {
 	fmt.Println("wallet by ID")
-	var wallet = new(model.Wallets)
+	var wallet = new(models.WalletModel)
 	var newEditedAt, newDeletedAt sql.NullString
 	err := s.db.QueryRow("SELECT * FROM m_wallet WHERE id = ?", id).Scan(&wallet.ID, &wallet.Saldo, &wallet.Debit, &wallet.Kredit, &wallet.CreatedAt, &newEditedAt, &newDeletedAt, &wallet.Status)
 	wallet.EditedAt = converter.NullStringToString(newEditedAt)
@@ -99,7 +99,7 @@ func (s walletRepositoryImpl) CheckFeePerHour(id string) (*int, error) {
 	return feePerHour, nil
 }
 
-func (s walletRepositoryImpl) TransactionDone(ticket *model.Tickets) error {
+func (s walletRepositoryImpl) TransactionDone(ticket *models.Tickets) error {
 	tx, err := s.db.Begin()
 	if err != nil {
 		return err

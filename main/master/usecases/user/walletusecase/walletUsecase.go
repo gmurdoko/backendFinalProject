@@ -1,10 +1,10 @@
 package walletusecase
 
 import (
-	"finalproject/main/master/model"
+	"finalproject/main/master/models"
 )
 
 //WalletUsecase app
 type WalletUsecase interface {
-	TransactionPayment(Ticket *model.Tickets) error
+	TransactionPayment(Ticket *models.Tickets) error
 }

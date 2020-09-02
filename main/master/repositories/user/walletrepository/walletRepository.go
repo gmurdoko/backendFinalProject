@@ -1,14 +1,14 @@
 package walletrepository
 
-import "finalproject/main/master/model"
+import "finalproject/main/master/models"
 
 //WalletRepository interface for ticket
 type WalletRepository interface {
-	Payment(Wallet *model.Wallets) error
-	Receive(Wallet *model.Wallets) error
+	Payment(Wallet *models.WalletModel) error
+	Receive(Wallet *models.WalletModel) error
 
 	//SelectWallet
-	SelectWalletByID(id string) (*model.Wallets, error)
+	SelectWalletByID(id string) (*models.WalletModel, error)
 
 	CheckWalletIDByAssetID(id string) (*string, error)
 	CheckWalletIDByUserID(id string) (*string, error)
@@ -17,5 +17,5 @@ type WalletRepository interface {
 	CheckFeePerHour(id string) (*int, error)
 
 	//Update ticket to transaction done
-	TransactionDone(ticket *model.Tickets) error
+	TransactionDone(ticket *models.Tickets) error
 }

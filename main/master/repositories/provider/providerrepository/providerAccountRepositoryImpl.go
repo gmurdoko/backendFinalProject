@@ -2,7 +2,7 @@ package providerrepository
 
 import (
 	"database/sql"
-	"finalproject/main/master/model"
+	"finalproject/main/master/models"
 )
 
 //providerRepositortImpl is for init Repository
@@ -26,7 +26,7 @@ func (s providerRepositorytImpl) DeletePhotoProvider(id string) error {
 	return nil
 }
 
-func (s providerRepositorytImpl) UpdateDataProvider(Provider *model.Providers) error {
+func (s providerRepositorytImpl) UpdateDataProvider(Provider *models.Providers) error {
 	tx, err := s.db.Begin()
 	if err != nil {
 		return err

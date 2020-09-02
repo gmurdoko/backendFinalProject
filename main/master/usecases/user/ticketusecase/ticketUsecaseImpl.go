@@ -1,8 +1,8 @@
 package ticketusecase
 
 import (
-	"finalproject/main/master/model"
-	"finalproject/main/master/repository/user/ticketrepository"
+	"finalproject/main/master/models"
+	"finalproject/main/master/repositories/user/ticketrepository"
 	"fmt"
 )
 
@@ -21,7 +21,7 @@ func (s ticketUsecaseImpl) DeleteTicket(id string) error {
 }
 
 //GetHistoryTicketByID app
-func (s ticketUsecaseImpl) GetHistoryTicketByID(offset, limit, id string) ([]*model.TicketView, *int, error) {
+func (s ticketUsecaseImpl) GetHistoryTicketByID(offset, limit, id string) ([]*models.TicketView, *int, error) {
 	println("INI USECASE", offset, limit, id)
 	ticketView, totalField, err := s.ticketRepository.SelectHistoryTicketByUserID(offset, limit, id)
 	if err != nil {

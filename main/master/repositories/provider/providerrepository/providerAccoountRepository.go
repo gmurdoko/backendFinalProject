@@ -1,9 +1,9 @@
 package providerrepository
 
-import "finalproject/main/master/model"
+import "finalproject/main/master/models"
 
 //ProviderRepository interface for ticket
 type ProviderRepository interface {
 	DeletePhotoProvider(id string) error
-	UpdateDataProvider(Provider *model.Providers) error
+	UpdateDataProvider(Provider *models.Providers) error
 }

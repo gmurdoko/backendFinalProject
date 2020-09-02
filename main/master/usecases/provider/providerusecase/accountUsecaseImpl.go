@@ -1,8 +1,8 @@
 package providerusecase
 
 import (
-	"finalproject/main/master/model"
-	"finalproject/main/master/repository/provider/providerrepository"
+	"finalproject/main/master/models"
+	"finalproject/main/master/repositories/provider/providerrepository"
 )
 
 //providerUsecaseImpl app
@@ -19,7 +19,7 @@ func (s providerUsecaseImpl) DeleteProviderFoto(id string) error {
 	return nil
 }
 
-func (s providerUsecaseImpl) UpdateDataProvider(Provider *model.Providers) error {
+func (s providerUsecaseImpl) UpdateDataProvider(Provider *models.Providers) error {
 	err := s.providerRepository.UpdateDataProvider(Provider)
 	if err != nil {
 		return err

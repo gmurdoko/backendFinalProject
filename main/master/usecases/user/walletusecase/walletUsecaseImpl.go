@@ -2,8 +2,8 @@ package walletusecase
 
 import (
 	"errors"
-	"finalproject/main/master/model"
-	"finalproject/main/master/repository/user/walletrepository"
+	"finalproject/main/master/models"
+	"finalproject/main/master/repositories/user/walletrepository"
 	"fmt"
 	"math"
 	"strconv"
@@ -17,7 +17,7 @@ type walletUsecaseImpl struct {
 }
 
 //TransactionPayment app
-func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
+func (s walletUsecaseImpl) TransactionPayment(ticket *models.Tickets) error {
 	//
 	if ticket.Status != "A" {
 		return errors.New("Ticket Not Active")
@@ -89,6 +89,7 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *model.Tickets) error {
 		return err
 	}
 
+	// debitInt, err := strconv.Atoi(assetWallet.Debit)
 	debitInt, err := strconv.Atoi(assetWallet.Debit)
 	if err != nil {
 		return err

@@ -1,4 +1,4 @@
-package model
+package models
 
 //Tickets is a Tickect blueprint
 type Tickets struct {

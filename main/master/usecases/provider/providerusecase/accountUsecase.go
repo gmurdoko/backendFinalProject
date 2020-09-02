@@ -1,9 +1,9 @@
 package providerusecase
 
-import "finalproject/main/master/model"
+import "finalproject/main/master/models"
 
 //ProviderUsecase usecase interface
 type ProviderUsecase interface {
 	DeleteProviderFoto(id string) error
-	UpdateDataProvider(Provider *model.Providers) error
+	UpdateDataProvider(Provider *models.Providers) error
 }

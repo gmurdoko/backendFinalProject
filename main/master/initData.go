@@ -24,10 +24,10 @@ import (
 	"finalproject/main/master/usecases/user/userAccountUsecase"
 	"finalproject/main/master/usecases/user/userHomeUsecase"
 
-	"finalproject/main/master/repository/user/ticketrepository"
-	"finalproject/main/master/repository/user/walletrepository"
-	"finalproject/main/master/usecase/user/ticketusecase"
-	"finalproject/main/master/usecase/user/walletusecase"
+	"finalproject/main/master/repositories/user/ticketrepository"
+	"finalproject/main/master/repositories/user/walletrepository"
+	"finalproject/main/master/usecases/user/ticketusecase"
+	"finalproject/main/master/usecases/user/walletusecase"
 	"finalproject/main/middleware"
 
 	"github.com/gorilla/mux"

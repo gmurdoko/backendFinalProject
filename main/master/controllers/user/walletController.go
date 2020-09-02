@@ -3,8 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"finalproject/config"
-	"finalproject/main/master/model"
-	"finalproject/main/master/usecase/user/walletusecase"
+	"finalproject/main/master/models"
+	"finalproject/main/master/usecases/user/walletusecase"
 	"finalproject/main/middleware"
 	"finalproject/utils/response"
 	"log"
@@ -49,7 +49,7 @@ func detailWalletController(wallets, wallet *mux.Router, walletHandler WalletHan
 
 //TransactionPayment app
 func (s *WalletHandler) TransactionPayment(w http.ResponseWriter, r *http.Request) {
-	var inTicket model.Tickets
+	var inTicket models.Tickets
 	var transactionPaymentResponse response.Response
 	w.Header().Set("content-type", "application/json")
 	err := json.NewDecoder(r.Body).Decode(&inTicket)
