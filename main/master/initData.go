@@ -3,14 +3,13 @@ package master
 import (
 	"database/sql"
 	controllersAdmin "finalproject/main/master/controllers/admin"
-	controllersProvider "finalproject/main/master/controllers/provider"
+	controllers "finalproject/main/master/controllers/provider"
 
 	adminaccountmanagementrepo "finalproject/main/master/repositories/admin/accountManagement"
 	adminassetsreportsrepo "finalproject/main/master/repositories/admin/report"
 	providerassetsreportsrepo "finalproject/main/master/repositories/provider/assetReport"
 	providerlistassetsrepo "finalproject/main/master/repositories/provider/listAssets"
 
-	"finalproject/main/master/controllers/provider"
 	"finalproject/main/master/controllers/user"
 	"finalproject/main/master/repositories/provider/providerAccountRepo"
 	"finalproject/main/master/repositories/provider/providerHomeRepo"
@@ -34,11 +33,11 @@ import (
 func Init(r *mux.Router, db *sql.DB, activityLog bool) {
 	listAssetsRepo := providerlistassetsrepo.InitListAssetsRepoImpl(db)
 	listAssetsUsecase := providerlistassetsusecase.InitListAssetsUsecaseImpl(listAssetsRepo)
-	controllersProvider.ListAssetsController(r, listAssetsUsecase)
+	controllers.ListAssetsController(r, listAssetsUsecase)
 
 	providerAssetsReportRepo := providerassetsreportsrepo.InitProviderAssetReportRepoImpl(db)
 	providerAssetsReportUsecase := providerassetreportsusecase.InitProviderReportUsecaseImpl(providerAssetsReportRepo)
-	controllersProvider.ProviderAssetReportController(r, providerAssetsReportUsecase)
+	controllers.ProviderAssetReportController(r, providerAssetsReportUsecase)
 
 	adminAssetsReportRepo := adminassetsreportsrepo.InitAdminAssetReportRepoImpl(db)
 	adminAssetsReportUsecase := adminassetsreportsusecase.InitProviderReportUsecaseImpl(adminAssetsReportRepo)
@@ -50,10 +49,10 @@ func Init(r *mux.Router, db *sql.DB, activityLog bool) {
 
 	providerAccRepo := providerAccountRepo.InitProviderRepoAccImpl(db)
 	providerAccUsecase := providerAccountUsecase.InitProviderAccUsecase(providerAccRepo)
-	provider.ProviderAccController(r, providerAccUsecase)
+	controllers.ProviderAccController(r, providerAccUsecase)
 	providerHomeRepo := providerHomeRepo.InitProviderHomeRepoImpl(db)
 	providerHomeUsecase := providerHomeUsecase.InitProviderHomeUsecase(providerHomeRepo)
-	provider.ProviderHomeController(r, providerHomeUsecase)
+	controllers.ProviderHomeController(r, providerHomeUsecase)
 
 	userAccRepo := userAccountRepo.InitUserAccRepoImpl(db)
 	userAccUsecase := userAccountUsecase.InitUseAccUsecase(userAccRepo)
