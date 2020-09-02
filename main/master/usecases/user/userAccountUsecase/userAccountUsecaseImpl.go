@@ -14,10 +14,13 @@ func InitUseAccUsecase(userRepo userAccountRepo.UserAccount) UserAccount {
 }
 
 func (uc *UserAccUsecaseImpl) GetUser(user *models.UserModel) (bool, error) {
+
 	isValid, err := uc.userRepo.GetUser(user)
+
 	if err != nil {
 		return false, err
 	}
+
 	return isValid, nil
 }
 func (uc *UserAccUsecaseImpl) CreateUser(user *models.UserModel) (*models.UserModel, error) {

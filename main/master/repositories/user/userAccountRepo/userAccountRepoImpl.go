@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"finalproject/main/master/models"
 	"finalproject/utils"
+	"finalproject/utils/pwd"
+	"fmt"
 	"log"
 	"time"
 
@@ -18,13 +20,15 @@ func InitUserAccRepoImpl(db *sql.DB) UserAccount {
 	return &UserAccRepoImpl{db: db}
 }
 func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (bool, error) {
-	row := ur.db.QueryRow(utils.SELECT_USER, user.Username, user.Password)
+	row := ur.db.QueryRow(utils.SELECT_USER, user.Username)
 	var users = models.UserModel{}
 	err := row.Scan(&users.Username, &users.Password)
 	if err != nil {
+		fmt.Println(err)
 		return false, err
 	}
-	if user.Username == user.Username && user.Password == user.Password {
+	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
+	if user.Username == users.Username && isPwdValid {
 		return true, nil
 	} else {
 		return false, err
@@ -47,14 +51,26 @@ func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel
 		return nil, err
 	}
 	user.IdWallet = wallet.ID
+	password, _ := pwd.HashPassword(user.Password)
 	_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet, user.Username,
-		user.Password, user.Email, user.Fullname, user.PhoneNumber,
+		password, user.Email, user.Fullname, user.PhoneNumber,
 		user.CreatedAt)
 	if err != nil {
 		tx.Rollback()
 		log.Println(err)
 		return nil, err
 	}
-	tx.Commit()
-	return user, nil
+	var users *models.UserModel
+	err = tx.Commit()
+	if err == nil {
+		fmt.Println("id", user.ID)
+		row := ur.db.QueryRow(utils.SELECT_NEW_USER, user.ID)
+		fmt.Println("row", row)
+
+		err = row.Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
+			&users.Email, &users.Fullname, &users.Photo, &users.BornDate, &users.Address, &users.PhoneNumber,
+			&users.CreatedAt, &users.EditedAt, &users.DeletedAt, &users.Status)
+	}
+	return users, nil
+
 }

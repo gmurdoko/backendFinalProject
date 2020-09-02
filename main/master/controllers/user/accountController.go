@@ -17,10 +17,11 @@ type UserAccHandler struct {
 
 func UserAccController(r *mux.Router, service userAccountUsecase.UserAccount) {
 	userHandler := UserAccHandler{userUsecase: service}
-	user := r.PathPrefix("/user").Subrouter()
-	user.HandleFunc("", userHandler.CreateUsers).Methods(http.MethodPost)
-	auth := r.PathPrefix("/auth").Subrouter()
-	auth.HandleFunc("", userHandler.GetUser).Methods(http.MethodPost)
+
+	auth := r.PathPrefix("/authUser").Subrouter()
+	auth.HandleFunc("/login", userHandler.GetUser).Methods(http.MethodPost)
+	auth.HandleFunc("/register", userHandler.CreateUsers).Methods(http.MethodPost)
+
 }
 func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	var data models.UserModel

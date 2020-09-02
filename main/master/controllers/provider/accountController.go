@@ -18,9 +18,9 @@ type ProviderAccHandler struct {
 func ProviderAccController(r *mux.Router, service providerAccountUsecase.ProviderAccount) {
 	providerHandler := ProviderAccHandler{providerAccUsecase: service}
 	provider := r.PathPrefix("/provider").Subrouter()
-	provider.HandleFunc("", providerHandler.CreateProviders).Methods(http.MethodPost)
-	auth := r.PathPrefix("/auth").Subrouter()
-	auth.HandleFunc("", providerHandler.GetProvider).Methods(http.MethodPost)
+	provider.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
+	auth := r.PathPrefix("/authProvider").Subrouter()
+	auth.HandleFunc("login", providerHandler.GetProvider).Methods(http.MethodPost)
 }
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
 	var data models.ProviderModel

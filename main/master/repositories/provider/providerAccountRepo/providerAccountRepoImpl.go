@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"finalproject/main/master/models"
 	"finalproject/utils"
+	"finalproject/utils/pwd"
 	"log"
 	"time"
 
@@ -18,13 +19,14 @@ func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 	return &ProviderRepoAccountImpl{db: db}
 }
 func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (bool, error) {
-	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username, provider.Password)
-	var users = models.UserModel{}
-	err := row.Scan(&users.Username, &users.Password)
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username)
+	var providers = models.UserModel{}
+	err := row.Scan(&providers.Username, &providers.Password)
 	if err != nil {
 		return false, err
 	}
-	if provider.Username == provider.Username && provider.Password == provider.Password {
+	isPwdValid := pwd.CheckPasswordHash(provider.Password, providers.Password)
+	if provider.Username == provider.Username && isPwdValid {
 		return true, nil
 	} else {
 		return false, err
@@ -38,8 +40,9 @@ func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.ProviderModel
 		log.Println(err)
 		return nil, err
 	}
+	password, _ := pwd.HashPassword(provider.Password)
 	_, err = tx.Exec(utils.INSERT_PROVIDER_ACCOUNT, provider.ID, provider.Username,
-		provider.Password, provider.Email, provider.Fullname, provider.PhoneNumber,
+		password, provider.Email, provider.Fullname, provider.PhoneNumber,
 		provider.CreatedAt)
 	if err != nil {
 		tx.Rollback()
