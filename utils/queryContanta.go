@@ -3,7 +3,7 @@ package utils
 const (
 	SELECT_NEW_USER     = `SELECT * FROM m_user_account WHERE id=?`
 	SELECT_NEW_PROVIDER = `SELECT * FROM m_provider_account WHERE id=?`
-	SELECT_USER         = `SELECT username,password FROM m_user_account WHERE username=? `
+	SELECT_USER         = `SELECT * FROM m_user_account WHERE username=? `
 	SELECT_PROVIDER     = `SELECT username,password FROM m_provider_account WHERE username=?`
 	INSERT_USER_ACCOUNT = `INSERT INTO m_user_account (id,id_wallet,username,password,email,fullname,phone_number,created_at) 
 	VALUES (?,?,?,?,?,?,?,?)`

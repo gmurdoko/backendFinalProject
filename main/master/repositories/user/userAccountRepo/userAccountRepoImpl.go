@@ -19,19 +19,28 @@ type UserAccRepoImpl struct {
 func InitUserAccRepoImpl(db *sql.DB) UserAccount {
 	return &UserAccRepoImpl{db: db}
 }
-func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (bool, error) {
+func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, bool, error) {
 	row := ur.db.QueryRow(utils.SELECT_USER, user.Username)
 	var users = models.UserModel{}
-	err := row.Scan(&users.Username, &users.Password)
+	var bornDate, editedAt, deletedAt sql.NullString
+	err := row.Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
+		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.Address, &users.PhoneNumber,
+		&users.CreatedAt, &editedAt, &deletedAt, &users.Status)
+	users.BornDate = bornDate.String
+	users.EditedAt = editedAt.String
+	users.DeletedAt = deletedAt.String
 	if err != nil {
 		fmt.Println(err)
-		return false, err
+		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
+
 	if user.Username == users.Username && isPwdValid {
-		return true, nil
+		data, _ := ur.GetUserById(users.ID)
+		fmt.Println("repo", data)
+		return data, true, nil
 	} else {
-		return false, err
+		return nil, false, err
 	}
 }
 func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel, error) {
@@ -60,17 +69,24 @@ func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel
 		log.Println(err)
 		return nil, err
 	}
-	var users *models.UserModel
-	err = tx.Commit()
-	if err == nil {
-		fmt.Println("id", user.ID)
-		row := ur.db.QueryRow(utils.SELECT_NEW_USER, user.ID)
-		fmt.Println("row", row)
+	tx.Commit()
+	users, _ := ur.GetUserById(user.ID)
+	return users, nil
+}
 
-		err = row.Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
-			&users.Email, &users.Fullname, &users.Photo, &users.BornDate, &users.Address, &users.PhoneNumber,
-			&users.CreatedAt, &users.EditedAt, &users.DeletedAt, &users.Status)
+func (ur *UserAccRepoImpl) GetUserById(id string) (*models.UserModel, error) {
+	users := new(models.UserModel)
+	var bornDate, editedAt, deletedAt sql.NullString
+
+	err := ur.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
+		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.Address, &users.PhoneNumber,
+		&users.CreatedAt, &editedAt, &deletedAt, &users.Status)
+	users.BornDate = bornDate.String
+	users.EditedAt = editedAt.String
+	users.DeletedAt = deletedAt.String
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
 	}
 	return users, nil
-
 }

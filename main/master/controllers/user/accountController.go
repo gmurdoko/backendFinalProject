@@ -26,15 +26,24 @@ func UserAccController(r *mux.Router, service userAccountUsecase.UserAccount) {
 func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	var data models.UserModel
 	_ = json.NewDecoder(r.Body).Decode(&data)
-	isValid, _ := uh.userUsecase.GetUser(&data)
-
+	dataUser, isValid, _ := uh.userUsecase.GetUser(&data)
+	w.Header().Set("Content-type", "application/json")
 	if isValid {
-		w.WriteHeader(http.StatusOK)
+		// w.WriteHeader(http.StatusOK)
 		token, err := jwt.JwtEncoder(data.Username, "rahasiadong")
 		if err != nil {
 			http.Error(w, "Failed token generation", http.StatusUnauthorized)
 		} else {
-			w.Write([]byte(token))
+			var response response.Response
+			response.Status = http.StatusOK
+			response.Message = "Success"
+			response.Token = token
+			response.Data = dataUser
+			byteData, err := json.Marshal(response)
+			if err != nil {
+				w.Write([]byte("Something Wrong on Marshalling Data"))
+			}
+			w.Write(byteData)
 		}
 	} else {
 		http.Error(w, "Invalid login", http.StatusUnauthorized)
@@ -43,7 +52,7 @@ func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 	var userRequest *models.UserModel
 	_ = json.NewDecoder(r.Body).Decode(&userRequest)
-	_, err := uh.userUsecase.CreateUser(userRequest)
+	data, err := uh.userUsecase.CreateUser(userRequest)
 	if err != nil {
 		var response response.Response
 		response.Status = http.StatusOK
@@ -54,7 +63,7 @@ func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 		var response response.Response
 		response.Status = http.StatusOK
 		response.Message = "Success"
-		response.Data = userRequest
+		response.Data = data
 		byteData, err := json.Marshal(response)
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))

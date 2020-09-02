@@ -10,6 +10,7 @@ import (
 type Response struct {
 	Status  int         `json:"status"`
 	Message string      `json:"message"`
+	Token   string      `json:"token"`
 	Data    interface{} `json:"result"`
 }
 
