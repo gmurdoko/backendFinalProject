@@ -1,19 +1,19 @@
-package controllers
+package provider
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	providerlistassetsusecase "finalproject/main/master/usecases/provider/listassets"
+	"finalproject/main/master/usecases/provider/providerListAssetUsecase"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
 type ListAssetsHandler struct {
-	listAssetsUsecase providerlistassetsusecase.ListAssetsUsecase
+	listAssetsUsecase providerListAssetUsecase.ListAssetsUsecase
 }
 
-func ListAssetsController(r *mux.Router, service providerlistassetsusecase.ListAssetsUsecase) {
+func ListAssetsController(r *mux.Router, service providerListAssetUsecase.ListAssetsUsecase) {
 	listAssetsHandler := ListAssetsHandler{listAssetsUsecase: service}
 	listAssets := r.PathPrefix("/providerassets").Subrouter()
 	listAssets.HandleFunc("/{id}", listAssetsHandler.getListAssets).Methods(http.MethodGet)

@@ -50,7 +50,7 @@ func (ur *UserHomeRepoImpl) UpdateUserData(user *models.UserModel, id string) (*
 	}
 	return user, tx.Commit()
 }
-func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.WalletModel, id string) (int, error) {
+func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (int, error) {
 	editedAt := time.Now()
 	tx, err := ur.db.Begin()
 	_, err = tx.Exec(utils.UPDATE_USER_SALDO_TOPUP, wallet.Debit, editedAt, id)

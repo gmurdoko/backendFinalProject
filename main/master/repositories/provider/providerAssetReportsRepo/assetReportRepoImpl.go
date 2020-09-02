@@ -1,4 +1,4 @@
-package providerassetreportrepo
+package providerAssetReportsRepo
 
 import (
 	"database/sql"

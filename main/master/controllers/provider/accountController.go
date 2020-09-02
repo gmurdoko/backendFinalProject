@@ -23,7 +23,7 @@ func ProviderAccController(r *mux.Router, service providerAccountUsecase.Provide
 	auth.HandleFunc("login", providerHandler.GetProvider).Methods(http.MethodPost)
 }
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
-	var data models.ProviderModel
+	var data models.Providers
 	_ = json.NewDecoder(r.Body).Decode(&data)
 	isValid, _ := ph.providerAccUsecase.GetProvider(&data)
 
@@ -40,7 +40,7 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 	}
 }
 func (ph *ProviderAccHandler) CreateProviders(w http.ResponseWriter, r *http.Request) {
-	var providerRequest *models.ProviderModel
+	var providerRequest *models.Providers
 	_ = json.NewDecoder(r.Body).Decode(&providerRequest)
 	_, err := ph.providerAccUsecase.CreateProvider(providerRequest)
 	if err != nil {

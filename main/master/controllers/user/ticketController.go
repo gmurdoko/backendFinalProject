@@ -1,4 +1,4 @@
-package controllers
+package user
 
 import (
 	"finalproject/config"
@@ -84,5 +84,4 @@ func (s *TicketHandler) HistoryTickets(w http.ResponseWriter, r *http.Request) {
 		response.ResponseWrite(&ticketsResponse, w)
 	}
 	log.Println("Endpoint hit: Get History Tickets")
-
 }

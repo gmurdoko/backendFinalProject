@@ -1,19 +1,19 @@
-package controllers
+package admin
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	adminassetsreportusecase "finalproject/main/master/usecases/admin/report"
+	"finalproject/main/master/usecases/admin/adminReportUsecase"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
 type AdminAssetReportHandler struct {
-	assetsReport adminassetsreportusecase.AdminAssetReportsUsecase
+	assetsReport adminReportUsecase.AdminAssetReportsUsecase
 }
 
-func AdminAssetReportController(r *mux.Router, service adminassetsreportusecase.AdminAssetReportsUsecase) {
+func AdminAssetReportController(r *mux.Router, service adminReportUsecase.AdminAssetReportsUsecase) {
 	assetsReportHandler := AdminAssetReportHandler{assetsReport: service}
 	reportAsset := r.PathPrefix("/providerreports").Subrouter()
 	reportAsset.HandleFunc("/daily/{id}", assetsReportHandler.getReportDaily).Methods(http.MethodGet)

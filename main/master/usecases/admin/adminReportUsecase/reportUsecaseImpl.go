@@ -1,4 +1,4 @@
-package adminreportusecase
+package adminReportUsecase
 
 import (
 	"finalproject/main/master/models"

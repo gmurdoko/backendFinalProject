@@ -1,19 +1,19 @@
-package controllers
+package provider
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	providerassetsreportusecase "finalproject/main/master/usecases/provider/assetReport"
+	"finalproject/main/master/usecases/provider/providerAssetReportsUsecase"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
 type ProviderAssetReportHandler struct {
-	assetsReport providerassetsreportusecase.ProviderAssetReportsUsecase
+	assetsReport providerAssetReportsUsecase.ProviderAssetReportsUsecase
 }
 
-func ProviderAssetReportController(r *mux.Router, service providerassetsreportusecase.ProviderAssetReportsUsecase) {
+func ProviderAssetReportController(r *mux.Router, service providerAssetReportsUsecase.ProviderAssetReportsUsecase) {
 	assetsReportHandler := ProviderAssetReportHandler{assetsReport: service}
 	reportAsset := r.PathPrefix("/providerreports").Subrouter()
 	reportAsset.HandleFunc("/daily/{id}", assetsReportHandler.getReportDaily).Methods(http.MethodGet)

@@ -1,8 +1,8 @@
-package adminreportusecase
+package providerAssetReportsUsecase
 
 import "finalproject/main/master/models"
 
-type AdminAssetReportsUsecase interface {
+type ProviderAssetReportsUsecase interface {
 	GetReportDaily(string) ([]*models.ReportAssetDaily, error)
 	GetReportMonthly(string) ([]*models.ReportAssetMonthly, error)
 }

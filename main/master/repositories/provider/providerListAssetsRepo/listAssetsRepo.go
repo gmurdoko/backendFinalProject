@@ -1,4 +1,4 @@
-package providerlistassetsrepo
+package providerListAssetsRepo
 
 import "finalproject/main/master/models"
 

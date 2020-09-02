@@ -86,7 +86,7 @@ func (uh *UserHomeHandler) UpdateUserSaldoTopUp(w http.ResponseWriter, r *http.R
 	params := mux.Vars(r)
 	id := params["id"]
 
-	var data models.WalletModel
+	var data models.Wallets
 	_ = json.NewDecoder(r.Body).Decode(&data)
 
 	saldo, err := uh.userUsecase.UpdateUserSaldoTopUp(&data, id)

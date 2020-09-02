@@ -27,7 +27,7 @@ func (pr *ProviderHomeRepoImpl) GetProviderSaldo(id string) (int, error) {
 	return saldo, nil
 }
 func (pr *ProviderHomeRepoImpl) CreateAssetProvider(asset *models.AssetModel) (*models.AssetModel, error) {
-	var wallet models.WalletModel
+	var wallet models.Wallets
 	asset.ID = uuid.New().String()
 	wallet.ID = uuid.New().String()
 	asset.CreatedAt = time.Now().Format(utils.DATE_FORMAT)

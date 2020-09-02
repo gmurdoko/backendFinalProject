@@ -44,7 +44,7 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 	}
 }
 func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel, error) {
-	var wallet models.WalletModel
+	var wallet models.Wallets
 	user.ID = uuid.New().String()
 	wallet.ID = uuid.New().String()
 	user.CreatedAt = time.Now().Format(utils.DATE_FORMAT)

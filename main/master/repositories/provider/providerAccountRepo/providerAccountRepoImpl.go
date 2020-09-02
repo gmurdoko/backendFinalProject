@@ -18,7 +18,7 @@ type ProviderRepoAccountImpl struct {
 func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 	return &ProviderRepoAccountImpl{db: db}
 }
-func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (bool, error) {
+func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (bool, error) {
 	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username)
 	var providers = models.UserModel{}
 	err := row.Scan(&providers.Username, &providers.Password)
@@ -32,7 +32,7 @@ func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (
 		return false, err
 	}
 }
-func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.ProviderModel) (*models.ProviderModel, error) {
+func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.Providers) (*models.Providers, error) {
 	provider.ID = uuid.New().String()
 	provider.CreatedAt = time.Now().Format(utils.DATE_FORMAT)
 	tx, err := pr.db.Begin()

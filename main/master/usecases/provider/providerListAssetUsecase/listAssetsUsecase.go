@@ -1,4 +1,4 @@
-package providerlistassetsusecase
+package providerListAssetUsecase
 
 import "finalproject/main/master/models"
 

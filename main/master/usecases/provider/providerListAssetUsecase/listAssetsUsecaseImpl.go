@@ -1,16 +1,16 @@
-package providerlistassetsusecase
+package providerListAssetUsecase
 
 import (
 	"finalproject/main/master/models"
-	providerlistassetsrepo "finalproject/main/master/repositories/provider/listAssets"
+	"finalproject/main/master/repositories/provider/providerListAssetsRepo"
 	"log"
 )
 
 type ListAssetsUsecaseImpl struct {
-	listAssetsRepo providerlistassetsrepo.ListAssetsRepo
+	listAssetsRepo providerListAssetsRepo.ListAssetsRepo
 }
 
-func InitListAssetsUsecaseImpl(listAssetsRepo providerlistassetsrepo.ListAssetsRepo) ListAssetsUsecase {
+func InitListAssetsUsecaseImpl(listAssetsRepo providerListAssetsRepo.ListAssetsRepo) ListAssetsUsecase {
 	return &ListAssetsUsecaseImpl{listAssetsRepo: listAssetsRepo}
 }
 

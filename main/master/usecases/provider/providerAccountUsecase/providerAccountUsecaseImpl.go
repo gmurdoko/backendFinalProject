@@ -12,14 +12,14 @@ type ProviderUsecaseAccImpl struct {
 func InitProviderAccUsecase(providerRepo providerAccountRepo.ProviderAccount) ProviderAccount {
 	return &ProviderUsecaseAccImpl{providerRepo: providerRepo}
 }
-func (pu *ProviderUsecaseAccImpl) GetProvider(provider *models.ProviderModel) (bool, error) {
+func (pu *ProviderUsecaseAccImpl) GetProvider(provider *models.Providers) (bool, error) {
 	isValid, err := pu.providerRepo.GetProvider(provider)
 	if err != nil {
 		return false, err
 	}
 	return isValid, nil
 }
-func (pu *ProviderUsecaseAccImpl) CreateProvider(provider *models.ProviderModel) (*models.ProviderModel, error) {
+func (pu *ProviderUsecaseAccImpl) CreateProvider(provider *models.Providers) (*models.Providers, error) {
 	data, err := pu.providerRepo.CreateProvider(provider)
 	if err != nil {
 		return nil, err
