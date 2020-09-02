@@ -10,16 +10,28 @@ import (
 	providerassetsreportsrepo "finalproject/main/master/repositories/provider/assetReport"
 	providerlistassetsrepo "finalproject/main/master/repositories/provider/listAssets"
 
+	"finalproject/main/master/controllers/provider"
+	"finalproject/main/master/controllers/user"
+	"finalproject/main/master/repositories/provider/providerAccountRepo"
+	"finalproject/main/master/repositories/provider/providerHomeRepo"
+	"finalproject/main/master/repositories/user/userAccountRepo"
+	"finalproject/main/master/repositories/user/userHomeRepo"
 	adminaccountmanagementusecase "finalproject/main/master/usecases/admin/accountManagement"
 	adminassetsreportsusecase "finalproject/main/master/usecases/admin/report"
 	providerassetreportsusecase "finalproject/main/master/usecases/provider/assetReport"
 	providerlistassetsusecase "finalproject/main/master/usecases/provider/listassets"
+	"finalproject/main/master/usecases/provider/providerAccountUsecase"
+	"finalproject/main/master/usecases/provider/providerHomeUsecase"
+	"finalproject/main/master/usecases/user/userAccountUsecase"
+	"finalproject/main/master/usecases/user/userHomeUsecase"
+
+	"finalproject/main/middleware"
 
 	"github.com/gorilla/mux"
 )
 
 // Init app
-func Init(r *mux.Router, db *sql.DB) {
+func Init(r *mux.Router, db *sql.DB, activityLog bool) {
 	listAssetsRepo := providerlistassetsrepo.InitListAssetsRepoImpl(db)
 	listAssetsUsecase := providerlistassetsusecase.InitListAssetsUsecaseImpl(listAssetsRepo)
 	controllersProvider.ListAssetsController(r, listAssetsUsecase)
@@ -35,4 +47,22 @@ func Init(r *mux.Router, db *sql.DB) {
 	adminAccountManagementRepo := adminaccountmanagementrepo.InitAccountManagementImpl(db)
 	adminAccountManagementUsecase := adminaccountmanagementusecase.InitAccountManagementUsecaseImpl(adminAccountManagementRepo)
 	controllersAdmin.AccountManagerController(r, adminAccountManagementUsecase)
+
+	providerAccRepo := providerAccountRepo.InitProviderRepoAccImpl(db)
+	providerAccUsecase := providerAccountUsecase.InitProviderAccUsecase(providerAccRepo)
+	provider.ProviderAccController(r, providerAccUsecase)
+	providerHomeRepo := providerHomeRepo.InitProviderHomeRepoImpl(db)
+	providerHomeUsecase := providerHomeUsecase.InitProviderHomeUsecase(providerHomeRepo)
+	provider.ProviderHomeController(r, providerHomeUsecase)
+
+	userAccRepo := userAccountRepo.InitUserAccRepoImpl(db)
+	userAccUsecase := userAccountUsecase.InitUseAccUsecase(userAccRepo)
+	user.UserAccController(r, userAccUsecase)
+	userHomeRepo := userHomeRepo.InitUserHomeRepoImpl(db)
+	userHomeUsecase := userHomeUsecase.InitUserHomeUsecase(userHomeRepo)
+	user.UserHomeController(r, userHomeUsecase)
+
+	if activityLog == true {
+		r.Use(middleware.ActivityLogMiddleware)
+	}
 }
