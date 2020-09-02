@@ -1,6 +1,6 @@
 package models
 
-type review struct {
+type Review struct {
 	ID        string `json:"id"`
 	UserID    string `json:"user_id"`
 	AssetID   string `json:"asset_id"`

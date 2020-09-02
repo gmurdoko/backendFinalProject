@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30d2e9b6-2430-47b3-bf6f-6db9c440f2c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main/master/repositories/asset/assetsCapacity/assetCapacityRepo.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/master/repositories/asset/assetsCapacity/assetCapcityRepoImpl.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/master/repositories/ticket/ticketRepo.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/master/repositories/ticket/ticketRepoImpl.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/master/repositories/review/reviewRepo.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main/master/repositories/review/reviewRepoImpl.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/master/models/ticket.go" beforeDir="false" afterPath="$PROJECT_DIR$/main/master/models/ticket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/master/models/review.go" beforeDir="false" afterPath="$PROJECT_DIR$/main/master/models/review.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/constant/constanta.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/constant/constanta.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
