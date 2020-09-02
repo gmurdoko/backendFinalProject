@@ -53,3 +53,12 @@
 2020-09-02 14:36:55 Accessing path /wallet/payment with application PostmanRuntime/7.26.3
 2020-09-02 14:38:11 Accessing path /ticket/556169b9-eccc-11ea-83bf-b4a9fc958140 with application PostmanRuntime/7.26.3
 2020-09-02 14:38:14 Accessing path /tickets/history?page=0&limit=2&user_id=177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 17:50:11 Accessing path /provider/photo?photo=hehe.jpg&id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 17:52:43 Accessing path /provider/photo?photo=hehe.jpg&id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 17:54:58 Accessing path /provider/photo/?photo=hoho.jpg&id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 17:57:36 Accessing path /provider/photo/?photo=hoho.jpg&id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 17:57:37 Accessing path /provider/photo/?photo=hoho.jpg&id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 18:01:59 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 18:03:46 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 18:46:53 Accessing path /provider/data/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-02 18:50:25 Accessing path /provider/data/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
