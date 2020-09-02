@@ -5,18 +5,22 @@ const (
 	READ_LOCATION_ASSET = `SELECT asset_name, longitude, latitude FROM m_asset WHERE status="A";`
 
 	// Ticket reservation
-	CREATE_NEW_TICKET   = `INSERT INTO m_ticket (id, user_id, asset_id, fee_id, vehicle_id, license_plate, status) VALUES (?,?,?,?,?,?,"B");`
-	UPDATE_TICKET_START_PARKING = `UPDATE m_ticket SET status="A", start_at=NOW() WHERE id=?;`
+	CREATE_NEW_TICKET            = `INSERT INTO m_ticket (id, user_id, asset_id, fee_id, vehicle_id, license_plate, status) VALUES (?,?,?,?,?,?,"B");`
+	UPDATE_TICKET_START_PARKING  = `UPDATE m_ticket SET status="A", start_at=NOW() WHERE id=?;`
 	UPDATE_TICKET_FINISH_PARKING = `UPDATE m_ticket SET status="I", finished_at=NOW() WHERE id=?;`
 
 	// Asset capacity change due to parking spot booked by car/motor/bike
-	UPDATE_CAPACITY_CAR_START = `UPDATE m_asset SET car_capacity=car_capacity-1 WHERE id=?;`
-	UPDATE_CAPACITY_MOTOR_START = `UPDATE m_asset SET motorcycle_capacity=motorcycle_capacity-1 WHERE id=?;`
-	UPDATE_CAPACITY_BIKE_START = `UPDATE m_asset SET bicycle_capacity=bicycle_capacity-1 WHERE id=?;`
-	UPDATE_CAPACITY_CAR_FINISH = `UPDATE m_asset SET car_capacity=car_capacity+1 WHERE id=?;`
-	UPDATE_CAPACITY_MOTOR_FINISH = `UPDATE m_asset SET motorcycle_capacity=motorcycle_capacity+1 WHERE id=?;`
-	UPDATE_CAPACITY_BIKE_FINISH = `UPDATE m_asset SET bicycle_capacity=bicycle_capacity+1 WHERE id=?;`
+	READ_CURRENT_CAPACITY = `select ma.car_capacity, ma.car_capacity-(
+select count(m_ticket.id) from m_ticket where vehicle_id="209f6e05-eb5a-11ea-86a5-b4a9fc958140" and status="A")
+as car_capacity_available,
+ma.motorcycle_capacity, ma.motorcycle_capacity-(
+select count(m_ticket.id) from m_ticket where vehicle_id="221be282-eb5a-11ea-86a5-b4a9fc958140" and status="A")
+as motorcycle_capacity_available,
+ma.bicycle_capacity, ma.bicycle_capacity-(
+select count(m_ticket.id) from m_ticket where vehicle_id="22be08ef-eb5a-11ea-86a5-b4a9fc958140" and status="A")
+as bicycle_capacity_available
+from m_asset ma join m_ticket mt on ma.id = mt.asset_id GROUP BY ?;`
 
 	// User review asset
 	CREATE_RATING_COMMENT = `INSERT INTO m_review (id, user_id, asset_id, rating, comment, created_at, status) VALUES (?,?,?,?,?,NOW(),"A");`
-	)
+)

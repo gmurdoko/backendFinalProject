@@ -1,4 +1,4 @@
-package assetsLocation
+package repositories
 
 import (
 	"database/sql"
@@ -15,17 +15,16 @@ func InitAssetsLocationRepoImpl(mydb *sql.DB) AssetsLocationRepo {
 	return &AssetsLocationRepoImpl{db: mydb}
 }
 
-func (s *AssetsLocationRepoImpl) ReadAssetsLocation() ([]*models.Asset, error) {
+func (s *AssetsLocationRepoImpl) ReadAssetsLocation() ([]*models.AssetLocation, error) {
 	query := constant.READ_LOCATION_ASSET
 	rows, err := s.db.Query(query)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
-	defer rows.Close()
-	var listAssetsLocation []*models.Asset
+	var listAssetsLocation []*models.AssetLocation
 	for rows.Next() {
-		asset := models.Asset{}
+		asset := models.AssetLocation{}
 		err := rows.Scan(&asset.AssetName, &asset.Longitude, &asset.Latitude)
 		if err != nil {
 			log.Println(err)

@@ -1,7 +1,7 @@
-package assetsLocation
+package repositories
 
 import "finalproject/main/master/models"
 
 type AssetsLocationRepo interface {
-	ReadAssetsLocation() ([]*models.Asset, error)
+	ReadAssetsLocation() ([]*models.AssetLocation, error)
 }
