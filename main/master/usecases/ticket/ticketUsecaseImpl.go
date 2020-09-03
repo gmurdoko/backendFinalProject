@@ -21,18 +21,18 @@ func (t *TicketUsecaseImpl) CreateNewTicket(ticket *models.Ticket) (*models.Tick
 	return data, nil
 }
 
-func (t *TicketUsecaseImpl) UpdateTicketStatusActive(ticket *models.Ticket, ticketID string) (*models.Ticket, error) {
-	data, err := t.ticketRepo.UpdateTicketStatusActive(ticket, ticketID)
+func (t *TicketUsecaseImpl) UpdateTicketStatusActive(ticketID string) (string, error) {
+	err := t.ticketRepo.UpdateTicketStatusActive(ticketID)
 	if err != nil {
-		return nil, err
+		return "Failed changing ticket status", err
 	}
-	return data, nil
+	return "Success change ticket status: Active", nil
 }
 
-func (t *TicketUsecaseImpl) UpdateTicketStatusInactive(ticket *models.Ticket, ticketID string) (*models.Ticket, error) {
-	data, err := t.ticketRepo.UpdateTicketStatusInactive(ticket, ticketID)
+func (t *TicketUsecaseImpl) UpdateTicketStatusInactive(ticketID string) (string, error) {
+	err := t.ticketRepo.UpdateTicketStatusInactive(ticketID)
 	if err != nil {
-		return nil, err
+		return "Failed changing ticket status", err
 	}
-	return data, nil
+	return "Success change ticket status: Inactive", nil
 }

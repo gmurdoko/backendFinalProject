@@ -15,15 +15,14 @@ func InitAssetCapacityRepoImpl(mydb *sql.DB) AssetCapacityRepo {
 	return &AssetCapacityRepoImpl{db: mydb}
 }
 
-func (s *AssetCapacityRepoImpl) ReadCurrentCapacity(ac *models.AssetCapacity, assetId string) (*models.AssetCapacity, error) {
-	//panic("implement me")
+func (s *AssetCapacityRepoImpl) ReadCurrentCapacity(assetId string) (*models.AssetCapacity, error) {
 	query := constant.READ_CURRENT_CAPACITY
 	row, err := s.db.Query(query, assetId)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
-
+	var ac models.AssetCapacity
 	err = row.Scan(&ac.CarCapMax, &ac.CarCapAvailable,
 		&ac.MotorCapMax, &ac.MotorCapAvailable,
 		&ac.BicycleCapMax, &ac.BicycleCapAvailable)
@@ -32,6 +31,6 @@ func (s *AssetCapacityRepoImpl) ReadCurrentCapacity(ac *models.AssetCapacity, as
 		return nil, err
 	}
 
-	return ac, err
+	return &ac, err
 }
 

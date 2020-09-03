@@ -13,8 +13,8 @@ func InitAssetCapacityUsecaseImpl(repo repositories.AssetCapacityRepo) AssetCapa
 	return &AssetCapacityUsecaseImpl{assetCapacity: repo}
 }
 
-func (s *AssetCapacityUsecaseImpl) ReadCurrentCapacity(ac *models.AssetCapacity, assetId string) (*models.AssetCapacity, error) {
-	capacity, err := s.ReadCurrentCapacity(ac, assetId)
+func (s *AssetCapacityUsecaseImpl) ReadCurrentCapacity(assetId string) (*models.AssetCapacity, error) {
+	capacity, err := s.ReadCurrentCapacity(assetId)
 	if err != nil {
 		return nil, err
 	}

@@ -17,7 +17,6 @@ func InitReviewRepoImpl(mydb *sql.DB) ReviewRepo {
 }
 
 func (r *ReviewRepoImpl) CreateReview(review *models.Review) (*models.Review, error) {
-	//panic("implement me")
 	query := constant.CREATE_RATING_COMMENT
 	review.ID = uuid.New().String()
 	tx, err := r.db.Begin()
