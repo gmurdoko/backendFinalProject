@@ -1,15 +1,15 @@
-package usecases
+package ticket_usecases
 
 import (
 	"finalproject/main/master/models"
-	repositories "finalproject/main/master/repositories/ticket"
+	ticket_repositories "finalproject/main/master/repositories/ticket"
 )
 
 type TicketUsecaseImpl struct {
-	ticketRepo repositories.TicketRepo
+	ticketRepo ticket_repositories.TicketRepo
 }
 
-func InitTicketUsecase(repo repositories.TicketRepo) TicketUsecase {
+func InitTicketUsecase(repo ticket_repositories.TicketRepo) TicketUsecase {
 	return &TicketUsecaseImpl{ticketRepo: repo}
 }
 

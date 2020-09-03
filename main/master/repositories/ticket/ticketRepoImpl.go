@@ -1,4 +1,4 @@
-package repositories
+package ticket_repositories
 
 import (
 	"database/sql"

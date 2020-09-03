@@ -1,15 +1,15 @@
-package usecases
+package review_usecases
 
 import (
 	"finalproject/main/master/models"
-	repositories "finalproject/main/master/repositories/review"
+	"finalproject/main/master/repositories/review"
 )
 
 type ReviewUsecaseImpl struct {
-	reviewRepo repositories.ReviewRepo
+	reviewRepo review_repositories.ReviewRepo
 }
 
-func InitReviewUsecaseImpl(repo repositories.ReviewRepo) ReviewUsecase {
+func InitReviewUsecaseImpl(repo review_repositories.ReviewRepo) ReviewUsecase {
 	return &ReviewUsecaseImpl{reviewRepo: repo}
 }
 

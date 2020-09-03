@@ -1,4 +1,4 @@
-package usecases
+package ticket_usecases
 
 import (
 	"finalproject/main/master/models"

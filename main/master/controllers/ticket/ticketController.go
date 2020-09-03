@@ -1,20 +1,22 @@
-package controllers
+package ticket_controllers
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	usecases "finalproject/main/master/usecases/ticket"
+	"finalproject/main/master/usecases/ticket"
+	"finalproject/main/middleware"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
 type TicketHandler struct {
-	ticket usecases.TicketUsecase
+	ticket ticket_usecases.TicketUsecase
 }
 
-func TicketController(r *mux.Router, service usecases.TicketUsecase) {
+func TicketController(r *mux.Router, service ticket_usecases.TicketUsecase) {
 	ticketHandler := TicketHandler{ticket: service}
+	r.Use(middleware.ActivityLogMiddleware)
 
 	ticket := r.PathPrefix("/ticket").Subrouter()
 	ticket.HandleFunc("/new", ticketHandler.CreateTicket).Methods(http.MethodPost)

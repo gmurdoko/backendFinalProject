@@ -1,22 +1,22 @@
-package controllers
+package asset_controllers
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	usecases "finalproject/main/master/usecases/asset/assetsLocation"
+	"finalproject/main/master/usecases/asset"
 	"finalproject/main/middleware"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 type AssetLocationHandler struct {
-	assetLocation usecases.AssetLocationUsecase
+	assetLocation asset_usecases.AssetLocationUsecase
 }
 
-func AssetLocationController(r *mux.Router, service usecases.AssetLocationUsecase ) {
+func AssetLocationController(r *mux.Router, service asset_usecases.AssetLocationUsecase) {
 	assetLocationHandler := AssetLocationHandler{assetLocation: service}
-
 	r.Use(middleware.ActivityLogMiddleware)
+
 	assetLocation := r.PathPrefix("/providerassets").Subrouter()
 	assetLocation.HandleFunc("/locations", assetLocationHandler.getAssetLocation).Methods(http.MethodGet)
 }

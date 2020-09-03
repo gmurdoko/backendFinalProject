@@ -1,4 +1,4 @@
-package repositories
+package review_repositories
 
 import "finalproject/main/master/models"
 

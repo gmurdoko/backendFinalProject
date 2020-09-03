@@ -1,19 +1,21 @@
-package controllers
+package review_controllers
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	usecases "finalproject/main/master/usecases/review"
+	"finalproject/main/master/usecases/review"
+	"finalproject/main/middleware"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 type ReviewHandler struct {
-	review usecases.ReviewUsecase
+	review review_usecases.ReviewUsecase
 }
 
-func ReviewController(r *mux.Router, service usecases.ReviewUsecase) {
+func ReviewController(r *mux.Router, service review_usecases.ReviewUsecase) {
 	reviewHandler := ReviewHandler{review: service}
+	r.Use(middleware.ActivityLogMiddleware)
 
 	createReview := r.PathPrefix("/providerassets").Subrouter()
 	createReview.HandleFunc("/review", reviewHandler.CreateReview).Methods(http.MethodPost)

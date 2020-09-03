@@ -1,22 +1,22 @@
-package controllers
+package asset_controllers
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	usecases "finalproject/main/master/usecases/asset/assetsCapacity"
+	"finalproject/main/master/usecases/asset"
 	"finalproject/main/middleware"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 type AssetCapacityHandler struct {
-	assetCapacity usecases.AssetCapacityUsecase
+	assetCapacity asset_usecases.AssetCapacityUsecase
 }
 
-func AssetCapacityController(r *mux.Router, service usecases.AssetCapacityUsecase) {
+func AssetCapacityController(r *mux.Router, service asset_usecases.AssetCapacityUsecase) {
 	assetCapacityHandler := AssetCapacityHandler{assetCapacity: service}
-
 	r.Use(middleware.ActivityLogMiddleware)
+
 	assetCapacity := r.PathPrefix("/providerassets").Subrouter()
 	assetCapacity.HandleFunc("/currentcap/{id}", assetCapacityHandler.getAssetCapacity).Methods(http.MethodGet)
 }

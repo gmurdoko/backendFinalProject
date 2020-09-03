@@ -1,4 +1,4 @@
-package usecases
+package review_usecases
 
 import (
 	"finalproject/main/master/models"
