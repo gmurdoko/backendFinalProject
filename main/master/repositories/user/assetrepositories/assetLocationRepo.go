@@ -1,4 +1,4 @@
-package asset_repositories
+package assetrepositories
 
 import "finalproject/main/master/models"
 

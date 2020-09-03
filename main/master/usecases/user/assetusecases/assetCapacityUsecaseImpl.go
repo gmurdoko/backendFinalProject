@@ -1,15 +1,15 @@
-package asset_usecases
+package assetusecases
 
 import (
 	"finalproject/main/master/models"
-	"finalproject/main/master/repositories/asset"
+	"finalproject/main/master/repositories/user/assetrepositories"
 )
 
 type AssetCapacityUsecaseImpl struct {
-	assetCapacity asset_repositories.AssetCapacityRepo
+	assetCapacity assetrepositories.AssetCapacityRepo
 }
 
-func InitAssetCapacityUsecaseImpl(repo asset_repositories.AssetCapacityRepo) AssetCapacityUsecase {
+func InitAssetCapacityUsecaseImpl(repo assetrepositories.AssetCapacityRepo) AssetCapacityUsecase {
 	return &AssetCapacityUsecaseImpl{assetCapacity: repo}
 }
 

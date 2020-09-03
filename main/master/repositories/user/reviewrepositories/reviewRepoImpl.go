@@ -1,14 +1,15 @@
-package review_repositories
+package reviewrepositories
 
 import (
 	"database/sql"
 	"finalproject/main/master/models"
-	"finalproject/utils/constant"
-	"github.com/google/uuid"
+	constanta "finalproject/utils/constant"
 	"log"
+
+	"github.com/google/uuid"
 )
 
-type ReviewRepoImpl struct{
+type ReviewRepoImpl struct {
 	db *sql.DB
 }
 
@@ -17,7 +18,7 @@ func InitReviewRepoImpl(mydb *sql.DB) ReviewRepo {
 }
 
 func (r *ReviewRepoImpl) CreateReview(review *models.Review) (*models.Review, error) {
-	query := constant.CREATE_RATING_COMMENT
+	query := constanta.CREATE_RATING_COMMENT
 	review.ID = uuid.New().String()
 	tx, err := r.db.Begin()
 	if err != nil {

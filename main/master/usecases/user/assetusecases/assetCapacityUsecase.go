@@ -1,4 +1,4 @@
-package asset_usecases
+package assetusecases
 
 import (
 	"finalproject/main/master/models"

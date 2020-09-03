@@ -1,13 +1,13 @@
-package asset_repositories
+package assetrepositories
 
 import (
 	"database/sql"
 	"finalproject/main/master/models"
-	"finalproject/utils/constant"
+	constanta "finalproject/utils/constant"
 	"log"
 )
 
-type AssetsLocationRepoImpl struct{
+type AssetsLocationRepoImpl struct {
 	db *sql.DB
 }
 
@@ -16,7 +16,7 @@ func InitAssetsLocationRepoImpl(mydb *sql.DB) AssetsLocationRepo {
 }
 
 func (s *AssetsLocationRepoImpl) ReadAssetsLocation() ([]*models.AssetLocation, error) {
-	query := constant.READ_LOCATION_ASSET
+	query := constanta.READ_LOCATION_ASSET
 	rows, err := s.db.Query(query)
 	if err != nil {
 		log.Println(err)
@@ -34,6 +34,3 @@ func (s *AssetsLocationRepoImpl) ReadAssetsLocation() ([]*models.AssetLocation, 
 	}
 	return listAssetsLocation, nil
 }
-
-
-

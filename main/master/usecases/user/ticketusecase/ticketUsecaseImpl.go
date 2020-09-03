@@ -30,6 +30,29 @@ func (s ticketUsecaseImpl) GetHistoryTicketByID(offset, limit, id string) ([]*mo
 	fmt.Println("useCase", *totalField)
 	return ticketView, totalField, nil
 }
+func (t ticketUsecaseImpl) CreateNewTicket(ticket *models.Ticket) (*models.Ticket, error) {
+	data, err := t.ticketRepository.CreateNewTicket(ticket)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (t ticketUsecaseImpl) UpdateTicketStatusActive(ticketID string) (string, error) {
+	err := t.ticketRepository.UpdateTicketStatusActive(ticketID)
+	if err != nil {
+		return "Failed changing ticket status", err
+	}
+	return "Success change ticket status: Active", nil
+}
+
+func (t ticketUsecaseImpl) UpdateTicketStatusInactive(ticketID string) (string, error) {
+	err := t.ticketRepository.UpdateTicketStatusInactive(ticketID)
+	if err != nil {
+		return "Failed changing ticket status", err
+	}
+	return "Success change ticket status: Inactive", nil
+}
 
 //InitTicketUsecaseImpl app
 func InitTicketUsecaseImpl(ticketRepository ticketrepository.TicketRepository) TicketUsecase {

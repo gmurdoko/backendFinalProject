@@ -1,7 +1,9 @@
 package user
 
 import (
+	"encoding/json"
 	"finalproject/config"
+	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/ticketusecase"
 	"finalproject/main/middleware"
 	"finalproject/utils/response"
@@ -21,6 +23,9 @@ func TicketController(r *mux.Router, s ticketusecase.TicketUsecase) {
 	ticketHandler := TicketHandler{s}
 	tickets := r.PathPrefix("/tickets").Subrouter()
 	ticket := r.PathPrefix("/ticket").Subrouter()
+	ticket.HandleFunc("/new", ticketHandler.CreateTicket).Methods(http.MethodPost)
+	ticket.HandleFunc("/active/{id}", ticketHandler.SetTicketActive).Methods(http.MethodPut)
+	ticket.HandleFunc("/inactive/{id}", ticketHandler.SetTicketInactive).Methods(http.MethodPut)
 	isAuthOn := config.AuthSwitch()
 	if isAuthOn {
 		tickets.Use(middleware.TokenValidationMiddleware)
@@ -84,4 +89,69 @@ func (s *TicketHandler) HistoryTickets(w http.ResponseWriter, r *http.Request) {
 		response.ResponseWrite(&ticketsResponse, w)
 	}
 	log.Println("Endpoint hit: Get History Tickets")
+}
+
+func (s *TicketHandler) CreateTicket(w http.ResponseWriter, r *http.Request) {
+	var newTicket *models.Ticket
+	var response models.Response
+	response.Status = http.StatusOK
+	response.Message = "Success"
+
+	_ = json.NewDecoder(r.Body).Decode(&newTicket)
+	data, err := s.ticketUsecase.CreateNewTicket(newTicket)
+	if err != nil {
+		response.Response = "Cannot Add Data"
+	} else {
+		response.Response = data
+	}
+
+	byteData, err := json.Marshal(response)
+	if err != nil {
+		w.Write([]byte("Something went wrong when marshaling data"))
+	}
+	w.Header().Set("Content-type", "application/json")
+	w.Write(byteData)
+
+}
+
+func (s *TicketHandler) SetTicketActive(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ticketId := params["id"]
+	resp, err := s.ticketUsecase.UpdateTicketStatusActive(ticketId)
+	if err != nil {
+		log.Println(err)
+	}
+
+	var response models.Response
+	response.Status = http.StatusOK
+	response.Message = "Success"
+	response.Response = resp
+	byteData, err := json.Marshal(response)
+	if err != nil {
+		w.Write([]byte("Something went wrong when marshaling data"))
+	}
+	w.Header().Set("Content-type", "application/json")
+	w.Write(byteData)
+
+}
+
+func (s *TicketHandler) SetTicketInactive(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	ticketId := params["id"]
+	resp, err := s.ticketUsecase.UpdateTicketStatusInactive(ticketId)
+	if err != nil {
+		log.Println(err)
+	}
+
+	var response models.Response
+	response.Status = http.StatusOK
+	response.Message = "Success"
+	response.Response = resp
+	byteData, err := json.Marshal(response)
+	if err != nil {
+		w.Write([]byte("Something went wrong when marshaling data"))
+	}
+	w.Header().Set("Content-type", "application/json")
+	w.Write(byteData)
+
 }

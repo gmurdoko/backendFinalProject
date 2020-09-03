@@ -1,9 +1,9 @@
-package asset_repositories
+package assetrepositories
 
 import (
 	"database/sql"
 	"finalproject/main/master/models"
-	"finalproject/utils/constant"
+	constanta "finalproject/utils/constant"
 	"log"
 )
 
@@ -16,7 +16,7 @@ func InitAssetCapacityRepoImpl(mydb *sql.DB) AssetCapacityRepo {
 }
 
 func (s *AssetCapacityRepoImpl) ReadCurrentCapacity(assetId string) (*models.AssetCapacity, error) {
-	query := constant.READ_CURRENT_CAPACITY
+	query := constanta.READ_CURRENT_CAPACITY
 	row, err := s.db.Query(query, assetId)
 	if err != nil {
 		log.Println(err)
@@ -33,4 +33,3 @@ func (s *AssetCapacityRepoImpl) ReadCurrentCapacity(assetId string) (*models.Ass
 
 	return &ac, err
 }
-

@@ -1,19 +1,20 @@
-package asset_controllers
+package user
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	"finalproject/main/master/usecases/asset"
+	"finalproject/main/master/usecases/user/assetusecases"
 	"finalproject/main/middleware"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type AssetCapacityHandler struct {
-	assetCapacity asset_usecases.AssetCapacityUsecase
+	assetCapacity assetusecases.AssetCapacityUsecase
 }
 
-func AssetCapacityController(r *mux.Router, service asset_usecases.AssetCapacityUsecase) {
+func AssetCapacityController(r *mux.Router, service assetusecases.AssetCapacityUsecase) {
 	assetCapacityHandler := AssetCapacityHandler{assetCapacity: service}
 	r.Use(middleware.ActivityLogMiddleware)
 

@@ -3,8 +3,11 @@ package ticketrepository
 import (
 	"database/sql"
 	"finalproject/main/master/models"
+	constanta "finalproject/utils/constant"
 	"fmt"
 	"log"
+
+	"github.com/google/uuid"
 )
 
 //ticketRepositoryImpl is for init Repository
@@ -63,6 +66,58 @@ func (s ticketRepositoryImpl) SelectHistoryTicketByUserID(offset, limit, id stri
 	}
 	fmt.Println("total Field", *totalField)
 	return result, totalField, nil
+}
+
+func (t *ticketRepositoryImpl) CreateNewTicket(ticket *models.Ticket) (*models.Ticket, error) {
+	query := constanta.CREATE_NEW_TICKET
+	ticket.ID = uuid.New().String()
+	tx, err := t.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	_, err = tx.Exec(query, ticket.ID, ticket.UserID, ticket.AssetID,
+		ticket.FeeID, ticket.VehicleID, ticket.LicensePlate)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return ticket, tx.Commit()
+}
+
+func (t *ticketRepositoryImpl) UpdateTicketStatusActive(ticketID string) error {
+	query := constanta.UPDATE_TICKET_START_PARKING
+	tx, err := t.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	_, err = tx.Exec(query, ticketID)
+	if err != nil {
+		tx.Rollback()
+		log.Println(err)
+		return err
+	}
+	return tx.Commit()
+}
+
+func (t *ticketRepositoryImpl) UpdateTicketStatusInactive(ticketID string) error {
+	query := constanta.UPDATE_TICKET_FINISH_PARKING
+	tx, err := t.db.Begin()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	_, err = tx.Exec(query, ticketID)
+	if err != nil {
+		tx.Rollback()
+		log.Println(err)
+		return err
+	}
+	return tx.Commit()
 }
 
 //InitTicketRepositoryImpl is init gate for repository

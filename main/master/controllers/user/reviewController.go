@@ -1,19 +1,20 @@
-package review_controllers
+package user
 
 import (
 	"encoding/json"
 	"finalproject/main/master/models"
-	"finalproject/main/master/usecases/review"
+	"finalproject/main/master/usecases/user/reviewusecase"
 	"finalproject/main/middleware"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type ReviewHandler struct {
-	review review_usecases.ReviewUsecase
+	review reviewusecase.ReviewUsecase
 }
 
-func ReviewController(r *mux.Router, service review_usecases.ReviewUsecase) {
+func ReviewController(r *mux.Router, service reviewusecase.ReviewUsecase) {
 	reviewHandler := ReviewHandler{review: service}
 	r.Use(middleware.ActivityLogMiddleware)
 

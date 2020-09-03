@@ -1,16 +1,16 @@
-package asset_usecases
+package assetusecases
 
 import (
 	"finalproject/main/master/models"
-	"finalproject/main/master/repositories/asset"
+	"finalproject/main/master/repositories/user/assetrepositories"
 	"log"
 )
 
-type AssetLocationUsecaseImpl struct{
-	assetsLocationRepo asset_repositories.AssetsLocationRepo
+type AssetLocationUsecaseImpl struct {
+	assetsLocationRepo assetrepositories.AssetsLocationRepo
 }
 
-func InitAssetLocationUsecaseImpl(repo asset_repositories.AssetsLocationRepo) AssetLocationUsecase {
+func InitAssetLocationUsecaseImpl(repo assetrepositories.AssetsLocationRepo) AssetLocationUsecase {
 	return &AssetLocationUsecaseImpl{assetsLocationRepo: repo}
 }
 
