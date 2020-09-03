@@ -12,6 +12,8 @@ import (
 	"finalproject/main/master/repositories/provider/providerHomeRepo"
 	"finalproject/main/master/repositories/provider/providerListAssetsRepo"
 	"finalproject/main/master/repositories/provider/providerrepository"
+	"finalproject/main/master/repositories/user/assetrepositories"
+	"finalproject/main/master/repositories/user/reviewrepositories"
 	"finalproject/main/master/repositories/user/ticketrepository"
 	"finalproject/main/master/repositories/user/userAccountRepo"
 	"finalproject/main/master/repositories/user/userHomeRepo"
@@ -23,6 +25,8 @@ import (
 	"finalproject/main/master/usecases/provider/providerHomeUsecase"
 	"finalproject/main/master/usecases/provider/providerListAssetUsecase"
 	"finalproject/main/master/usecases/provider/providerusecase"
+	"finalproject/main/master/usecases/user/assetusecases"
+	"finalproject/main/master/usecases/user/reviewusecase"
 	"finalproject/main/master/usecases/user/ticketusecase"
 	"finalproject/main/master/usecases/user/userAccountUsecase"
 	"finalproject/main/master/usecases/user/userHomeUsecase"
@@ -82,6 +86,34 @@ func Init(r *mux.Router, db *sql.DB, activityLog bool) {
 	adminAccountManagementRepo := adminaccountmanagementrepo.InitAccountManagementImpl(db)
 	adminAccountManagementUsecase := adminaccountmanagementusecase.InitAccountManagementUsecaseImpl(adminAccountManagementRepo)
 	admin.AccountManagerController(r, adminAccountManagementUsecase)
+
+	// assetCapRepo := asset_repositories.InitAssetCapacityRepoImpl(db)
+	// assetCapUsecase := asset_usecases.InitAssetCapacityUsecaseImpl(assetCapRepo)
+	// asset_controllers.AssetCapacityController(r, assetCapUsecase)
+
+	assetCapRepo := assetrepositories.InitAssetCapacityRepoImpl(db)
+	assetCapUsecase := assetusecases.InitAssetCapacityUsecaseImpl(assetCapRepo)
+	user.AssetCapacityController(r, assetCapUsecase)
+
+	// assetLocRepo := asset_repositories.InitAssetsLocationRepoImpl(db)
+	// assetLocUsecase := asset_usecases.InitAssetLocationUsecaseImpl(assetLocRepo)
+	// asset_controllers.AssetLocationController(r, assetLocUsecase)
+
+	assetLocRepo := assetrepositories.InitAssetsLocationRepoImpl(db)
+	assetLocUsecase := assetusecases.InitAssetLocationUsecaseImpl(assetLocRepo)
+	user.AssetLocationController(r, assetLocUsecase)
+
+	// reviewRepo := review_repositories.InitReviewRepoImpl(db)
+	// reviewUsecase := review_usecases.InitReviewUsecaseImpl(reviewRepo)
+	// review_controllers.ReviewController(r, reviewUsecase)
+
+	reviewRepo := reviewrepositories.InitReviewRepoImpl(db)
+	reviewUsecase := reviewusecase.InitReviewUsecaseImpl(reviewRepo)
+	user.ReviewController(r, reviewUsecase)
+
+	// ticketRepo := ticket_repositories.InitTicketRepoImpl(db)
+	// ticketUsecase := ticket_usecases.InitTicketUsecase(ticketRepo)
+	// ticket_controllers.TicketController(r, ticketUsecase)
 
 	if activityLog == true {
 		r.Use(middleware.ActivityLogMiddleware)
