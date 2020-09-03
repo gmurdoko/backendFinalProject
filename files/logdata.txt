@@ -76,3 +76,4 @@
 2020-09-02 20:19:35 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
 2020-09-02 20:27:53 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
 2020-09-02 20:28:04 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-03 18:53:59 Accessing path /providerreports/daily?id=750d28c1-eb59-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3

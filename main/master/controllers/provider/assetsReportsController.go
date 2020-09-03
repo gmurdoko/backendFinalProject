@@ -16,8 +16,8 @@ type ProviderAssetReportHandler struct {
 func ProviderAssetReportController(r *mux.Router, service providerAssetReportsUsecase.ProviderAssetReportsUsecase) {
 	assetsReportHandler := ProviderAssetReportHandler{assetsReport: service}
 	reportAsset := r.PathPrefix("/providerreports").Subrouter()
-	reportAsset.HandleFunc("/daily/{id}", assetsReportHandler.getReportDaily).Methods(http.MethodGet)
-	reportAsset.HandleFunc("/monthly/{id}", assetsReportHandler.getReportMonthly).Methods(http.MethodGet)
+	reportAsset.HandleFunc("/daily", assetsReportHandler.getReportDaily).Queries("id", "{id}").Methods(http.MethodGet)
+	reportAsset.HandleFunc("/monthly", assetsReportHandler.getReportMonthly).Queries("id", "{id}").Methods(http.MethodGet)
 }
 
 func (s *ProviderAssetReportHandler) getReportDaily(w http.ResponseWriter, r *http.Request) {

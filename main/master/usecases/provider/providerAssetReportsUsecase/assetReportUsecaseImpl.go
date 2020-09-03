@@ -16,7 +16,7 @@ func InitProviderReportUsecaseImpl(providerReportRepo providerAssetReportsRepo.P
 }
 
 func (s *ProviderAssetReportsUsecaseImpl) GetReportDaily(provId string) ([]*models.ReportAssetDaily, error) {
-	reports, err := s.GetReportDaily(provId)
+	reports, err := s.providerReportRepo.GetReportDaily(provId)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -24,7 +24,7 @@ func (s *ProviderAssetReportsUsecaseImpl) GetReportDaily(provId string) ([]*mode
 	return reports, nil
 }
 func (s *ProviderAssetReportsUsecaseImpl) GetReportMonthly(provId string) ([]*models.ReportAssetMonthly, error) {
-	reports, err := s.GetReportMonthly(provId)
+	reports, err := s.providerReportRepo.GetReportMonthly(provId)
 	if err != nil {
 		log.Println(err)
 		return nil, err
