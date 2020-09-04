@@ -2,6 +2,7 @@ package providerAccountRepo
 
 import (
 	"database/sql"
+	"errors"
 	"finalproject/main/master/models"
 	"finalproject/utils"
 	"finalproject/utils/pwd"
@@ -48,18 +49,32 @@ func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.Providers) (*
 		log.Println(err)
 		return nil, err
 	}
+
 	password, _ := pwd.HashPassword(provider.Password)
-	_, err = tx.Exec(utils.INSERT_PROVIDER_ACCOUNT, provider.ID, provider.Username,
-		password, provider.Email, provider.Fullname, provider.PhoneNumber,
-		provider.CreatedAt)
-	if err != nil {
+	// stmt, _ := tx.Prepare("Select username, email from m_provider_account where username=? and email=?")
+	// result, _ := stmt.Exec(provider.Username, provider.Email)
+	// fmt.Println(result.RowsAffected())
+	// row, _ := result.RowsAffected()
+	row := pr.db.QueryRow("Select username, email from m_provider_account where username=? or email=?", provider.Username, provider.Email)
+	var checkproviders = models.CheckProvider{}
+	err = row.Scan(&checkproviders.Username, &checkproviders.Email)
+	if checkproviders.Username == provider.Username || checkproviders.Email == provider.Email {
+		_, err = tx.Exec(utils.INSERT_PROVIDER_ACCOUNT, provider.ID, provider.Username,
+			password, provider.Email, provider.Fullname, provider.PhoneNumber,
+			provider.CreatedAt)
+		if err != nil {
+			tx.Rollback()
+			log.Println(err)
+			return nil, err
+		}
+
+		providers, _ := pr.GetProviderById(provider.ID)
+		tx.Commit()
+		return providers, nil
+	} else {
 		tx.Rollback()
-		log.Println(err)
-		return nil, err
+		return nil, errors.New("Username or Email Exist")
 	}
-	tx.Commit()
-	providers, _ := pr.GetProviderById(provider.ID)
-	return providers, nil
 }
 func (pr *ProviderRepoAccountImpl) GetProviderById(id string) (*models.Providers, error) {
 	providers := new(models.Providers)

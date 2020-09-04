@@ -16,3 +16,8 @@ type Providers struct {
 	DeletedAt   string `json:"deleted_at"`
 	Status      string `json:"status"`
 }
+
+type CheckProvider struct {
+	Username string
+	Email    string
+}
