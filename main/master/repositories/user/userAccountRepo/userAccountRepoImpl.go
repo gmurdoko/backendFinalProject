@@ -2,6 +2,7 @@ package userAccountRepo
 
 import (
 	"database/sql"
+	"errors"
 	"finalproject/main/master/models"
 	"finalproject/utils"
 	"finalproject/utils/pwd"
@@ -20,7 +21,7 @@ func InitUserAccRepoImpl(db *sql.DB) UserAccount {
 	return &UserAccRepoImpl{db: db}
 }
 func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, bool, error) {
-	row := ur.db.QueryRow(utils.SELECT_USER_LOGIN, user.Username)
+	row := ur.db.QueryRow(utils.SELECT_USER_LOGIN, user.Username, user.Email)
 	var users = models.UserModel{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
@@ -35,7 +36,7 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 	}
 	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
 
-	if user.Username == users.Username && isPwdValid {
+	if user.Username == users.Username && users.Status == "A" || user.Email == users.Email && isPwdValid {
 		data, _ := ur.GetUserById(users.ID)
 		return data, true, nil
 	} else {
@@ -60,17 +61,26 @@ func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel
 	}
 	user.IdWallet = wallet.ID
 	password, _ := pwd.HashPassword(user.Password)
-	_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet, user.Username,
-		password, user.Email, user.Fullname, user.PhoneNumber,
-		user.CreatedAt)
-	if err != nil {
+	row := ur.db.QueryRow(utils.SELECT_USER_EXIST, user.Username, user.Email)
+	var checkproviders = models.CheckProvider{}
+	err = row.Scan(&checkproviders.Username, &checkproviders.Email)
+	if checkproviders.Username != user.Username || checkproviders.Email != user.Email {
+		_, err = tx.Exec(utils.INSERT_USER_ACCOUNT, user.ID, user.IdWallet, user.Username,
+			password, user.Email, user.Fullname, user.PhoneNumber,
+			user.CreatedAt)
+		if err != nil {
+			tx.Rollback()
+			log.Println(err)
+			return nil, err
+		}
+		tx.Commit()
+		users, _ := ur.GetUserById(user.ID)
+		return users, nil
+	} else {
 		tx.Rollback()
-		log.Println(err)
-		return nil, err
+		return nil, errors.New("Username or Email Exist")
 	}
-	tx.Commit()
-	users, _ := ur.GetUserById(user.ID)
-	return users, nil
+
 }
 
 func (ur *UserAccRepoImpl) GetUserById(id string) (*models.UserModel, error) {

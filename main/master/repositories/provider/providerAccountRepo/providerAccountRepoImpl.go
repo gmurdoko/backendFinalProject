@@ -21,7 +21,7 @@ func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 	return &ProviderRepoAccountImpl{db: db}
 }
 func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (*models.Providers, bool, error) {
-	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username)
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username, provider.Email)
 	var providers = models.Providers{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&providers.ID, &providers.Username, &providers.Password,
@@ -34,7 +34,7 @@ func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (*mod
 		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(provider.Password, providers.Password)
-	if provider.Username == provider.Username && isPwdValid {
+	if provider.Username == provider.Username && providers.Status == "A" || provider.Email == providers.Email && isPwdValid {
 		data, _ := pr.GetProviderById(providers.ID)
 		return data, true, nil
 	} else {
@@ -51,14 +51,10 @@ func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.Providers) (*
 	}
 
 	password, _ := pwd.HashPassword(provider.Password)
-	// stmt, _ := tx.Prepare("Select username, email from m_provider_account where username=? and email=?")
-	// result, _ := stmt.Exec(provider.Username, provider.Email)
-	// fmt.Println(result.RowsAffected())
-	// row, _ := result.RowsAffected()
-	row := pr.db.QueryRow("Select username, email from m_provider_account where username=? or email=?", provider.Username, provider.Email)
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER_EXIST, provider.Username, provider.Email)
 	var checkproviders = models.CheckProvider{}
 	err = row.Scan(&checkproviders.Username, &checkproviders.Email)
-	if checkproviders.Username == provider.Username || checkproviders.Email == provider.Email {
+	if checkproviders.Username != provider.Username || checkproviders.Email != provider.Email {
 		_, err = tx.Exec(utils.INSERT_PROVIDER_ACCOUNT, provider.ID, provider.Username,
 			password, provider.Email, provider.Fullname, provider.PhoneNumber,
 			provider.CreatedAt)

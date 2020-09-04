@@ -50,7 +50,16 @@ func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 			w.Write(byteData)
 		}
 	} else {
-		http.Error(w, "Invalid login", http.StatusUnauthorized)
+		var response response.Response
+		response.Status = http.StatusBadRequest
+		response.Message = "Success"
+		response.Token = ""
+		response.Data = nil
+		byteData, err := json.Marshal(response)
+		if err != nil {
+			w.Write([]byte("Something Wrong on Marshalling Data"))
+		}
+		w.Write(byteData)
 	}
 }
 
@@ -61,10 +70,14 @@ func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 	data, err := uh.userUsecase.CreateUser(userRequest)
 	if err != nil {
 		var response response.Response
-		response.Status = http.StatusOK
+		response.Status = http.StatusBadRequest
 		response.Message = "Success"
-		response.Data = "Fail"
-		w.Write([]byte("Cannot Add Data"))
+		response.Data = nil
+		byteData, err := json.Marshal(response)
+		if err != nil {
+			w.Write([]byte("Something Wrong on Marshalling Data"))
+		}
+		w.Write(byteData)
 	} else {
 		var response response.Response
 		response.Status = http.StatusOK

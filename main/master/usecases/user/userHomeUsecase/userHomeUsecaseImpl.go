@@ -20,10 +20,10 @@ type UserHomeUsecaseImpl struct {
 func InitUserHomeUsecase(userRepo userHomeRepo.UserHome) UserHome {
 	return &UserHomeUsecaseImpl{userRepo: userRepo}
 }
-func (uc *UserHomeUsecaseImpl) GetSaldo(id string) (int, error) {
+func (uc *UserHomeUsecaseImpl) GetSaldo(id string) (*models.UserWallet, error) {
 	data, err := uc.userRepo.GetSaldo(id)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	return data, nil
 }

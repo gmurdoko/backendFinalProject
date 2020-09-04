@@ -15,14 +15,14 @@ type UserHomeRepoImpl struct {
 func InitUserHomeRepoImpl(db *sql.DB) UserHome {
 	return &UserHomeRepoImpl{db: db}
 }
-func (ur *UserHomeRepoImpl) GetSaldo(id string) (int, error) {
+func (ur *UserHomeRepoImpl) GetSaldo(id string) (*models.UserWallet, error) {
+	var userSaldo = new(models.UserWallet)
 	row := ur.db.QueryRow(utils.SELECT_USER_SALDO, id)
-	var saldo int
-	err := row.Scan(&saldo)
+	err := row.Scan(&userSaldo.ID, &userSaldo.Saldo)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return saldo, nil
+	return userSaldo, nil
 }
 func (ur *UserHomeRepoImpl) DeleteUserPhoto(id string) error {
 	deletedAt := time.Now()

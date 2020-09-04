@@ -17,10 +17,9 @@ type ProviderAccHandler struct {
 
 func ProviderAccController(r *mux.Router, service providerAccountUsecase.ProviderAccount) {
 	providerHandler := ProviderAccHandler{providerAccUsecase: service}
-	provider := r.PathPrefix("/provider").Subrouter()
-	provider.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
 	auth := r.PathPrefix("/authProvider").Subrouter()
 	auth.HandleFunc("/login", providerHandler.GetProvider).Methods(http.MethodPost)
+	auth.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
 }
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
 	var data models.Providers
@@ -45,24 +44,39 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 			w.Write(byteData)
 		}
 	} else {
-		http.Error(w, "Invalid login", http.StatusUnauthorized)
+		var response response.Response
+		response.Status = http.StatusBadRequest
+		response.Message = "Failed"
+		response.Token = ""
+		response.Data = nil
+		byteData, err := json.Marshal(response)
+		if err != nil {
+			w.Write([]byte("Something Wrong on Marshalling Data"))
+		}
+		w.Header().Set("Content-type", "application/json")
+		w.Write(byteData)
 	}
 }
 func (ph *ProviderAccHandler) CreateProviders(w http.ResponseWriter, r *http.Request) {
 	var providerRequest *models.Providers
 	_ = json.NewDecoder(r.Body).Decode(&providerRequest)
-	_, err := ph.providerAccUsecase.CreateProvider(providerRequest)
+	data, err := ph.providerAccUsecase.CreateProvider(providerRequest)
 	if err != nil {
 		var response response.Response
-		response.Status = http.StatusOK
-		response.Message = "Success"
-		response.Data = "Fail"
-		w.Write([]byte("Cannot Add Data"))
+		response.Status = http.StatusBadRequest
+		response.Message = "Failed"
+		response.Data = nil
+		byteData, err := json.Marshal(response)
+		if err != nil {
+			w.Write([]byte("Something Wrong on Marshalling Data"))
+		}
+		w.Header().Set("Content-type", "application/json")
+		w.Write(byteData)
 	} else {
 		var response response.Response
 		response.Status = http.StatusOK
 		response.Message = "Success"
-		response.Data = providerRequest
+		response.Data = data
 		byteData, err := json.Marshal(response)
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))
