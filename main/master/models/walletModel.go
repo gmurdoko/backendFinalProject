@@ -11,3 +11,7 @@ type Wallets struct {
 	DeletedAt string `json:"deleted_at"`
 	Status    string `json:"status"`
 }
+type UserWallet struct {
+	ID    string `json:"id"`
+	Saldo int    `json:"saldo"`
+}

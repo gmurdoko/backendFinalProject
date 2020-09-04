@@ -6,7 +6,7 @@ import (
 )
 
 type UserHome interface {
-	GetSaldo(string) (int, error)
+	GetSaldo(string) (*models.UserWallet, error)
 	DeleteUserPhoto(string) error
 	UpdateUserData(*models.UserModel, string) (*models.UserModel, error)
 	UpdateUserSaldoTopUp(*models.Wallets, string) (int, error)

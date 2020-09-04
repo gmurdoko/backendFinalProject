@@ -26,7 +26,7 @@ func UserHomeController(r *mux.Router, service userHomeUsecase.UserHome) {
 	user.HandleFunc("/saldo/{id}", userHandler.UpdateUserSaldoTopUp).Methods(http.MethodPut)
 	user.HandleFunc("/photo/{id}", userHandler.DeleteUserPhoto).Methods(http.MethodDelete)
 	user.HandleFunc("/photo/{id}", userHandler.GetUserPhoto).Methods(http.MethodGet)
-	user.HandleFunc("/photo", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
+	user.HandleFunc("/photo{id}", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
 }
 func (uh *UserHomeHandler) GetSaldo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
