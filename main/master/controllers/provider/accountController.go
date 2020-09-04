@@ -20,7 +20,7 @@ func ProviderAccController(r *mux.Router, service providerAccountUsecase.Provide
 	provider := r.PathPrefix("/provider").Subrouter()
 	provider.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
 	auth := r.PathPrefix("/authProvider").Subrouter()
-	auth.HandleFunc("login", providerHandler.GetProvider).Methods(http.MethodPost)
+	auth.HandleFunc("/login", providerHandler.GetProvider).Methods(http.MethodPost)
 }
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
 	var data models.Providers

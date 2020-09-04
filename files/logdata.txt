@@ -77,3 +77,12 @@
 2020-09-02 20:27:53 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
 2020-09-02 20:28:04 Accessing path /provider/photo/?id=15eff893-eb58-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
 2020-09-03 18:53:59 Accessing path /providerreports/daily?id=750d28c1-eb59-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-04 14:09:40 Accessing path /providerreports/daily?id=750d28c1-eb59-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-04 14:09:40 Accessing path /providerreports/daily?id=750d28c1-eb59-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-04 14:09:40 Accessing path /providerreports/daily?id=750d28c1-eb59-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-04 14:15:23 Accessing path /providerreports/daily?id=7b7d2072-ec39-11ea-87e0-3c52824e8673 with application PostmanRuntime/7.26.3
+2020-09-04 14:15:23 Accessing path /providerreports/daily?id=7b7d2072-ec39-11ea-87e0-3c52824e8673 with application PostmanRuntime/7.26.3
+2020-09-04 14:15:23 Accessing path /providerreports/daily?id=7b7d2072-ec39-11ea-87e0-3c52824e8673 with application PostmanRuntime/7.26.3
+2020-09-04 14:16:16 Accessing path /tickets/history?page=0&limit=2&user_id=177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-04 14:16:16 Accessing path /tickets/history?page=0&limit=2&user_id=177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
+2020-09-04 14:16:16 Accessing path /tickets/history?page=0&limit=2&user_id=177f3d50-eb57-11ea-86a5-b4a9fc958140 with application PostmanRuntime/7.26.3
