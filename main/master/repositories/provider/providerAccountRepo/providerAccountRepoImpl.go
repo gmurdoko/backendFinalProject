@@ -33,7 +33,7 @@ func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.ProviderModel) (
 		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(provider.Password, providers.Password)
-	if provider.Username == providers.Username && isPwdValid {
+	if provider.Username == providers.Username && providers.Status == "A" && isPwdValid {
 		data, _ := pr.GetProviderById(providers.ID)
 		return data, true, nil
 	} else {

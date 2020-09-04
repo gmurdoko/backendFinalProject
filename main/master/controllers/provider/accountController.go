@@ -45,7 +45,16 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 			w.Write(byteData)
 		}
 	} else {
-		http.Error(w, "Invalid login", http.StatusUnauthorized)
+		var response response.Response
+		response.Status = http.StatusBadRequest
+		response.Message = "Login Provider Failed"
+		response.Token = ""
+		response.Data = nil
+		byteData, err := json.Marshal(response)
+		if err != nil {
+			w.Write([]byte("Something Wrong on Marshalling Data"))
+		}
+		w.Write(byteData)
 	}
 }
 func (ph *ProviderAccHandler) CreateProviders(w http.ResponseWriter, r *http.Request) {
