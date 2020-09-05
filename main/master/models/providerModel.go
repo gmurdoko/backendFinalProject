@@ -17,7 +17,7 @@ type Providers struct {
 	Status      string `json:"status"`
 }
 
-type CheckProvider struct {
-	Username string
-	Email    string
-}
+// type CheckProvider struct {
+// 	Username string
+// 	Email    string
+// }
