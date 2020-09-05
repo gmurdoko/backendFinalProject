@@ -26,8 +26,9 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 	_ = json.NewDecoder(r.Body).Decode(&data)
 	provider, isValid, _ := ph.providerAccUsecase.GetProvider(&data)
 
+	w.Header().Set("Content-type", "application/json")
+
 	if isValid {
-		w.Header().Set("Content-type", "application/json")
 		token, err := jwt.JwtEncoder(data.Username, "rahasiadong")
 		if err != nil {
 			http.Error(w, "Failed token generation", http.StatusUnauthorized)
@@ -46,7 +47,7 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 	} else {
 		var response response.Response
 		response.Status = http.StatusBadRequest
-		response.Message = "Failed"
+		response.Message = "Login Provider Failed"
 		response.Token = ""
 		response.Data = nil
 		byteData, err := json.Marshal(response)

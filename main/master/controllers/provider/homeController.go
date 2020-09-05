@@ -18,7 +18,7 @@ type ProviderHomeHandler struct {
 func ProviderHomeController(r *mux.Router, service providerHomeUsecase.ProviderHome) {
 	providerHandler := ProviderHomeHandler{providerHomeUsecase: service}
 	provider := r.PathPrefix("/provider").Subrouter()
-	provider.HandleFunc("/saldo{id}", providerHandler.GetProviderSaldo).Methods(http.MethodGet)
+	provider.HandleFunc("/saldo/{id}", providerHandler.GetProviderSaldo).Methods(http.MethodGet)
 	provider.HandleFunc("/asset", providerHandler.CreateProviderAsset).Methods(http.MethodPost)
 }
 func (ph *ProviderHomeHandler) GetProviderSaldo(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +26,10 @@ func (ph *ProviderHomeHandler) GetProviderSaldo(w http.ResponseWriter, r *http.R
 	id := params["id"]
 	data, err := ph.providerHomeUsecase.GetProviderSaldo(id)
 	if err != nil {
-		w.Write([]byte("Data Not Found!"))
+		var response response.Response
+		response.Status = http.StatusOK
+		response.Message = "Success"
+		response.Data = 0
 	}
 	var response response.Response
 	response.Status = http.StatusOK

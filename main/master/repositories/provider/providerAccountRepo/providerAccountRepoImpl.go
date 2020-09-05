@@ -21,11 +21,11 @@ func InitProviderRepoAccImpl(db *sql.DB) ProviderAccount {
 	return &ProviderRepoAccountImpl{db: db}
 }
 func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (*models.Providers, bool, error) {
-	row := pr.db.QueryRow(utils.SELECT_PROVIDER, provider.Username, provider.Email)
+	row := pr.db.QueryRow(utils.SELECT_PROVIDER_LOGIN, provider.Username, provider.Email)
 	var providers = models.Providers{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&providers.ID, &providers.Username, &providers.Password,
-		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.PhoneNumber, &providers.Address,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
 	providers.Borndate = bornDate.String
 	providers.EditedAt = editedAt.String
@@ -63,9 +63,9 @@ func (pr *ProviderRepoAccountImpl) CreateProvider(provider *models.Providers) (*
 			log.Println(err)
 			return nil, err
 		}
+		tx.Commit()
 
 		providers, _ := pr.GetProviderById(provider.ID)
-		tx.Commit()
 		return providers, nil
 	} else {
 		tx.Rollback()
@@ -76,8 +76,8 @@ func (pr *ProviderRepoAccountImpl) GetProviderById(id string) (*models.Providers
 	providers := new(models.Providers)
 	var bornDate, editedAt, deletedAt sql.NullString
 
-	err := pr.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
-		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
+	err := pr.db.QueryRow(utils.SELECT_NEW_PROVIDER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.PhoneNumber, &providers.Address,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
 	providers.Borndate = bornDate.String
 	providers.EditedAt = editedAt.String
