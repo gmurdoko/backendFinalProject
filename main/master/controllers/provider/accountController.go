@@ -47,7 +47,7 @@ func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request
 	} else {
 		var response response.Response
 		response.Status = http.StatusBadRequest
-		response.Message = "Failed"
+		response.Message = "Login Provider Failed"
 		response.Token = ""
 		response.Data = nil
 		byteData, err := json.Marshal(response)

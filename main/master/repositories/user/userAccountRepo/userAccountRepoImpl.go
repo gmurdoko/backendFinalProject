@@ -31,7 +31,6 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 	users.EditedAt = editedAt.String
 	users.DeletedAt = deletedAt.String
 	if err != nil {
-		fmt.Println(err)
 		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
@@ -55,8 +54,8 @@ func (ur *UserAccRepoImpl) CreateUser(user *models.UserModel) (*models.UserModel
 	}
 	_, err = tx.Exec(utils.INSERT_WALLET, wallet.ID)
 	if err != nil {
-		log.Println(err)
 		tx.Rollback()
+		log.Println(err)
 		return nil, err
 	}
 	user.IdWallet = wallet.ID

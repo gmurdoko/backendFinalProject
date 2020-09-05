@@ -48,7 +48,7 @@ func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var response response.Response
 		response.Status = http.StatusBadRequest
-		response.Message = "Failed"
+		response.Message = "Login User Failed"
 		response.Token = ""
 		response.Data = nil
 		byteData, err := json.Marshal(response)
