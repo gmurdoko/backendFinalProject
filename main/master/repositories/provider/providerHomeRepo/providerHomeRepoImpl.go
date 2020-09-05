@@ -17,12 +17,12 @@ type ProviderHomeRepoImpl struct {
 func InitProviderHomeRepoImpl(db *sql.DB) ProviderHome {
 	return &ProviderHomeRepoImpl{db: db}
 }
-func (pr *ProviderHomeRepoImpl) GetProviderSaldo(id string) (int, error) {
+func (pr *ProviderHomeRepoImpl) GetProviderSaldo(id string) (string, error) {
 	row := pr.db.QueryRow(utils.SELECT_PROVIDER_SALDO, id)
-	var saldo int
+	var saldo string
 	err := row.Scan(&saldo)
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 	return saldo, nil
 }

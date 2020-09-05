@@ -4,7 +4,7 @@ const (
 	SELECT_NEW_USER       = `SELECT * FROM m_user_account WHERE id=?`
 	SELECT_NEW_PROVIDER   = `SELECT * FROM m_provider_account WHERE id=?`
 	SELECT_USER_LOGIN     = `SELECT * FROM m_user_account WHERE username=? OR email=?`
-	SELECT_PROVIDER       = `SELECT * FROM m_provider_account WHERE username=? OR email=?`
+	SELECT_PROVIDER_LOGIN = `SELECT * FROM m_provider_account WHERE username=? OR email=?`
 	SELECT_PROVIDER_EXIST = `SELECT username, email FROM m_provider_account WHERE username=? OR email=?`
 	SELECT_USER_EXIST     = `SELECT username, email FROM m_user_account WHERE username=? OR email=?`
 	INSERT_USER_ACCOUNT   = `INSERT INTO m_user_account (id,id_wallet,username,password,email,fullname,phone_number,created_at) 

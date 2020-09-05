@@ -48,7 +48,7 @@ func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	} else {
 		var response response.Response
 		response.Status = http.StatusBadRequest
-		response.Message = "Success"
+		response.Message = "Failed"
 		response.Token = ""
 		response.Data = nil
 		byteData, err := json.Marshal(response)
@@ -71,6 +71,7 @@ func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))
 		}
+		w.Header().Set("Content-type", "application/json")
 		w.Write(byteData)
 	} else {
 		var response response.Response

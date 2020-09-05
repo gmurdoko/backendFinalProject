@@ -13,5 +13,5 @@ type Wallets struct {
 }
 type UserWallet struct {
 	ID    string `json:"id"`
-	Saldo int    `json:"saldo"`
+	Saldo string `json:"saldo"`
 }

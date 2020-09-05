@@ -59,10 +59,10 @@ func (pu *ProviderHomeUsecaseImpl) CreateAssetProvider(photo multipart.File, han
 	// }
 	// return data, nil
 }
-func (pu *ProviderHomeUsecaseImpl) GetProviderSaldo(id string) (int, error) {
+func (pu *ProviderHomeUsecaseImpl) GetProviderSaldo(id string) (string, error) {
 	data, err := pu.providerRepo.GetProviderSaldo(id)
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 	return data, nil
 }
