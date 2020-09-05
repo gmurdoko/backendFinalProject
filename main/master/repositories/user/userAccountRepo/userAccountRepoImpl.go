@@ -25,7 +25,7 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 	var users = models.UserModel{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
-		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.Address, &users.PhoneNumber,
+		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.PhoneNumber, &users.Address,
 		&users.CreatedAt, &editedAt, &deletedAt, &users.Status)
 	users.BornDate = bornDate.String
 	users.EditedAt = editedAt.String
@@ -87,7 +87,7 @@ func (ur *UserAccRepoImpl) GetUserById(id string) (*models.UserModel, error) {
 	var bornDate, editedAt, deletedAt sql.NullString
 
 	err := ur.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
-		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.Address, &users.PhoneNumber,
+		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.PhoneNumber, &users.Address,
 		&users.CreatedAt, &editedAt, &deletedAt, &users.Status)
 	users.BornDate = bornDate.String
 	users.EditedAt = editedAt.String

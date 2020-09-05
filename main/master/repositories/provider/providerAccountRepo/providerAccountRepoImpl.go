@@ -25,7 +25,7 @@ func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (*mod
 	var providers = models.Providers{}
 	var bornDate, editedAt, deletedAt sql.NullString
 	err := row.Scan(&providers.ID, &providers.Username, &providers.Password,
-		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.PhoneNumber, &providers.Address,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
 	providers.Borndate = bornDate.String
 	providers.EditedAt = editedAt.String
@@ -77,7 +77,7 @@ func (pr *ProviderRepoAccountImpl) GetProviderById(id string) (*models.Providers
 	var bornDate, editedAt, deletedAt sql.NullString
 
 	err := pr.db.QueryRow(utils.SELECT_NEW_PROVIDER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
-		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.Address, &providers.PhoneNumber,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.PhoneNumber, &providers.Address,
 		&providers.CreatedAt, &editedAt, &deletedAt, &providers.Status)
 	providers.Borndate = bornDate.String
 	providers.EditedAt = editedAt.String

@@ -51,11 +51,18 @@ func (uh *UserHomeHandler) DeleteUserPhoto(w http.ResponseWriter, r *http.Reques
 	id := params["id"]
 	err := uh.userUsecase.DeleteUserPhoto(id)
 	if err != nil {
-		w.Write([]byte("Delete Data Failed!"))
+		var response response.Response
+		response.Status = http.StatusBadRequest
+		response.Message = "Success Deleted Data"
+		response.Data = nil
+		byteData, _ := json.Marshal(response)
+		w.Header().Set("Content-type", "application/json")
+		w.Write(byteData)
 	}
 	var response response.Response
 	response.Status = http.StatusOK
 	response.Message = "Success Deleted Data"
+	response.Data = nil
 	byteData, err := json.Marshal(response)
 	w.Header().Set("Content-type", "application/json")
 	w.Write(byteData)
@@ -94,8 +101,13 @@ func (uh *UserHomeHandler) UpdateUserSaldoTopUp(w http.ResponseWriter, r *http.R
 
 	saldo, err := uh.userUsecase.UpdateUserSaldoTopUp(&data, id)
 	if err != nil {
-		log.Println(err)
-		w.Write([]byte("Update Data Failed!"))
+		var response response.Response
+		response.Status = http.StatusBadRequest
+		response.Message = "Failed"
+		response.Data = nil
+		byteData, _ := json.Marshal(response)
+		w.Header().Set("Content-type", "application/json")
+		w.Write(byteData)
 	}
 	var response response.Response
 	response.Status = http.StatusOK
@@ -119,7 +131,6 @@ func (uh *UserHomeHandler) GetUserPhoto(w http.ResponseWriter, r *http.Request) 
 	ex := mux.Vars(r)
 	id := ex["id"]
 	photo, err := uh.userUsecase.GetUserPhoto(id)
-	fmt.Println("photoooooooooo")
 	fileLocation := filepath.Join(dir, "files", *photo)
 	fmt.Println(fileLocation)
 	w.Header().Set("Content-Type", "image/jpeg")
