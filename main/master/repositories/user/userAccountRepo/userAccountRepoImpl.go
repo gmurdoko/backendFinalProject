@@ -36,11 +36,7 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 	}
 	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
 
-<<<<<<< Updated upstream
 	if user.Username == users.Username && users.Status == "A" || user.Email == users.Email && isPwdValid {
-=======
-	if user.Username == users.Username && user.Status == "A" && isPwdValid {
->>>>>>> Stashed changes
 		data, _ := ur.GetUserById(users.ID)
 		return data, true, nil
 	} else {
