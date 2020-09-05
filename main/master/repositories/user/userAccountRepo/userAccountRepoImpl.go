@@ -35,7 +35,8 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 	}
 	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
 
-	if user.Username == users.Username && users.Status == "A" || user.Email == users.Email && isPwdValid {
+	if user.Username == users.Username && users.Status == "A" && isPwdValid ||
+		user.Email == users.Email && isPwdValid && users.Status == "A" {
 		data, _ := ur.GetUserById(users.ID)
 		return data, true, nil
 	} else {
