@@ -46,8 +46,8 @@ func detailProviderController(providers, provider *mux.Router, providerHandler P
 	// provider.HandleFunc("", providerHandler.Putprovider).Methods(http.MethodPut)
 	provider.HandleFunc("/photo/", providerHandler.GetProviderPhoto).Queries("id", "{id}").Methods(http.MethodGet)
 	provider.HandleFunc("/photo/", providerHandler.UpdateProviderPhoto).Queries("id", "{id}").Methods(http.MethodPut)
-	provider.HandleFunc("/photo/", providerHandler.DeleteProviderPhoto).Queries("id", "{id}").Methods(http.MethodDelete)
-	provider.HandleFunc("/data/", providerHandler.PutDataProvider).Queries("id", "{id}").Methods(http.MethodPut)
+	provider.HandleFunc("/photo/{id}", providerHandler.DeleteProviderPhoto).Methods(http.MethodDelete)
+	provider.HandleFunc("/data/{id}", providerHandler.PutDataProvider).Methods(http.MethodPut)
 
 }
 
@@ -82,13 +82,13 @@ func (s *ProviderHandler) PutDataProvider(w http.ResponseWriter, r *http.Request
 		log.Println(err)
 	}
 	inProvider.ID = id
-	err = s.providerUsecase.UpdateDataProvider(&inProvider)
+	data, err := s.providerUsecase.UpdateDataProvider(id, &inProvider)
 	if err != nil {
 		providerResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()}
 		response.ResponseWrite(&providerResponse, w)
 		log.Println(err)
 	} else {
-		providerResponse = response.Response{Status: http.StatusAccepted, Message: "Update Data Provider Success", Data: inProvider}
+		providerResponse = response.Response{Status: http.StatusOK, Message: "Update Data Provider Success", Data: data}
 		response.ResponseWrite(&providerResponse, w)
 	}
 

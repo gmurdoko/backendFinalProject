@@ -27,12 +27,12 @@ func (s providerUsecaseImpl) DeleteProviderFoto(id string) error {
 	return nil
 }
 
-func (s providerUsecaseImpl) UpdateDataProvider(Provider *models.Providers) error {
-	err := s.providerRepository.UpdateDataProvider(Provider)
+func (s providerUsecaseImpl) UpdateDataProvider(id string, Provider *models.Providers) (*models.Providers, error) {
+	data, err := s.providerRepository.UpdateDataProvider(id, Provider)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return data, nil
 }
 
 func (s providerUsecaseImpl) UpdateProviderFoto(photo multipart.File, handler *multipart.FileHeader, id string) error {
