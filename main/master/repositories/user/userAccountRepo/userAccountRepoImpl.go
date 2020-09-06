@@ -34,12 +34,20 @@ func (ur *UserAccRepoImpl) GetUser(user *models.UserModel) (*models.UserModel, b
 		return nil, false, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(user.Password, users.Password)
+	fmt.Println(isPwdValid)
 
-	if user.Username == users.Username && users.Status == "A" && isPwdValid ||
-		user.Email == users.Email && isPwdValid && users.Status == "A" {
+	// if user.Username == users.Username && users.Status == "A" && isPwdValid ||
+	// 	user.Email == users.Email && isPwdValid && users.Status == "A" {
+	fmt.Println(user.Username, users.Username)
+	fmt.Println(user.Email, users.Email)
+	fmt.Println(user.Status, users.Status)
+	if (user.Username == users.Username || user.Email == users.Email) && users.Status == "A" && isPwdValid {
+		fmt.Println("masuk ke true")
 		data, _ := ur.GetUserById(users.ID)
 		return data, true, nil
 	} else {
+		fmt.Println("masuk ke false")
+
 		return nil, false, err
 	}
 }
