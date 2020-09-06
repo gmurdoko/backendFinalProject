@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"finalproject/main/master/models"
 	"finalproject/utils"
+	"fmt"
 	"log"
 	"time"
 )
@@ -48,7 +49,21 @@ func (ur *UserHomeRepoImpl) UpdateUserData(user *models.UserModel, id string) (*
 		tx.Rollback()
 		return nil, err
 	}
-	return user, tx.Commit()
+	tx.Commit()
+	users := new(models.UserModel)
+	var bornDate, deletedAt, editAt sql.NullString
+
+	err = ur.db.QueryRow(utils.SELECT_NEW_USER, id).Scan(&users.ID, &users.IdWallet, &users.Username, &users.Password,
+		&users.Email, &users.Fullname, &users.Photo, &bornDate, &users.PhoneNumber, &users.Address,
+		&users.CreatedAt, &editAt, &deletedAt, &users.Status)
+	users.BornDate = bornDate.String
+	users.DeletedAt = deletedAt.String
+	users.EditedAt = editAt.String
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return users, nil
 }
 func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (int, error) {
 	editedAt := time.Now()
