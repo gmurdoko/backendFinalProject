@@ -6,6 +6,7 @@ import (
 	"finalproject/main/master/usecases/user/userAccountUsecase"
 	"finalproject/utils/jwt"
 	"finalproject/utils/response"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -26,6 +27,8 @@ func UserAccController(r *mux.Router, service userAccountUsecase.UserAccount) {
 func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	var data models.UserModel
 	_ = json.NewDecoder(r.Body).Decode(&data)
+	fmt.Println("username " + data.Username + ", password " + data.Password + ", email : " + data.Email)
+
 	dataUser, isValid, _ := uh.userUsecase.GetUser(&data)
 	w.Header().Set("Content-type", "application/json")
 	if isValid {
