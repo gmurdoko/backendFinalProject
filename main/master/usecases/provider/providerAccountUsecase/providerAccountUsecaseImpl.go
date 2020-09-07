@@ -3,6 +3,7 @@ package providerAccountUsecase
 import (
 	"finalproject/main/master/models"
 	"finalproject/main/master/repositories/provider/providerAccountRepo"
+	"fmt"
 )
 
 type ProviderUsecaseAccImpl struct {
@@ -14,6 +15,7 @@ func InitProviderAccUsecase(providerRepo providerAccountRepo.ProviderAccount) Pr
 }
 func (pu *ProviderUsecaseAccImpl) GetProvider(provider *models.Providers) (*models.Providers, bool, error) {
 	data, isValid, err := pu.providerRepo.GetProvider(provider)
+	fmt.Println(data)
 	if err != nil {
 		return nil, false, err
 	}

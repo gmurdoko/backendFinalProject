@@ -31,11 +31,15 @@ func (pr *ProviderRepoAccountImpl) GetProvider(provider *models.Providers) (*mod
 	providers.EditedAt = editedAt.String
 	providers.DeletedAt = deletedAt.String
 	if err != nil {
+		fmt.Println(err)
 		return nil, false, err
 	}
+
 	isPwdValid := pwd.CheckPasswordHash(provider.Password, providers.Password)
-	if provider.Username == provider.Username && providers.Status == "A" || provider.Email == providers.Email && isPwdValid {
+	if provider.Username == providers.Username && providers.Status == "A" && isPwdValid ||
+		provider.Email == providers.Email && isPwdValid && providers.Status == "A" {
 		data, _ := pr.GetProviderById(providers.ID)
+		fmt.Println(data)
 		return data, true, nil
 	} else {
 		return nil, false, err

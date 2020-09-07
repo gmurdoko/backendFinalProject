@@ -72,18 +72,18 @@ func (uh *UserHomeHandler) UpdateUserData(w http.ResponseWriter, r *http.Request
 	params := mux.Vars(r)
 	id := params["id"]
 	_ = json.NewDecoder(r.Body).Decode(&userRequest)
-	_, err := uh.userUsecase.UpdateUserData(userRequest, id)
+	data, err := uh.userUsecase.UpdateUserData(userRequest, id)
 	if err != nil {
 		var response response.Response
-		response.Status = http.StatusOK
-		response.Message = "Success"
-		response.Data = "Fail"
+		response.Status = http.StatusBadGateway
+		response.Message = "Fail"
+		response.Data = nil
 		w.Write([]byte("Cannot Update Data"))
 	} else {
 		var response response.Response
 		response.Status = http.StatusOK
 		response.Message = "Success"
-		response.Data = userRequest
+		response.Data = data
 		byteData, err := json.Marshal(response)
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))

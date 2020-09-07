@@ -20,6 +20,7 @@ func ProviderAccController(r *mux.Router, service providerAccountUsecase.Provide
 	auth := r.PathPrefix("/authProvider").Subrouter()
 	auth.HandleFunc("/login", providerHandler.GetProvider).Methods(http.MethodPost)
 	auth.HandleFunc("/register", providerHandler.CreateProviders).Methods(http.MethodPost)
+	auth.HandleFunc("/{id}", providerHandler.GetProviderById).Methods(http.MethodGet)
 }
 func (ph *ProviderAccHandler) GetProvider(w http.ResponseWriter, r *http.Request) {
 	var data models.Providers
@@ -78,6 +79,28 @@ func (ph *ProviderAccHandler) CreateProviders(w http.ResponseWriter, r *http.Req
 		response.Status = http.StatusOK
 		response.Message = "Success"
 		response.Data = data
+		byteData, err := json.Marshal(response)
+		if err != nil {
+			w.Write([]byte("Something Wrong on Marshalling Data"))
+		}
+		w.Header().Set("Content-type", "application/json")
+		w.Write(byteData)
+	}
+}
+func (ph *ProviderAccHandler) GetProviderById(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id := params["id"]
+	provider, _ := ph.providerAccUsecase.GetProviderById(id)
+	// var response models.Response
+	token, err := jwt.JwtEncoder(provider.Username, "rahasiadong")
+	if err != nil {
+		http.Error(w, "Failed token generation", http.StatusUnauthorized)
+	} else {
+		var response response.Response
+		response.Status = http.StatusOK
+		response.Message = "Success"
+		response.Token = token
+		response.Data = provider
 		byteData, err := json.Marshal(response)
 		if err != nil {
 			w.Write([]byte("Something Wrong on Marshalling Data"))
