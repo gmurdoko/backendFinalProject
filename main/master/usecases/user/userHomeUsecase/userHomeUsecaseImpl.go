@@ -38,10 +38,10 @@ func (uc *UserHomeUsecaseImpl) UpdateUserData(user *models.UserModel, id string)
 	}
 	return data, nil
 }
-func (uc *UserHomeUsecaseImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (int, error) {
+func (uc *UserHomeUsecaseImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (string, error) {
 	data, err := uc.userRepo.UpdateUserSaldoTopUp(wallet, id)
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 	return data, nil
 }
@@ -63,7 +63,7 @@ func (uc *UserHomeUsecaseImpl) UpdateUserPhoto(photo multipart.File, handler *mu
 	rand.Seed(time.Now().UnixNano())
 	min := 11111111111
 	max := 99999999999
-	photoString := "provider-" + strconv.Itoa(rand.Intn(max-min+1)+min) + filepath.Ext(handler.Filename)
+	photoString := "user-" + strconv.Itoa(rand.Intn(max-min+1)+min) + filepath.Ext(handler.Filename)
 	fileLocation := filepath.Join(dir, "files", photoString)
 
 	log.Println(`FileLocation ->`, fileLocation)

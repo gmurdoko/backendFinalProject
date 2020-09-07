@@ -3,6 +3,8 @@ package providerrepository
 import (
 	"database/sql"
 	"finalproject/main/master/models"
+	"finalproject/utils"
+	"time"
 )
 
 //providerRepositortImpl is for init Repository
@@ -15,7 +17,7 @@ func (s providerRepositorytImpl) DeletePhotoProvider(id string) error {
 	if err != nil {
 		return err
 	}
-	query := "UPDATE m_provider_account SET photo = '' WHERE id=?;"
+	query := "UPDATE m_provider_account SET photo = '' WHERE id=?"
 	_, err = tx.Exec(query, id)
 	if err != nil {
 		tx.Rollback()
@@ -26,18 +28,32 @@ func (s providerRepositorytImpl) DeletePhotoProvider(id string) error {
 	return nil
 }
 
-func (s providerRepositorytImpl) UpdateDataProvider(Provider *models.Providers) error {
+func (s providerRepositorytImpl) UpdateDataProvider(id string, Provider *models.Providers) (*models.Providers, error) {
+	editedAt := time.Now()
 	tx, err := s.db.Begin()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	query := "UPDATE m_provider_account SET address =?, borndate=? WHERE id =?"
-	_, err = tx.Exec(query, Provider.Address, Provider.Borndate, Provider.ID)
+	query := "UPDATE m_provider_account SET address =?, borndate=?,edited_at=? WHERE id =?"
+	_, err = tx.Exec(query, Provider.Address, Provider.Borndate, editedAt, id)
 	if err != nil {
 		tx.Rollback()
-		return err
+		return nil, err
 	}
-	return nil
+	tx.Commit()
+	providers := new(models.Providers)
+	var bornDate, editAt, deletedAt sql.NullString
+
+	err = s.db.QueryRow(utils.SELECT_NEW_PROVIDER, id).Scan(&providers.ID, &providers.Username, &providers.Password,
+		&providers.Email, &providers.Fullname, &providers.Photo, &bornDate, &providers.PhoneNumber, &providers.Address,
+		&providers.CreatedAt, &editAt, &deletedAt, &providers.Status)
+	providers.Borndate = bornDate.String
+	providers.EditedAt = editAt.String
+	providers.DeletedAt = deletedAt.String
+	if err != nil {
+		return nil, err
+	}
+	return providers, nil
 
 }
 func (s providerRepositorytImpl) UpdatePhotoProvider(photo, id string) error {
