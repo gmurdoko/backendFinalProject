@@ -6,6 +6,7 @@ import (
 	"finalproject/utils"
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -65,21 +66,22 @@ func (ur *UserHomeRepoImpl) UpdateUserData(user *models.UserModel, id string) (*
 	}
 	return users, nil
 }
-func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (int, error) {
+func (ur *UserHomeRepoImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (string, error) {
 	editedAt := time.Now()
 	tx, err := ur.db.Begin()
-	_, err = tx.Exec(utils.UPDATE_USER_SALDO_TOPUP, wallet.Debit, editedAt, id)
+	debit, _ := strconv.Atoi(wallet.Debit)
+	_, err = tx.Exec(utils.UPDATE_USER_SALDO_TOPUP, debit, editedAt, id)
 	if err != nil {
 		tx.Rollback()
-		return 0, err
+		return "0", err
 	}
 	tx.Commit()
 	row := ur.db.QueryRow(utils.SELECT_UPDATED_SALDO_USER, id)
 
-	var saldo int
+	var saldo string
 	err = row.Scan(&saldo)
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 
 	return saldo, nil

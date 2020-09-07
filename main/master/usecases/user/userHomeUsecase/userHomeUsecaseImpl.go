@@ -38,10 +38,10 @@ func (uc *UserHomeUsecaseImpl) UpdateUserData(user *models.UserModel, id string)
 	}
 	return data, nil
 }
-func (uc *UserHomeUsecaseImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (int, error) {
+func (uc *UserHomeUsecaseImpl) UpdateUserSaldoTopUp(wallet *models.Wallets, id string) (string, error) {
 	data, err := uc.userRepo.UpdateUserSaldoTopUp(wallet, id)
 	if err != nil {
-		return 0, err
+		return "0", err
 	}
 	return data, nil
 }
