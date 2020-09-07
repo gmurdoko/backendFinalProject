@@ -13,10 +13,11 @@ type Assets struct {
 	Status     string `json:"status"`
 }
 type AssetLocation struct {
+	ID        string `json:"id"`
 	AssetName string `json:"asset_name"`
 	Longitude string `json:"longitude"`
 	Latitude  string `json:"latitude"`
-	Status    string `json:"status"`
+	// Status    string `json:"status"`
 }
 
 type AssetCapacity struct {

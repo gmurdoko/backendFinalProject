@@ -65,7 +65,7 @@ const (
 									JOIN
 								m_fee mf ON mf.id = mt.fee_id
 								WHERE ma.id = ? AND mt.status = "I" AND MONTH(NOW())-MONTH(mt.finished_at) <= 2  GROUP BY months ;`
-	READ_LOCATION_ASSET = `SELECT asset_name, longitude, latitude FROM m_asset WHERE status="A";`
+	READ_LOCATION_ASSET = `SELECT id, asset_name, longitude, latitude FROM m_asset WHERE status="A";`
 
 	// Ticket reservation
 	CREATE_NEW_TICKET            = `INSERT INTO m_ticket (id, user_id, asset_id, fee_id, vehicle_id, license_plate, status) VALUES (?,?,?,?,?,?,"B");`

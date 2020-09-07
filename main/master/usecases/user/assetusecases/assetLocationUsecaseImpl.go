@@ -16,6 +16,7 @@ func InitAssetLocationUsecaseImpl(repo assetrepositories.AssetsLocationRepo) Ass
 
 func (s *AssetLocationUsecaseImpl) ReadAssetsLocation() ([]*models.AssetLocation, error) {
 	//panic("implement me")
+	log.Println("masuk usecase")
 	listLocation, err := s.assetsLocationRepo.ReadAssetsLocation()
 	if err != nil {
 		log.Println(err)

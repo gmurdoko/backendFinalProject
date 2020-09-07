@@ -15,7 +15,7 @@ type ListAssetsHandler struct {
 
 func ListAssetsController(r *mux.Router, service providerListAssetUsecase.ListAssetsUsecase) {
 	listAssetsHandler := ListAssetsHandler{listAssetsUsecase: service}
-	listAssets := r.PathPrefix("/providerassets").Subrouter()
+	listAssets := r.PathPrefix("/listassets").Subrouter()
 	listAssets.HandleFunc("/{id}", listAssetsHandler.getListAssets).Methods(http.MethodGet)
 }
 
