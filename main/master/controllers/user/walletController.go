@@ -59,7 +59,7 @@ func (s *WalletHandler) TransactionPayment(w http.ResponseWriter, r *http.Reques
 	}
 	err = s.walletUsecase.TransactionPayment(&inTicket)
 	if err != nil {
-		transactionPaymentResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: err.Error()}
+		transactionPaymentResponse = response.Response{Status: http.StatusBadRequest, Message: "Error", Data: nil}
 		response.ResponseWrite(&transactionPaymentResponse, w)
 		log.Println(err)
 	} else {
