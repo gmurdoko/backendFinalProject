@@ -1,6 +1,7 @@
 package utils
 
 const (
+	SELECT_ADMIN_LOGIN    = `SELECT * FROM m_admin_account WHERE username=?`
 	SELECT_NEW_USER       = `SELECT * FROM m_user_account WHERE id=?`
 	SELECT_NEW_PROVIDER   = `SELECT * FROM m_provider_account WHERE id=?`
 	SELECT_USER_LOGIN     = `SELECT * FROM m_user_account WHERE username=? OR email=?`

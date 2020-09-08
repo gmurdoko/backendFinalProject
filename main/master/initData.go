@@ -6,6 +6,7 @@ import (
 	"finalproject/main/master/controllers/provider"
 	"finalproject/main/master/controllers/user"
 	adminaccountmanagementrepo "finalproject/main/master/repositories/admin/accountManagement"
+	"finalproject/main/master/repositories/admin/adminAccount"
 	adminassetsreportsrepo "finalproject/main/master/repositories/admin/report"
 	"finalproject/main/master/repositories/provider/providerAccountRepo"
 	"finalproject/main/master/repositories/provider/providerAssetReportsRepo"
@@ -19,6 +20,7 @@ import (
 	"finalproject/main/master/repositories/user/userHomeRepo"
 	"finalproject/main/master/repositories/user/walletrepository"
 	adminaccountmanagementusecase "finalproject/main/master/usecases/admin/accountManagement"
+	"finalproject/main/master/usecases/admin/adminAccountUsecase"
 	"finalproject/main/master/usecases/admin/adminReportUsecase"
 	"finalproject/main/master/usecases/provider/providerAccountUsecase"
 	"finalproject/main/master/usecases/provider/providerAssetReportsUsecase"
@@ -39,6 +41,10 @@ import (
 
 // Init app
 func Init(r *mux.Router, db *sql.DB, activityLog bool) {
+	//Admin
+	adminRepo := adminAccount.InitAdminAccountImpl(db)
+	adminUsecase := adminAccountUsecase.InitAdminAccountUsecaseImpl(adminRepo)
+	admin.AdminAccController(r, adminUsecase)
 	//Ticket
 	ticketRepo := ticketrepository.InitTicketRepositoryImpl(db)
 	ticketUsecase := ticketusecase.InitTicketUsecaseImpl(ticketRepo)
