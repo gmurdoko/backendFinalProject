@@ -54,6 +54,16 @@ func (t ticketUsecaseImpl) UpdateTicketStatusInactive(ticketID string) (string, 
 	return "Success change ticket status: Inactive", nil
 }
 
+func (s ticketUsecaseImpl) GetTicketViewByID(id string) (*models.TicketView, error) {
+
+	ticketView, err := s.ticketRepository.SelectTicketViewByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return ticketView, nil
+}
+
 //InitTicketUsecaseImpl app
 func InitTicketUsecaseImpl(ticketRepository ticketrepository.TicketRepository) TicketUsecase {
 	return &ticketUsecaseImpl{ticketRepository}

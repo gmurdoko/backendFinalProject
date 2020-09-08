@@ -120,6 +120,22 @@ func (t *ticketRepositoryImpl) UpdateTicketStatusInactive(ticketID string) error
 	return tx.Commit()
 }
 
+func (t *ticketRepositoryImpl) SelectTicketViewByID(id string) (*models.TicketView, error) {
+	query := "SELECT mt.id, mua.username, ma.asset_name, mt.license_plate, mf.fee, ceil(time_to_sec(timediff(mt.finished_at, mt.start_at))/3600), (ceil(time_to_sec(timediff(mt.finished_at, mt.start_at))/3600) * mf.fee), mt.book_at, mt.start_at, mt.finished_at FROM m_ticket mt JOIN m_user_account mua ON mt.user_id = mua.id JOIN m_asset ma ON mt.asset_id = ma.id JOIN m_fee mf ON mt.fee_id = mf.id WHERE mt.status = 'I' AND mt.id = ?;"
+	ticketView := new(models.TicketView)
+	var bookAt, StartAt, FinishedAt sql.NullString
+	err := t.db.QueryRow(query, id).Scan(&ticketView.ID, &ticketView.Username, &ticketView.AssetName, &ticketView.LicensePlate,
+		&ticketView.BasedFee, &ticketView.ParkingDurationHour, &ticketView.PayFee, &bookAt, &StartAt, &FinishedAt)
+	ticketView.BookAt = bookAt.String
+	ticketView.StartAt = StartAt.String
+	ticketView.FinishedAt = FinishedAt.String
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return ticketView, nil
+}
+
 //InitTicketRepositoryImpl is init gate for repository
 func InitTicketRepositoryImpl(db *sql.DB) TicketRepository {
 	return &ticketRepositoryImpl{db}

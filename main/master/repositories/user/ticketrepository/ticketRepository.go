@@ -11,4 +11,5 @@ type TicketRepository interface {
 	CreateNewTicket(ticket *models.Ticket) (*models.Ticket, error)
 	UpdateTicketStatusActive(ticketID string) error
 	UpdateTicketStatusInactive(ticketID string) error
+	SelectTicketViewByID(id string) (*models.TicketView, error)
 }
