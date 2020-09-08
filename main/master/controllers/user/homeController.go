@@ -124,8 +124,6 @@ func (uh *UserHomeHandler) GetUserPhoto(w http.ResponseWriter, r *http.Request) 
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Println(err)
-		println("MASUK ERROR")
-		// return
 	}
 	ex := mux.Vars(r)
 	id := ex["id"]
@@ -155,7 +153,7 @@ func (uh *UserHomeHandler) UpdateUserPhoto(w http.ResponseWriter, r *http.Reques
 		response.ResponseWrite(&providerResponse, w)
 		log.Println(err)
 	} else {
-		providerResponse = response.Response{Status: http.StatusAccepted, Message: "Update Provider Foto Success", Data: photo}
+		providerResponse = response.Response{Status: http.StatusAccepted, Message: "Update Provider Foto Success", Data: id}
 		response.ResponseWrite(&providerResponse, w)
 	}
 

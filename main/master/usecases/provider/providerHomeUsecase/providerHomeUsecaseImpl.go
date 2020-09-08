@@ -30,7 +30,7 @@ func (pu *ProviderHomeUsecaseImpl) CreateAssetProvider(photo multipart.File, han
 	rand.Seed(time.Now().UnixNano())
 	min := 11111111111
 	max := 99999999999
-	photoString := "provider-" + strconv.Itoa(rand.Intn(max-min+1)+min) + filepath.Ext(handler.Filename)
+	photoString := "asset-" + strconv.Itoa(rand.Intn(max-min+1)+min) + filepath.Ext(handler.Filename)
 	fileLocation := filepath.Join(dir, "files", photoString)
 
 	log.Println(`FileLocation ->`, fileLocation)
@@ -53,11 +53,6 @@ func (pu *ProviderHomeUsecaseImpl) CreateAssetProvider(photo multipart.File, han
 		return nil, err
 	}
 	return data, nil
-	// data, err := pu.providerRepo.CreateAssetProvider(provider)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// return data, nil
 }
 func (pu *ProviderHomeUsecaseImpl) GetProviderSaldo(id string) (string, error) {
 	data, err := pu.providerRepo.GetProviderSaldo(id)
