@@ -2,6 +2,7 @@ package adminaccountmanagementrepo
 
 import (
 	"database/sql"
+	"finalproject/main/master/models"
 	constanta "finalproject/utils/constant"
 	"log"
 )
@@ -102,4 +103,107 @@ func (s *AccountManagementRepoImpl) ApproveAssetsUpdate(assetId string) error {
 		return err
 	}
 	return tx.Commit()
+}
+
+// Get all users, providers, etc.
+
+func (s *AccountManagementRepoImpl) GetAllUsers() ([]*models.UserManagement, error) {
+	query:= constanta.GET_ALL_USERS
+	var listUsers []*models.UserManagement
+
+	rows, err := s.db.Query(query)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		user := models.UserManagement{}
+		err := rows.Scan(&user.ID, &user.IdWallet, &user.Username,
+			&user.Email, &user.Fullname, &user.BornDate, &user.PhoneNumber,
+			&user.Address, &user.CreatedAt, &user.Status)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		listUsers = append(listUsers, &user)
+	}
+	return listUsers, nil
+}
+
+func (s *AccountManagementRepoImpl) GetAllProviders() ([]*models.ProvidersManagement, error) {
+	query:= constanta.GET_ALL_PROVIDERS
+	var listProviders []*models.ProvidersManagement
+
+	rows, err := s.db.Query(query)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		provider := models.ProvidersManagement{}
+		err := rows.Scan(&provider.ID, &provider.Username, &provider.Email,
+			&provider.Fullname, &provider.Borndate, &provider.PhoneNumber,
+			&provider.Address, &provider.CreatedAt, &provider.Status)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		listProviders = append(listProviders, &provider)
+	}
+	return listProviders, nil
+}
+
+func (s *AccountManagementRepoImpl) GetAllAssets() ([]*models.AssetManagement, error) {
+	query:= constanta.GET_ALL_ASSETS
+	var listAssets []*models.AssetManagement
+
+	rows, err := s.db.Query(query)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		asset := models.AssetManagement{}
+		err := rows.Scan(&asset.ID, &asset.IdWallet, &asset.ProviderId,
+			&asset.AssetName, &asset.AssetArea, &asset.Longitude,
+			&asset.Latitude, &asset.CarCapacity, &asset.MotorcycleCapacity,
+			&asset.BicycleCapacity, &asset.CreatedAt, &asset.Status)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		listAssets = append(listAssets, &asset)
+	}
+	return listAssets, nil
+}
+
+func (s *AccountManagementRepoImpl) GetAllReviews() ([]*models.ReviewManagement, error) {
+	query:= constanta.GET_ALL_REVIEWS
+	var listReviews []*models.ReviewManagement
+
+	rows, err := s.db.Query(query)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		review := models.ReviewManagement{}
+		err := rows.Scan(&review.ID, &review.UserID, &review.AssetID,
+			&review.Rating, &review.Comment, &review.CreatedAt,
+			&review.Status)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		listReviews = append(listReviews, &review)
+	}
+	return listReviews, nil
 }
