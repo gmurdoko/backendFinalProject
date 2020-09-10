@@ -44,8 +44,8 @@ func detailProviderController(providers, provider *mux.Router, providerHandler P
 	// provider.HandleFunc("/{id}", providerHandler.provider).Methods(http.MethodGet)
 	// provider.HandleFunc("", providerHandler.Postprovider).Methods(http.MethodPost)
 	// provider.HandleFunc("", providerHandler.Putprovider).Methods(http.MethodPut)
-	provider.HandleFunc("/photo/{id}", providerHandler.GetProviderPhoto).Methods(http.MethodGet)
-	provider.HandleFunc("/photo/{id}", providerHandler.UpdateProviderPhoto).Methods(http.MethodPut)
+	provider.HandleFunc("/photo/", providerHandler.GetProviderPhoto).Queries("id", "{id}").Methods(http.MethodGet)
+	provider.HandleFunc("/photo/", providerHandler.UpdateProviderPhoto).Queries("id", "{id}").Methods(http.MethodPut)
 	provider.HandleFunc("/photo/{id}", providerHandler.DeleteProviderPhoto).Methods(http.MethodDelete)
 	provider.HandleFunc("/data/{id}", providerHandler.PutDataProvider).Methods(http.MethodPut)
 
