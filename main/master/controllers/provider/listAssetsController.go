@@ -2,8 +2,8 @@ package provider
 
 import (
 	"encoding/json"
-	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/provider/providerListAssetUsecase"
+	"finalproject/utils/response"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,13 +23,13 @@ func (s *ListAssetsHandler) getListAssets(w http.ResponseWriter, r *http.Request
 	params := mux.Vars(r)
 	userId := params["id"]
 	listAssets, err := s.listAssetsUsecase.GetAll(userId)
-	var response models.Response
+	var response response.Response
 	response.Status = http.StatusOK
 	response.Message = "Success"
 	if err != nil || listAssets == nil {
-		response.Response = "Data Not Found"
+		response.Data = nil
 	} else {
-		response.Response = listAssets
+		response.Data = listAssets
 	}
 	byteData, err := json.Marshal(response)
 	if err != nil {
