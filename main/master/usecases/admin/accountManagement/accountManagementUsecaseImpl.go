@@ -1,6 +1,7 @@
 package adminaccountmanagementusecase
 
 import (
+	"finalproject/main/master/models"
 	adminaccountmanagementrepo "finalproject/main/master/repositories/admin/accountManagement"
 	"log"
 )
@@ -60,4 +61,42 @@ func (s *AccountManagementUsecaseImpl) ApproveAssetsUpdate(assetId string) (stri
 		return "Update Asset Unsuccessful", err
 	}
 	return "Update Asset Successful", nil
+}
+
+// Get all users, providers, etc.
+
+func (s *AccountManagementUsecaseImpl) GetAllUsers() ([]*models.UserManagement, error) {
+	listUsers, err := s.accountManagementRepo.GetAllUsers()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return listUsers, err
+}
+
+func (s *AccountManagementUsecaseImpl) GetAllProviders() ([]*models.ProvidersManagement, error) {
+	listProviders, err := s.accountManagementRepo.GetAllProviders()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return listProviders, nil
+}
+
+func (s *AccountManagementUsecaseImpl) GetAllAssets() ([]*models.AssetManagement, error) {
+	listAssets, err := s.accountManagementRepo.GetAllAssets()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return listAssets, nil
+}
+
+func (s *AccountManagementUsecaseImpl) GetAllReviews() ([]*models.ReviewManagement, error) {
+	listReviews, err := s.accountManagementRepo.GetAllReviews()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return listReviews, nil
 }

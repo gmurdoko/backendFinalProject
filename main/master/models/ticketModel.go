@@ -27,3 +27,10 @@ type TicketView struct {
 	StartAt             string `json:"start_at"`
 	FinishedAt          string `json:"finished_at"`
 }
+type TicketUser struct {
+	UserID       string `json:"user_id"`
+	AssetName    string `json:"asset_name"`
+	Vehicle_type string `json:"vehicle_type"`
+	LicensePlate string `json:"license_plate"`
+	BookAt       string `json:"book_at"`
+}

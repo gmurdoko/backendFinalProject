@@ -112,3 +112,13 @@ func (ur *UserHomeRepoImpl) UpdateUserPhoto(photo string, id string) error {
 	tx.Commit()
 	return nil
 }
+func (ur *UserHomeRepoImpl) GetUserTicket(id string) (*models.TicketUser, error) {
+	tickets := new(models.TicketUser)
+	err := ur.db.QueryRow(utils.GET_USER_TICKET, id).Scan(&tickets.UserID, &tickets.AssetName, &tickets.Vehicle_type,
+		&tickets.LicensePlate, &tickets.BookAt)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return tickets, nil
+}

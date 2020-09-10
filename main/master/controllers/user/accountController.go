@@ -12,10 +12,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//UserAccHandler struct
 type UserAccHandler struct {
 	userUsecase userAccountUsecase.UserAccount
 }
 
+//UserAccController for controller
 func UserAccController(r *mux.Router, service userAccountUsecase.UserAccount) {
 	userHandler := UserAccHandler{userUsecase: service}
 
@@ -24,6 +26,8 @@ func UserAccController(r *mux.Router, service userAccountUsecase.UserAccount) {
 	auth.HandleFunc("/register", userHandler.CreateUsers).Methods(http.MethodPost)
 	auth.HandleFunc("/{id}", userHandler.GetUserById).Methods(http.MethodGet)
 }
+
+//GetUser for get user data
 func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	var data models.UserModel
 	_ = json.NewDecoder(r.Body).Decode(&data)
@@ -61,6 +65,8 @@ func (uh *UserAccHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 		w.Write(byteData)
 	}
 }
+
+//CreateUsers for add user
 func (uh *UserAccHandler) CreateUsers(w http.ResponseWriter, r *http.Request) {
 	var userRequest *models.UserModel
 	_ = json.NewDecoder(r.Body).Decode(&userRequest)

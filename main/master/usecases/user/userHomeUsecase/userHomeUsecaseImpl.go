@@ -86,3 +86,10 @@ func (uc *UserHomeUsecaseImpl) UpdateUserPhoto(photo multipart.File, handler *mu
 	}
 	return nil
 }
+func (uc *UserHomeUsecaseImpl) GetUserTicket(id string) (*models.TicketUser, error) {
+	data, err := uc.userRepo.GetUserTicket(id)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

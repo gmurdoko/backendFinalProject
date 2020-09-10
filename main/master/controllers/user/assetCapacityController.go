@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/assetusecases"
-	"finalproject/main/middleware"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -16,9 +15,9 @@ type AssetCapacityHandler struct {
 
 func AssetCapacityController(r *mux.Router, service assetusecases.AssetCapacityUsecase) {
 	assetCapacityHandler := AssetCapacityHandler{assetCapacity: service}
-	r.Use(middleware.ActivityLogMiddleware)
+	// r.Use(middleware.ActivityLogMiddleware)
 
-	assetCapacity := r.PathPrefix("/providerassets").Subrouter()
+	assetCapacity := r.PathPrefix("/assets").Subrouter()
 	assetCapacity.HandleFunc("/currentcap/{id}", assetCapacityHandler.getAssetCapacity).Methods(http.MethodGet)
 }
 

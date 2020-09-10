@@ -18,7 +18,7 @@ func ReviewController(r *mux.Router, service reviewusecase.ReviewUsecase) {
 	reviewHandler := ReviewHandler{review: service}
 	r.Use(middleware.ActivityLogMiddleware)
 
-	createReview := r.PathPrefix("/providerassets").Subrouter()
+	createReview := r.PathPrefix("/review").Subrouter()
 	createReview.HandleFunc("/review", reviewHandler.CreateReview).Methods(http.MethodPost)
 }
 

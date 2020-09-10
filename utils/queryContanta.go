@@ -23,5 +23,20 @@ const (
 	SELECT_UPDATED_SALDO_USER = "SELECT saldo FROM m_wallet WHERE id=?"
 	SELECT_PROVIDER_SALDO     = `SELECT SUM(mw.saldo) FROM m_asset AS ma JOIN m_wallet mw ON ma.id_wallet = mw.id JOIN 
 	m_provider_account mpa on ma.provider_id = mpa.id WHERE mpa.id = ?`
-	DATE_FORMAT = `2006-01-02 15:04:05`
+	DATE_FORMAT     = `2006-01-02 15:04:05`
+	GET_USER_TICKET = `SELECT 
+	user_id,
+    m_asset.asset_name,
+    m_vehicle_type.vehicle_type,
+    license_plate,
+    book_at
+FROM
+    m_ticket
+        JOIN
+    m_asset ON m_ticket.asset_id = m_asset.id
+        JOIN
+    m_vehicle_type ON m_vehicle_type.id = m_ticket.vehicle_id
+WHERE
+    m_ticket.user_id = ?
+        AND m_ticket.status = 'A' OR m_ticket.status="B"`
 )
