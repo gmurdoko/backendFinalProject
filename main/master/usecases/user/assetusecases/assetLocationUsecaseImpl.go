@@ -24,3 +24,14 @@ func (s *AssetLocationUsecaseImpl) ReadAssetsLocation() ([]*models.AssetLocation
 	}
 	return listLocation, nil
 }
+
+func (s *AssetLocationUsecaseImpl) GetAssetByID(id string) (*models.AssetLocation, error) {
+	//panic("implement me")
+	log.Println("masuk usecase")
+	listLocation, err := s.assetsLocationRepo.GetAssetsByID(id)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return listLocation, nil
+}
