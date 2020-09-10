@@ -26,7 +26,7 @@ func (s *ListAssetsRepoImpl) GetAllAssets(userId string) ([]*models.Assets, erro
 	var listAssets []*models.Assets
 	for rows.Next() {
 		asset := models.Assets{}
-		err := rows.Scan(&asset.AssetName, &asset.AssetArea, &asset.Longitude, &asset.Latitude, &asset.CarCap, &asset.MotorCap, &asset.BicycleCap, &asset.Photo, &asset.Saldo, &asset.Status)
+		err := rows.Scan(&asset.ID, &asset.AssetName, &asset.AssetArea, &asset.Longitude, &asset.Latitude, &asset.CarCap, &asset.MotorCap, &asset.BicycleCap, &asset.Photo, &asset.Saldo, &asset.Status)
 		if err != nil {
 			log.Println(err)
 			return nil, err

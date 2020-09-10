@@ -2,8 +2,9 @@ package provider
 
 import (
 	"encoding/json"
-	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/provider/providerAssetReportsUsecase"
+	"finalproject/utils/response"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -24,13 +25,13 @@ func (s *ProviderAssetReportHandler) getReportDaily(w http.ResponseWriter, r *ht
 	params := mux.Vars(r)
 	assetId := params["id"]
 	reports, err := s.assetsReport.GetReportDaily(assetId)
-	var response models.Response
+	var response response.Response
 	response.Status = http.StatusOK
 	response.Message = "Success"
 	if err != nil || reports == nil {
-		response.Response = "Data Not Found"
+		response.Data = nil
 	} else {
-		response.Response = reports
+		response.Data = reports
 	}
 	byteData, err := json.Marshal(response)
 	if err != nil {
@@ -44,13 +45,14 @@ func (s *ProviderAssetReportHandler) getReportMonthly(w http.ResponseWriter, r *
 	params := mux.Vars(r)
 	assetId := params["id"]
 	reports, err := s.assetsReport.GetReportMonthly(assetId)
-	var response models.Response
+	var response response.Response
 	response.Status = http.StatusOK
 	response.Message = "Success"
+	fmt.Println(reports)
 	if err != nil || reports == nil {
-		response.Response = "Data Not Found"
+		response.Data = nil
 	} else {
-		response.Response = reports
+		response.Data = reports
 	}
 	byteData, err := json.Marshal(response)
 	if err != nil {

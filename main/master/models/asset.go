@@ -1,6 +1,7 @@
 package models
 
 type Assets struct {
+	ID         string `json:"id"`
 	AssetName  string `json:"asset_name"`
 	AssetArea  string `json:"asset_area"`
 	Longitude  string `json:"longitude"`
