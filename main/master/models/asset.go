@@ -12,7 +12,6 @@ type Assets struct {
 	Saldo      string `json:"saldo"`
 	Status     string `json:"status"`
 }
-
 type AssetLocation struct {
 	ID         string `json:"id"`
 	AssetName  string `json:"asset_name"`
