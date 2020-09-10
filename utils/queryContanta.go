@@ -38,5 +38,5 @@ FROM
     m_vehicle_type ON m_vehicle_type.id = m_ticket.vehicle_id
 WHERE
     m_ticket.user_id = ?
-        AND m_ticket.status = 'A'`
+        AND m_ticket.status = 'A' OR m_ticket.status="B"`
 )
