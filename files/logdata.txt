@@ -5166,3 +5166,5 @@
 2020-09-10 12:11:41 Accessing path /user/saldo/17131da0-6d79-4562-bc86-47491696b23e with application okhttp/4.3.1
 2020-09-10 12:11:43 Accessing path /providerassets/locations with application okhttp/4.3.1
 >>>>>>> Stashed changes
+2020-09-10 15:56:50 Accessing path /user/ticket/17131da0-6d79-4562-bc86-47491696b23e with application okhttp/4.3.1
+2020-09-10 15:56:50 Accessing path /user/saldo/17131da0-6d79-4562-bc86-47491696b23e with application okhttp/4.3.1

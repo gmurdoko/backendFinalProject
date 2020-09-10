@@ -15,5 +15,4 @@ type AccountManagementUsecase interface {
 	GetAllProviders() ([]*models.ProvidersManagement, error)
 	GetAllAssets() ([]*models.AssetManagement, error)
 	GetAllReviews() ([]*models.ReviewManagement, error)
-
 }
