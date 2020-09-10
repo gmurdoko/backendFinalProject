@@ -45,7 +45,7 @@ func detailTicketController(tickets, ticket *mux.Router, ticketHandler TicketHan
 	tickets.HandleFunc("/history", ticketHandler.HistoryTickets).Queries("page", "{page}", "limit", "{limit}", "user_id", "{user_id}").Methods(http.MethodGet)
 
 	//Satuan
-	ticket.HandleFunc("/{id}", ticketHandler.GetTicketView).Methods(http.MethodGet)
+	ticket.HandleFunc("/view/{id}", ticketHandler.GetTicketView).Methods(http.MethodGet)
 	// ticket.HandleFunc("", ticketHandler.Postticket).Methods(http.MethodPost)
 	// ticket.HandleFunc("", ticketHandler.Putticket).Methods(http.MethodPut)
 	ticket.HandleFunc("/{id}", ticketHandler.DeleteTicket).Methods(http.MethodDelete)

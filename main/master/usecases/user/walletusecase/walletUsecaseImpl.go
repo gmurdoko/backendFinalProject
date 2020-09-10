@@ -25,7 +25,8 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *models.Tickets) error {
 	//TimeDifferent
 	layout := `2006-01-02 15:04:05`
 	// Update ticket add FinishedAt
-	ticket.FinishedAt = time.Now().Format(`2006-01-02 15:04:05`)
+	// ticket.FinishedAt = time.Now().Format(`2006-01-02 15:04:05`)
+	fmt.Println("START_AT", ticket.StartAt)
 	startAt, err := time.Parse(layout, ticket.StartAt)
 	if err != nil {
 		return err

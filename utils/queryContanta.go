@@ -25,11 +25,14 @@ const (
 	m_provider_account mpa on ma.provider_id = mpa.id WHERE mpa.id = ?`
 	DATE_FORMAT     = `2006-01-02 15:04:05`
 	GET_USER_TICKET = `SELECT 
-	user_id,
+	m_ticket.id, user_id,
     m_asset.asset_name,
     m_vehicle_type.vehicle_type,
     license_plate,
-    book_at
+	book_at, m_ticket.status,
+	m_ticket.asset_id,
+	m_ticket.fee_id,
+	m_ticket.vehicle_id
 FROM
     m_ticket
         JOIN
@@ -38,5 +41,5 @@ FROM
     m_vehicle_type ON m_vehicle_type.id = m_ticket.vehicle_id
 WHERE
     m_ticket.user_id = ?
-        AND m_ticket.status = 'A' OR m_ticket.status="B"`
+        AND m_ticket.status = "A" OR m_ticket.status="B"`
 )

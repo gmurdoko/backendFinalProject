@@ -28,9 +28,14 @@ type TicketView struct {
 	FinishedAt          string `json:"finished_at"`
 }
 type TicketUser struct {
+	ID           string `json:"id"`
 	UserID       string `json:"user_id"`
 	AssetName    string `json:"asset_name"`
 	Vehicle_type string `json:"vehicle_type"`
 	LicensePlate string `json:"license_plate"`
 	BookAt       string `json:"book_at"`
+	Status       string `json:"status"`
+	AssetID      string `json:"asset_id"`
+	FeeID        string `json:"fee_id"`
+	VehicleID    string `json:"vehicle"`
 }

@@ -77,7 +77,7 @@ const (
 	// Ticket reservation
 	CREATE_NEW_TICKET            = `INSERT INTO m_ticket (id, user_id, asset_id, fee_id, vehicle_id, license_plate, status) VALUES (?,?,?,?,?,?,"B");`
 	UPDATE_TICKET_START_PARKING  = `UPDATE m_ticket SET status="A", start_at=NOW() WHERE id=?;`
-	UPDATE_TICKET_FINISH_PARKING = `UPDATE m_ticket SET status="I", finished_at=NOW() WHERE id=?;`
+	UPDATE_TICKET_FINISH_PARKING = `UPDATE m_ticket SET status="A", finished_at=NOW() WHERE id=?;`
 
 	// Asset capacity change due to parking spot booked by car/motor/bike
 	READ_CURRENT_CAPACITY = `select ma.car_capacity, ma.car_capacity-(
