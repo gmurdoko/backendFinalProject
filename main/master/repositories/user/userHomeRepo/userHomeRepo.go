@@ -9,4 +9,5 @@ type UserHome interface {
 	UpdateUserSaldoTopUp(*models.Wallets, string) (string, error)
 	GetUserPhoto(string) (*string, error)
 	UpdateUserPhoto(string, string) error
+	GetUserTicket(string) (*models.TicketUser, error)
 }
