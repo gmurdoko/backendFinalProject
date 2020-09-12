@@ -23,10 +23,11 @@ func AccountManagerController(r *mux.Router, service accountmanagementusecase.Ac
 	accountManagement.HandleFunc("/deletecomment/{id}", accountManagementHandler.deleteComment).Methods(http.MethodPut)
 	accountManagement.HandleFunc("/approveasset/{id}", accountManagementHandler.approveAsset).Methods(http.MethodPut)
 
-//	Get all users, providers, assets for admin
+	//	Get all users, providers, assets for admin
 	accountManagement.HandleFunc("/allusers", accountManagementHandler.GetAllUsers).Methods(http.MethodGet)
 	accountManagement.HandleFunc("/allproviders", accountManagementHandler.GetAllProviders).Methods(http.MethodGet)
 	accountManagement.HandleFunc("/allassets", accountManagementHandler.GetAllAssets).Methods(http.MethodGet)
+	accountManagement.HandleFunc("/allassetsnotapproved", accountManagementHandler.GetAllAssetsNotApproved).Methods(http.MethodGet)
 	accountManagement.HandleFunc("/allreviews", accountManagementHandler.GetAllReviews).Methods(http.MethodGet)
 
 }
@@ -172,6 +173,26 @@ func (s *AccountManagementControllerHandler) GetAllProviders(w http.ResponseWrit
 
 func (s *AccountManagementControllerHandler) GetAllAssets(w http.ResponseWriter, r *http.Request) {
 	listAssets, err := s.accountManagementUsecase.GetAllAssets()
+
+	var response models.Response
+	response.Status = http.StatusOK
+	response.Message = "Success"
+	if err != nil {
+		response.Response = "Data Not Found"
+	} else {
+		response.Response = listAssets
+	}
+
+	byteData, err := json.Marshal(response)
+	if err != nil {
+		w.Write([]byte("Something went wrong when marshaling data"))
+	}
+	w.Header().Set("Content-type", "application/json")
+	w.Write(byteData)
+}
+
+func (s *AccountManagementControllerHandler) GetAllAssetsNotApproved(w http.ResponseWriter, r *http.Request) {
+	listAssets, err := s.accountManagementUsecase.GetAllAssetsNotApproved()
 
 	var response models.Response
 	response.Status = http.StatusOK

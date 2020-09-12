@@ -3,10 +3,11 @@ package constanta
 const (
 
 	// Get all data per tables for admin frontend
-	GET_ALL_USERS     = `SELECT id, id_wallet, username, email, fullname, borndate, phone_number, address, created_at, status FROM m_user_account;`
-	GET_ALL_PROVIDERS = `SELECT id, username, email, fullname, borndate, phone_number, address, created_at, status FROM m_provider_account;`
-	GET_ALL_ASSETS    = `SELECT id, id_wallet, provider_id, asset_name, asset_area, longitude, latitude, car_capacity, motorcycle_capacity, bicycle_capacity, created_at, status FROM m_asset;`
-	GET_ALL_REVIEWS   = `SELECT id, user_id, asset_id, rating, comment, created_at, status FROM m_review;`
+	GET_ALL_USERS              = `SELECT id, id_wallet, username, email, fullname, borndate, phone_number, address, created_at, status FROM m_user_account;`
+	GET_ALL_PROVIDERS          = `SELECT id, username, email, fullname, borndate, phone_number, address, created_at, status FROM m_provider_account;`
+	GET_ALL_ASSETS_APPROVED    = `SELECT id, id_wallet, provider_id, asset_name, asset_area, longitude, latitude, car_capacity, motorcycle_capacity, bicycle_capacity, created_at, status FROM m_asset where status = "A";`
+	GET_ALL_ASSET_NOT_APPROVED = `SELECT id, id_wallet, provider_id, asset_name, asset_area, longitude, latitude, car_capacity, motorcycle_capacity, bicycle_capacity, created_at, status FROM m_asset where status = "I";`
+	GET_ALL_REVIEWS            = `SELECT id, user_id, asset_id, rating, comment, created_at, status FROM m_review;`
 
 	GETALLASSETSPERPROVIDER = `SELECT ma.id, ma.asset_name,ma.asset_area, ma.longitude, ma.latitude, ma.car_capacity, ma.motorcycle_capacity,
 								ma.bicycle_capacity, ma.photo,mw.saldo,ma.status
