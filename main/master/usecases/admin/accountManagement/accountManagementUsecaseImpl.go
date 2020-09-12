@@ -83,6 +83,15 @@ func (s *AccountManagementUsecaseImpl) GetAllProviders() ([]*models.ProvidersMan
 	return listProviders, nil
 }
 
+func (s *AccountManagementUsecaseImpl) GetAllAssetsNotApproved() ([]*models.AssetManagement, error) {
+	listAssets, err := s.accountManagementRepo.GetAllAssetsNotApproved()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return listAssets, nil
+}
+
 func (s *AccountManagementUsecaseImpl) GetAllAssets() ([]*models.AssetManagement, error) {
 	listAssets, err := s.accountManagementRepo.GetAllAssets()
 	if err != nil {

@@ -108,8 +108,9 @@ func (s *AccountManagementRepoImpl) ApproveAssetsUpdate(assetId string) error {
 // Get all users, providers, etc.
 
 func (s *AccountManagementRepoImpl) GetAllUsers() ([]*models.UserManagement, error) {
-	query:= constanta.GET_ALL_USERS
+	query := constanta.GET_ALL_USERS
 	var listUsers []*models.UserManagement
+	var bd sql.NullString
 
 	rows, err := s.db.Query(query)
 	if err != nil {
@@ -121,8 +122,9 @@ func (s *AccountManagementRepoImpl) GetAllUsers() ([]*models.UserManagement, err
 	for rows.Next() {
 		user := models.UserManagement{}
 		err := rows.Scan(&user.ID, &user.IdWallet, &user.Username,
-			&user.Email, &user.Fullname, &user.BornDate, &user.PhoneNumber,
+			&user.Email, &user.Fullname, &bd, &user.PhoneNumber,
 			&user.Address, &user.CreatedAt, &user.Status)
+		user.BornDate = bd.String
 		if err != nil {
 			log.Println(err)
 			return nil, err
@@ -133,9 +135,9 @@ func (s *AccountManagementRepoImpl) GetAllUsers() ([]*models.UserManagement, err
 }
 
 func (s *AccountManagementRepoImpl) GetAllProviders() ([]*models.ProvidersManagement, error) {
-	query:= constanta.GET_ALL_PROVIDERS
+	query := constanta.GET_ALL_PROVIDERS
 	var listProviders []*models.ProvidersManagement
-
+	var bd sql.NullString
 	rows, err := s.db.Query(query)
 	if err != nil {
 		log.Println(err)
@@ -146,8 +148,9 @@ func (s *AccountManagementRepoImpl) GetAllProviders() ([]*models.ProvidersManage
 	for rows.Next() {
 		provider := models.ProvidersManagement{}
 		err := rows.Scan(&provider.ID, &provider.Username, &provider.Email,
-			&provider.Fullname, &provider.Borndate, &provider.PhoneNumber,
+			&provider.Fullname, &bd, &provider.PhoneNumber,
 			&provider.Address, &provider.CreatedAt, &provider.Status)
+		provider.Borndate = bd.String
 		if err != nil {
 			log.Println(err)
 			return nil, err
@@ -157,8 +160,34 @@ func (s *AccountManagementRepoImpl) GetAllProviders() ([]*models.ProvidersManage
 	return listProviders, nil
 }
 
+func (s *AccountManagementRepoImpl) GetAllAssetsNotApproved() ([]*models.AssetManagement, error) {
+	query := constanta.GET_ALL_ASSET_NOT_APPROVED
+	var listAssets []*models.AssetManagement
+
+	rows, err := s.db.Query(query)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		asset := models.AssetManagement{}
+		err := rows.Scan(&asset.ID, &asset.IdWallet, &asset.ProviderId,
+			&asset.AssetName, &asset.AssetArea, &asset.Longitude,
+			&asset.Latitude, &asset.CarCapacity, &asset.MotorcycleCapacity,
+			&asset.BicycleCapacity, &asset.CreatedAt, &asset.Status)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		listAssets = append(listAssets, &asset)
+	}
+	return listAssets, nil
+}
+
 func (s *AccountManagementRepoImpl) GetAllAssets() ([]*models.AssetManagement, error) {
-	query:= constanta.GET_ALL_ASSETS
+	query := constanta.GET_ALL_ASSETS_APPROVED
 	var listAssets []*models.AssetManagement
 
 	rows, err := s.db.Query(query)
@@ -184,7 +213,7 @@ func (s *AccountManagementRepoImpl) GetAllAssets() ([]*models.AssetManagement, e
 }
 
 func (s *AccountManagementRepoImpl) GetAllReviews() ([]*models.ReviewManagement, error) {
-	query:= constanta.GET_ALL_REVIEWS
+	query := constanta.GET_ALL_REVIEWS
 	var listReviews []*models.ReviewManagement
 
 	rows, err := s.db.Query(query)

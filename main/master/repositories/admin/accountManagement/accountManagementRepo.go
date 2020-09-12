@@ -14,5 +14,6 @@ type AccountManagementRepo interface {
 	GetAllUsers() ([]*models.UserManagement, error)
 	GetAllProviders() ([]*models.ProvidersManagement, error)
 	GetAllAssets() ([]*models.AssetManagement, error)
+	GetAllAssetsNotApproved() ([]*models.AssetManagement, error)
 	GetAllReviews() ([]*models.ReviewManagement, error)
 }
