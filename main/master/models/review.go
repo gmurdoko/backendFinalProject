@@ -6,7 +6,7 @@ type Review struct {
 	AssetID   string `json:"asset_id"`
 	Rating    string `json:"rating"`
 	Comment   string `json:"comment"`
-	CreatedAt string `json:"crated_at"`
+	CreatedAt string `json:"created_at"`
 	Status    string `json:"status"`
 }
 
@@ -16,6 +16,6 @@ type ReviewManagement struct {
 	AssetID   string `json:"asset_id"`
 	Rating    string `json:"rating"`
 	Comment   string `json:"comment"`
-	CreatedAt string `json:"crated_at"`
+	CreatedAt string `json:"created_at"`
 	Status    string `json:"status"`
 }
