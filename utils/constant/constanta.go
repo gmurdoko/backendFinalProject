@@ -8,9 +8,7 @@ const (
 	GET_ALL_ASSETS    = `SELECT id, id_wallet, provider_id, asset_name, asset_area, longitude, latitude, car_capacity, motorcycle_capacity, bicycle_capacity, created_at, status FROM m_asset;`
 	GET_ALL_REVIEWS   = `SELECT id, user_id, asset_id, rating, comment, created_at, status FROM m_review;`
 
-	GETALLASSETSPERPROVIDER = `SELECT ma.id, ma.asset_name,ma.asset_area, ma.longitude, ma.latitude, ma.car_capacity, ma.motorcycle_capacity,
-								ma.bicycle_capacity, ma.photo,mw.saldo,ma.status
-								FROM m_asset as ma join m_wallet as mw on ma.id_wallet = mw.id  where ma.provider_id = ?;`
+	GETALLASSETSPERPROVIDER   = `SELECT ma.id, ma.asset_name, ma.asset_area, ma.longitude, ma.latitude, ma.car_capacity, ma.motorcycle_capacity, ma.bicycle_capacity, ma.photo, mw.saldo, ma.status FROM m_asset as ma join m_wallet as mw on ma.id_wallet = mw.id where ma.provider_id = ?;`
 	DELETEUSER                = `UPDATE m_user_account SET status ="I" where id=?;`
 	DELETEPROVIDER            = `UPDATE m_provider_account SET status="A" where id=?;`
 	DELETEASSET               = `UPDATE m_asset SET status = "I" where id=?;`

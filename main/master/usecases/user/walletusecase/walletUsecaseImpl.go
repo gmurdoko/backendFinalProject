@@ -26,7 +26,8 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *models.Tickets) error {
 	layout := `2006-01-02 15:04:05`
 	// Update ticket add FinishedAt
 	// ticket.FinishedAt = time.Now().Format(`2006-01-02 15:04:05`)
-	fmt.Println("START_AT", ticket.StartAt)
+	fmt.Println("START_AT", ticket)
+
 	startAt, err := time.Parse(layout, ticket.StartAt)
 	if err != nil {
 		return err
@@ -36,7 +37,7 @@ func (s walletUsecaseImpl) TransactionPayment(ticket *models.Tickets) error {
 		return err
 	}
 	//HourDifferent
-	HourDifferent := int(math.Ceil(finishAt.Sub(startAt).Seconds()) / 3600)
+	HourDifferent := int(math.Ceil(finishAt.Sub(startAt).Seconds() / 3600))
 	//Looking for fee per hour
 	feePerHour, err := s.walletRepository.CheckFeePerHour(ticket.FeeID)
 	if err != nil {

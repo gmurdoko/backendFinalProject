@@ -37,5 +37,5 @@ type TicketUser struct {
 	Status       string `json:"status"`
 	AssetID      string `json:"asset_id"`
 	FeeID        string `json:"fee_id"`
-	VehicleID    string `json:"vehicle"`
+	VehicleID    string `json:"vehicle_id"`
 }

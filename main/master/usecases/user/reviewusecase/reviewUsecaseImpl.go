@@ -20,3 +20,11 @@ func (r *ReviewUsecaseImpl) CreateReview(review *models.Review) (*models.Review,
 	}
 	return data, nil
 }
+
+func (r *ReviewUsecaseImpl) GetStatusReview(user_id, asset_id string) error {
+	err := r.reviewRepo.GetStatusReview(user_id, asset_id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

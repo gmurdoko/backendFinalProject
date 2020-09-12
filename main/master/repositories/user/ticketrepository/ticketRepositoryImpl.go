@@ -34,9 +34,8 @@ func (s ticketRepositoryImpl) Delete(id string) error {
 
 //SelectHistoryTicketByUserID history user payment
 func (s ticketRepositoryImpl) SelectHistoryTicketByUserID(offset, limit, id string) ([]*models.TicketView, *int, error) {
-	fmt.Println("REPO 1", offset, limit, id)
+
 	queryIn := fmt.Sprintf(`SELECT mt.id, mua.username, ma.asset_name, mt.license_plate, mf.fee, ceil(time_to_sec(timediff(mt.finished_at, mt.start_at))/3600), (ceil(time_to_sec(timediff(mt.finished_at, mt.start_at))/3600) * mf.fee), mt.book_at, mt.start_at, mt.finished_at FROM m_ticket mt JOIN m_user_account mua ON mt.user_id = mua.id JOIN m_asset ma ON mt.asset_id = ma.id JOIN m_fee mf ON mt.fee_id = mf.id WHERE mt.status = 'I' AND mua.id = ? ORDER BY mt.finished_at DESC LIMIT %s , %s;`, offset, limit)
-	fmt.Println(queryIn)
 	data, err := s.db.Query(queryIn, id)
 	if err != nil {
 		return nil, nil, err
@@ -44,7 +43,7 @@ func (s ticketRepositoryImpl) SelectHistoryTicketByUserID(offset, limit, id stri
 	// fmt.Println("Repo", data)
 	defer data.Close()
 	var result = []*models.TicketView{}
-	fmt.Println("SAMPAI SINI")
+
 	for data.Next() {
 		var ticketView = models.TicketView{}
 		var err = data.Scan(&ticketView.ID, &ticketView.Username, &ticketView.AssetName, &ticketView.LicensePlate, &ticketView.BasedFee, &ticketView.ParkingDurationHour, &ticketView.PayFee, &ticketView.BookAt, &ticketView.StartAt, &ticketView.FinishedAt)
