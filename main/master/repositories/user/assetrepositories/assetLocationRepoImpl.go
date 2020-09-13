@@ -54,7 +54,9 @@ func (s *AssetsLocationRepoImpl) GetAssetsByID(id string) (*models.AssetLocation
                 AND (status = 'A' OR status = 'B')
                 AND m_asset.id = asset_id) bicycle_capacity_avaliable
 FROM
-	m_asset WHERE id=?`
+    m_asset
+WHERE
+    m_asset.status = 'A' AND id=?`
 	var rate sql.NullString
 	row := s.db.QueryRow(query, id)
 	var asset = models.AssetLocation{}
@@ -106,7 +108,9 @@ func (s *AssetsLocationRepoImpl) ReadAssetsLocation() ([]*models.AssetLocation, 
                 AND (status = 'A' OR status = 'B')
                 AND m_asset.id = asset_id) bicycle_capacity_avaliable
 FROM
-    m_asset`
+    m_asset
+WHERE
+    m_asset.status = 'A'`
 	rows, err := s.db.Query(query)
 	if err != nil {
 		log.Println(err)
