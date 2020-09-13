@@ -14,13 +14,13 @@ func InitAdminAccountUsecaseImpl(adminAccRepo adminAccount.AdminAccount) AdminAc
 	return &AdminAccountUsecaseImpl{adminAccRepo: adminAccRepo}
 }
 
-func (ac *AdminAccountUsecaseImpl) AdminLogin(admin *models.Admin) (bool, error) {
+func (ac *AdminAccountUsecaseImpl) AdminLogin(admin *models.Admin) (bool, *models.Admin, error) {
 
-	isValid, err := ac.adminAccRepo.AdminLogin(admin)
+	isValid, admin, err := ac.adminAccRepo.AdminLogin(admin)
 
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
 
-	return isValid, nil
+	return isValid, admin, nil
 }

@@ -15,20 +15,20 @@ type AdminAccountRepoImpl struct {
 func InitAdminAccountImpl(mydb *sql.DB) AdminAccount {
 	return &AdminAccountRepoImpl{db: mydb}
 }
-func (ac *AdminAccountRepoImpl) AdminLogin(admin *models.Admin) (bool, error) {
+func (ac *AdminAccountRepoImpl) AdminLogin(admin *models.Admin) (bool, *models.Admin, error) {
 	row := ac.db.QueryRow(utils.SELECT_ADMIN_LOGIN, admin.Username)
 	var admins = models.Admin{}
 	err := row.Scan(&admins.ID, &admins.Username, &admins.Password)
 
 	if err != nil {
-		return false, err
+		return false, nil, err
 	}
 	isPwdValid := pwd.CheckPasswordHash(admin.Password, admins.Password)
 	fmt.Println(isPwdValid)
 
 	if admin.Username == admins.Username && isPwdValid {
-		return true, nil
+		return true, &admins, nil
 	} else {
-		return false, err
+		return false, nil, err
 	}
 }

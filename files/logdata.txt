@@ -115,3 +115,12 @@
 2020-09-12 15:50:57 Accessing path /accountmanagement/allusers with application Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36
 2020-09-12 15:50:57 Accessing path /accountmanagement/allassets with application Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36
 2020-09-12 15:50:57 Accessing path /accountmanagement/allreviews with application Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36
+2020-09-13 08:46:47 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 08:47:07 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:14:01 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:15:34 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:23:35 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:23:56 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:24:32 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:24:41 Accessing path /auth/login with application PostmanRuntime/7.26.5
+2020-09-13 09:25:43 Accessing path /auth/login with application PostmanRuntime/7.26.5
