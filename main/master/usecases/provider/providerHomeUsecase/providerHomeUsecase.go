@@ -8,4 +8,5 @@ import (
 type ProviderHome interface {
 	GetProviderSaldo(string) (string, error)
 	CreateAssetProvider(photo multipart.File, handler *multipart.FileHeader, provider *models.AssetModel) (*models.AssetModel, error)
+	GetAssetReview(string) ([]*models.AssetReview, error)
 }

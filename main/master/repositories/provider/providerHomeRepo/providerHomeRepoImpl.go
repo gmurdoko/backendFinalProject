@@ -55,3 +55,25 @@ func (pr *ProviderHomeRepoImpl) CreateAssetProvider(asset *models.AssetModel) (*
 	tx.Commit()
 	return asset, nil
 }
+func (pr *ProviderHomeRepoImpl) GetAssetReview(id string) ([]*models.AssetReview, error) {
+	var listReview []*models.AssetReview
+	var rate, comment sql.NullString
+	rows, err := pr.db.Query(utils.SELECT_ASSET_REVIEW, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		review := models.AssetReview{}
+		err := rows.Scan(&review.ProviderID, &rate, &comment, &review.AssetName)
+		if err != nil {
+			log.Println(err)
+			return nil, err
+		}
+		review.Rating = rate.String
+		review.Comment = comment.String
+		listReview = append(listReview, &review)
+	}
+
+	return listReview, nil
+}

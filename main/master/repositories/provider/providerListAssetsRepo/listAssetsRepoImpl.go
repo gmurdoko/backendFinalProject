@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"finalproject/main/master/models"
 	constanta "finalproject/utils/constant"
-	"fmt"
 	"log"
 )
 
@@ -32,7 +31,6 @@ func (s *ListAssetsRepoImpl) GetAllAssets(userId string) ([]*models.Assets, erro
 		err := rows.Scan(&asset.ID, &asset.AssetName, &asset.AssetArea, &asset.Longitude, &asset.Latitude, &asset.CarCap, &asset.MotorCap, &asset.BicycleCap, &asset.Photo, &asset.Saldo, &asset.Status)
 		if err != nil {
 			log.Println(err)
-			fmt.Println("dinsi")
 			return nil, err
 		}
 		listAssets = append(listAssets, &asset)

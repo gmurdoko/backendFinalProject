@@ -61,3 +61,10 @@ func (pu *ProviderHomeUsecaseImpl) GetProviderSaldo(id string) (string, error) {
 	}
 	return data, nil
 }
+func (pu *ProviderHomeUsecaseImpl) GetAssetReview(id string) ([]*models.AssetReview, error) {
+	data, err := pu.providerRepo.GetAssetReview(id)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
