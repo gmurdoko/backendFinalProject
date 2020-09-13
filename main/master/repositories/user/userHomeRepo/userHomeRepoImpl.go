@@ -122,3 +122,13 @@ func (ur *UserHomeRepoImpl) GetUserTicket(id string) (*models.TicketUser, error)
 	}
 	return tickets, nil
 }
+func (ur *UserHomeRepoImpl) GetUserTicketById(id string) (*models.Tickets, error) {
+	tickets := new(models.Tickets)
+	err := ur.db.QueryRow(utils.SELECT_USER_TICKET, id).Scan(&tickets.ID, &tickets.AssetID, &tickets.FeeID, &tickets.VehicleID,
+		&tickets.LicensePlate, &tickets.BookAt)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return tickets, nil
+}

@@ -28,6 +28,7 @@ func UserHomeController(r *mux.Router, service userHomeUsecase.UserHome) {
 	user.HandleFunc("/photo/{id}", userHandler.GetUserPhoto).Methods(http.MethodGet)
 	user.HandleFunc("/photo/{id}", userHandler.UpdateUserPhoto).Methods(http.MethodPut)
 	user.HandleFunc("/ticket/{id}", userHandler.GetUserTicket).Methods(http.MethodGet)
+	user.HandleFunc("/ticket/status/{id}", userHandler.GetUserTicketById).Methods(http.MethodGet)
 }
 
 func (uh *UserHomeHandler) GetSaldo(w http.ResponseWriter, r *http.Request) {
@@ -190,4 +191,26 @@ func (uh *UserHomeHandler) GetUserTicket(w http.ResponseWriter, r *http.Request)
 		w.Header().Set("Content-type", "application/json")
 		w.Write(byteData)
 	}
+}
+func (uh *UserHomeHandler) GetUserTicketById(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	userId := params["user_id"]
+	_, err := uh.userUsecase.GetUserTicketById(userId)
+	var response response.Response
+
+	if err != nil {
+		response.Status = http.StatusBadRequest
+		response.Message = "Success"
+		response.Data = nil
+	} else {
+		response.Status = http.StatusOK
+		response.Message = "Success"
+		response.Data = "hello"
+	}
+	byteData, err := json.Marshal(response)
+	if err != nil {
+		w.Write([]byte("Something Wrong on Marshalling Data"))
+	}
+	w.Header().Set("Content-type", "application/json")
+	w.Write(byteData)
 }

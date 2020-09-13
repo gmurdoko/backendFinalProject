@@ -13,4 +13,5 @@ type UserHome interface {
 	GetUserPhoto(string) (*string, error)
 	UpdateUserPhoto(photo multipart.File, handler *multipart.FileHeader, id string) error
 	GetUserTicket(string) (*models.TicketUser, error)
+	GetUserTicketById(string) (*models.Tickets, error)
 }

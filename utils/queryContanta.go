@@ -41,5 +41,6 @@ FROM
     m_vehicle_type ON m_vehicle_type.id = m_ticket.vehicle_id
 WHERE
     m_ticket.user_id = ?
-        AND m_ticket.status = "A" OR m_ticket.status="B"`
+		AND m_ticket.status = "A" OR m_ticket.status="B"`
+	SELECT_USER_TICKET = `select id,user_id,asset_id,fee_id,vehicle_id,license_plate,book_at from m_ticket where user_id=?`
 )

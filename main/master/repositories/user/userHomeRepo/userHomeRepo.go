@@ -10,4 +10,5 @@ type UserHome interface {
 	GetUserPhoto(string) (*string, error)
 	UpdateUserPhoto(string, string) error
 	GetUserTicket(string) (*models.TicketUser, error)
+	GetUserTicketById(string) (*models.Tickets, error)
 }
