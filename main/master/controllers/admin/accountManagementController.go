@@ -19,7 +19,7 @@ type AccountManagementControllerHandler struct {
 func AccountManagerController(r *mux.Router, service accountmanagementusecase.AccountManagementUsecase) {
 	accountManagementHandler := AccountManagementControllerHandler{accountManagementUsecase: service}
 	accountManagement := r.PathPrefix("/accountmanagement").Subrouter()
-
+	// isAuth := false
 	isAuthOn := config.AuthSwitch()
 	if isAuthOn {
 		accountManagement.Use(middleware.TokenValidationMiddleware)
@@ -61,6 +61,7 @@ func (s *AccountManagementControllerHandler) deleteUser(w http.ResponseWriter, r
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -80,6 +81,7 @@ func (s *AccountManagementControllerHandler) deleteAsset(w http.ResponseWriter, 
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -99,6 +101,7 @@ func (s *AccountManagementControllerHandler) deleteProvider(w http.ResponseWrite
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -118,6 +121,7 @@ func (s *AccountManagementControllerHandler) deleteComment(w http.ResponseWriter
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -137,6 +141,7 @@ func (s *AccountManagementControllerHandler) approveAsset(w http.ResponseWriter,
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
