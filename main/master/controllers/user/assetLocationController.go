@@ -2,8 +2,10 @@ package user
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/assetusecases"
+	"finalproject/main/middleware"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,8 +21,19 @@ type AssetLocationHandler struct {
 func AssetLocationController(r *mux.Router, service assetusecases.AssetLocationUsecase) {
 	assetLocationHandler := AssetLocationHandler{assetLocation: service}
 	// r.Use(middleware.ActivityLogMiddleware)
-
 	assetLocation := r.PathPrefix("/providerassets").Subrouter()
+
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		assetLocation.Use(middleware.TokenValidationMiddleware)
+		detailAssetLocationController(assetLocation, assetLocationHandler)
+	} else {
+		detailAssetLocationController(assetLocation, assetLocationHandler)
+	}
+
+}
+
+func detailAssetLocationController(assetLocation *mux.Router, assetLocationHandler AssetLocationHandler) {
 	assetLocation.HandleFunc("/locations", assetLocationHandler.getAssetLocation).Methods(http.MethodGet)
 	assetLocation.HandleFunc("/{id}", assetLocationHandler.getByID).Methods(http.MethodGet)
 }

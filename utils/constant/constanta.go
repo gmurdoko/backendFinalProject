@@ -28,7 +28,7 @@ const (
 										m_ticket mt ON mt.asset_id = ma.id
 											JOIN
 										m_fee mf ON mf.id = mt.fee_id
-										WHERE ma.id = ? AND mt.status = "I" AND MONTH(NOW())-MONTH(mt.finished_at) <= 2 GROUP BY date  ;`
+										WHERE ma.id = ? AND (mt.status = "I" OR mt.status="D") AND MONTH(NOW())-MONTH(mt.finished_at) <= 2 GROUP BY date  ;`
 	PROVIDERASSETSMONTHLYREPORT = `SELECT 
 										ma.asset_name,
 										MONTH(mt.finished_at) AS months,
@@ -42,7 +42,7 @@ const (
 										m_ticket mt ON mt.asset_id = ma.id
 											JOIN
 										m_fee mf ON mf.id = mt.fee_id
-										WHERE ma.id = ? AND mt.status = "I" AND MONTH(NOW())-MONTH(mt.finished_at) <= 2  GROUP BY months ;`
+										WHERE ma.id = ? AND (mt.status = "I" OR mt.status="D") AND MONTH(NOW())-MONTH(mt.finished_at) <= 2  GROUP BY months ;`
 	ADMINASSETSDAILYREPORT = `SELECT 
 							ma.asset_name,
 								DATE(mt.finished_at) date,

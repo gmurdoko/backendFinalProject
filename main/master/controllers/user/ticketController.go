@@ -38,16 +38,10 @@ func TicketController(r *mux.Router, s ticketusecase.TicketUsecase) {
 
 func detailTicketController(tickets, ticket *mux.Router, ticketHandler TicketHandler) {
 	//Jamak
-	// tickets.HandleFunc("", ticketHandler.Listtickets).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods(http.MethodGet)
-	// tickets.HandleFunc("/available", ticketHandler.ListAvailabletickets).Methods(http.MethodGet)
-	// tickets.HandleFunc("/booked", ticketHandler.ListBookedtickets).Methods(http.MethodGet)
-
 	tickets.HandleFunc("/history", ticketHandler.HistoryTickets).Queries("page", "{page}", "limit", "{limit}", "user_id", "{user_id}").Methods(http.MethodGet)
 
 	//Satuan
 	ticket.HandleFunc("/view/{id}", ticketHandler.GetTicketView).Methods(http.MethodGet)
-	// ticket.HandleFunc("", ticketHandler.Postticket).Methods(http.MethodPost)
-	// ticket.HandleFunc("", ticketHandler.Putticket).Methods(http.MethodPut)
 	ticket.HandleFunc("/{id}", ticketHandler.DeleteTicket).Methods(http.MethodDelete)
 }
 

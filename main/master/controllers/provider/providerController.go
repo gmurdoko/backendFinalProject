@@ -36,14 +36,7 @@ func ProviderController(r *mux.Router, s providerusecase.ProviderUsecase) {
 }
 
 func detailProviderController(providers, provider *mux.Router, providerHandler ProviderHandler) {
-	//Jamak
-	// providers.HandleFunc("", providerHandler.Listproviders).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods(http.MethodGet)
-	// providers.HandleFunc("/available", providerHandler.ListAvailableproviders).Methods(http.MethodGet)
-	// providers.HandleFunc("/booked", providerHandler.ListBookedproviders).Methods(http.MethodGet)
-	//Satuan
-	// provider.HandleFunc("/{id}", providerHandler.provider).Methods(http.MethodGet)
-	// provider.HandleFunc("", providerHandler.Postprovider).Methods(http.MethodPost)
-	// provider.HandleFunc("", providerHandler.Putprovider).Methods(http.MethodPut)
+
 	provider.HandleFunc("/photo/{id}", providerHandler.GetProviderPhoto).Methods(http.MethodGet)
 	provider.HandleFunc("/photo/{id}", providerHandler.UpdateProviderPhoto).Methods(http.MethodPut)
 	provider.HandleFunc("/photo/{id}", providerHandler.DeleteProviderPhoto).Methods(http.MethodDelete)

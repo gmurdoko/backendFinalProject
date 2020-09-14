@@ -2,7 +2,9 @@ package provider
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/usecases/provider/providerListAssetUsecase"
+	"finalproject/main/middleware"
 	"finalproject/utils/response"
 	"net/http"
 
@@ -16,7 +18,14 @@ type ListAssetsHandler struct {
 func ListAssetsController(r *mux.Router, service providerListAssetUsecase.ListAssetsUsecase) {
 	listAssetsHandler := ListAssetsHandler{listAssetsUsecase: service}
 	listAssets := r.PathPrefix("/listassets").Subrouter()
-	listAssets.HandleFunc("/{id}", listAssetsHandler.getListAssets).Methods(http.MethodGet)
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		listAssets.Use(middleware.TokenValidationMiddleware)
+		listAssets.HandleFunc("/{id}", listAssetsHandler.getListAssets).Methods(http.MethodGet)
+	} else {
+		listAssets.HandleFunc("/{id}", listAssetsHandler.getListAssets).Methods(http.MethodGet)
+	}
+
 }
 
 func (s *ListAssetsHandler) getListAssets(w http.ResponseWriter, r *http.Request) {

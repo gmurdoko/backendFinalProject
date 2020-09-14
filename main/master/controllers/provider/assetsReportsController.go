@@ -2,7 +2,9 @@ package provider
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/usecases/provider/providerAssetReportsUsecase"
+	"finalproject/main/middleware"
 	"finalproject/utils/response"
 	"fmt"
 	"net/http"
@@ -17,6 +19,17 @@ type ProviderAssetReportHandler struct {
 func ProviderAssetReportController(r *mux.Router, service providerAssetReportsUsecase.ProviderAssetReportsUsecase) {
 	assetsReportHandler := ProviderAssetReportHandler{assetsReport: service}
 	reportAsset := r.PathPrefix("/providerreports").Subrouter()
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		reportAsset.Use(middleware.TokenValidationMiddleware)
+		detailProviderAssetReportController(reportAsset, assetsReportHandler)
+	} else {
+		detailProviderAssetReportController(reportAsset, assetsReportHandler)
+	}
+
+}
+
+func detailProviderAssetReportController(reportAsset *mux.Router, assetsReportHandler ProviderAssetReportHandler) {
 	reportAsset.HandleFunc("/daily", assetsReportHandler.getReportDaily).Queries("id", "{id}").Methods(http.MethodGet)
 	reportAsset.HandleFunc("/monthly", assetsReportHandler.getReportMonthly).Queries("id", "{id}").Methods(http.MethodGet)
 }

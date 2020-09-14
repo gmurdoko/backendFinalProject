@@ -19,3 +19,9 @@ type ReviewManagement struct {
 	CreatedAt string `json:"created_at"`
 	Status    string `json:"status"`
 }
+type AssetReview struct {
+	ProviderID string `json:"provider_id"`
+	AssetName  string `json:"asset_name"`
+	Rating     string `json:"rating"`
+	Comment    string `json:"comment"`
+}

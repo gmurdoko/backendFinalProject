@@ -2,8 +2,10 @@ package user
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/assetusecases"
+	"finalproject/main/middleware"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -18,6 +20,17 @@ func AssetCapacityController(r *mux.Router, service assetusecases.AssetCapacityU
 	// r.Use(middleware.ActivityLogMiddleware)
 
 	assetCapacity := r.PathPrefix("/assets").Subrouter()
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		assetCapacity.Use(middleware.TokenValidationMiddleware)
+		detailAssetCapacityController(assetCapacity, assetCapacityHandler)
+	} else {
+		detailAssetCapacityController(assetCapacity, assetCapacityHandler)
+	}
+
+}
+
+func detailAssetCapacityController(assetCapacity *mux.Router, assetCapacityHandler AssetCapacityHandler) {
 	assetCapacity.HandleFunc("/currentcap/{id}", assetCapacityHandler.getAssetCapacity).Methods(http.MethodGet)
 }
 

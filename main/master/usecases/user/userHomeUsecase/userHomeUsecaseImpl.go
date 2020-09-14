@@ -93,3 +93,10 @@ func (uc *UserHomeUsecaseImpl) GetUserTicket(id string) (*models.TicketUser, err
 	}
 	return data, nil
 }
+func (uc *UserHomeUsecaseImpl) GetUserTicketById(id string) (*models.Tickets, error) {
+	data, err := uc.userRepo.GetUserTicketById(id)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}

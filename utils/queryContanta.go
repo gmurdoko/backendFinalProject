@@ -42,5 +42,14 @@ FROM
     m_vehicle_type ON m_vehicle_type.id = m_ticket.vehicle_id
 WHERE
     m_ticket.user_id = ?
-        AND m_ticket.status = "A" OR m_ticket.status="B"`
+		AND (m_ticket.status = "A" OR m_ticket.status="B")`
+	SELECT_USER_TICKET  = `select id,user_id,asset_id,fee_id,vehicle_id,license_plate,book_at from m_ticket where user_id=?`
+	SELECT_ASSET_REVIEW = `SELECT 
+    m_provider_account.id,m_review.rating, m_review.comment, m_asset.asset_name
+FROM
+    m_review
+        JOIN
+    m_asset ON m_review.asset_id = m_asset.id
+        JOIN
+    m_provider_account ON m_asset.provider_id = m_provider_account.id WHERE m_provider_account.id=?;`
 )

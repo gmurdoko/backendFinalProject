@@ -23,6 +23,7 @@ type AssetLocation struct {
 	CarCap     string `json:"car_capacity_available"`
 	MotorCap   string `json:"motorcycle_capacity_available"`
 	BicycleCap string `json:"bicycle_capacity_available"`
+	Rating     string `json:"rating"`
 	// Status    string `json:"status"`
 }
 
