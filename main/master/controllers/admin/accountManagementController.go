@@ -2,7 +2,6 @@ package admin
 
 import (
 	"encoding/json"
-	"finalproject/config"
 	"finalproject/main/master/models"
 	accountmanagementusecase "finalproject/main/master/usecases/admin/accountManagement"
 	"finalproject/main/middleware"
@@ -20,7 +19,7 @@ func AccountManagerController(r *mux.Router, service accountmanagementusecase.Ac
 	accountManagementHandler := AccountManagementControllerHandler{accountManagementUsecase: service}
 	accountManagement := r.PathPrefix("/accountmanagement").Subrouter()
 	// isAuth := false
-	isAuthOn := config.AuthSwitch()
+	isAuthOn := false
 	if isAuthOn {
 		accountManagement.Use(middleware.TokenValidationMiddleware)
 		detailAccountManagerController(accountManagement, accountManagementHandler)
@@ -61,7 +60,7 @@ func (s *AccountManagementControllerHandler) deleteUser(w http.ResponseWriter, r
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -81,7 +80,7 @@ func (s *AccountManagementControllerHandler) deleteAsset(w http.ResponseWriter, 
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -101,7 +100,7 @@ func (s *AccountManagementControllerHandler) deleteProvider(w http.ResponseWrite
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -121,7 +120,7 @@ func (s *AccountManagementControllerHandler) deleteComment(w http.ResponseWriter
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -141,7 +140,7 @@ func (s *AccountManagementControllerHandler) approveAsset(w http.ResponseWriter,
 		w.Write([]byte("Something Wrong on Marshalling Data"))
 	}
 	w.Header().Set("Content-type", "application/json")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Write(byteData)
 }
 
@@ -178,7 +177,11 @@ func (s *AccountManagementControllerHandler) GetAllProviders(w http.ResponseWrit
 	if err != nil {
 		response.Response = "Data Not Found"
 	} else {
-		response.Response = listProviders
+		if listProviders != nil {
+			response.Response = listProviders
+		} else {
+			response.Response = []string{}
+		}
 	}
 
 	byteData, err := json.Marshal(response)
@@ -198,7 +201,11 @@ func (s *AccountManagementControllerHandler) GetAllAssets(w http.ResponseWriter,
 	if err != nil {
 		response.Response = "Data Not Found"
 	} else {
-		response.Response = listAssets
+		if listAssets != nil {
+			response.Response = listAssets
+		} else {
+			response.Response = []string{}
+		}
 	}
 
 	byteData, err := json.Marshal(response)
@@ -211,14 +218,18 @@ func (s *AccountManagementControllerHandler) GetAllAssets(w http.ResponseWriter,
 
 func (s *AccountManagementControllerHandler) GetAllAssetsNotApproved(w http.ResponseWriter, r *http.Request) {
 	listAssets, err := s.accountManagementUsecase.GetAllAssetsNotApproved()
-
 	var response models.Response
+	// kosong :=
 	response.Status = http.StatusOK
 	response.Message = "Success"
 	if err != nil {
 		response.Response = "Data Not Found"
 	} else {
-		response.Response = listAssets
+		if listAssets != nil {
+			response.Response = listAssets
+		} else {
+			response.Response = []string{}
+		}
 	}
 
 	byteData, err := json.Marshal(response)
@@ -238,7 +249,11 @@ func (s *AccountManagementControllerHandler) GetAllReviews(w http.ResponseWriter
 	if err != nil {
 		response.Response = "Data Not Found"
 	} else {
-		response.Response = listReviews
+		if listReviews != nil {
+			response.Response = listReviews
+		} else {
+			response.Response = []string{}
+		}
 	}
 
 	byteData, err := json.Marshal(response)
