@@ -15,8 +15,8 @@ func InitProviderReportUsecaseImpl(adminReportRepo adminassetreportrepo.AdminAss
 	return &AdminAssetReportsUsecaseImpl{adminReportRepo: adminReportRepo}
 }
 
-func (s *AdminAssetReportsUsecaseImpl) GetReportDaily(provId string) ([]*models.ReportAssetDaily, error) {
-	reports, err := s.adminReportRepo.GetReportDaily(provId)
+func (s *AdminAssetReportsUsecaseImpl) GetReportDaily(start, end, provId string) ([]*models.ReportAssetDaily, error) {
+	reports, err := s.adminReportRepo.GetReportDaily(start, end, provId)
 	if err != nil {
 		log.Println(err)
 		return nil, err

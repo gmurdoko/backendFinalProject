@@ -44,19 +44,19 @@ const (
 										m_fee mf ON mf.id = mt.fee_id
 										WHERE ma.id = ? AND (mt.status = "I" OR mt.status="D") AND MONTH(NOW())-MONTH(mt.finished_at) <= 2  GROUP BY months ;`
 	ADMINASSETSDAILYREPORT = `SELECT 
-							ma.asset_name,
-								DATE(mt.finished_at) date,
-								COUNT(mt.id) total_parked ,
-								SUM(CEIL(TIME_TO_SEC(TIMEDIFF(mt.finished_at, mt.start_at)) / 3600) * mf.fee) total_rev
-							FROM
-								m_asset AS ma
-									JOIN
-								m_wallet mw ON ma.id_wallet = mw.id
-									JOIN
-								m_ticket mt ON mt.asset_id = ma.id
-									JOIN
-								m_fee mf ON mf.id = mt.fee_id
-								WHERE ma.id = ? AND mt.status = "I" AND MONTH(NOW())-MONTH(mt.finished_at) <= 2 GROUP BY date  ;`
+	ma.asset_name,
+		DATE(mt.finished_at) date,
+		COUNT(mt.id) total_parked ,
+		SUM(CEIL(TIME_TO_SEC(TIMEDIFF(mt.finished_at, mt.start_at)) / 3600) * mf.fee) total_rev
+	FROM
+		m_asset AS ma
+			JOIN
+		m_wallet mw ON ma.id_wallet = mw.id
+			JOIN
+		m_ticket mt ON mt.asset_id = ma.id
+			JOIN
+		m_fee mf ON mf.id = mt.fee_id
+		WHERE ma.id = ? AND mt.status = "I" and mt.finished_at between ? and ? GROUP BY date`
 	ADMINASSETSMONTHLYREPORT = `SELECT 
 								ma.asset_name,
 								MONTH(mt.finished_at) AS months,

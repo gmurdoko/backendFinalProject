@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"finalproject/main/master/models"
 	constanta "finalproject/utils/constant"
+	"fmt"
 	"log"
 )
 
@@ -15,9 +16,9 @@ func InitAdminAssetReportRepoImpl(mydb *sql.DB) AdminAssetReportRepo {
 	return &AdminAssetReportRepoImpl{db: mydb}
 }
 
-func (s *AdminAssetReportRepoImpl) GetReportDaily(id string) ([]*models.ReportAssetDaily, error) {
+func (s *AdminAssetReportRepoImpl) GetReportDaily(start, end, id string) ([]*models.ReportAssetDaily, error) {
 	query := constanta.ADMINASSETSDAILYREPORT
-	rows, err := s.db.Query(query, id)
+	rows, err := s.db.Query(query, id, start, end)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -25,12 +26,14 @@ func (s *AdminAssetReportRepoImpl) GetReportDaily(id string) ([]*models.ReportAs
 	defer rows.Close()
 	var reports []*models.ReportAssetDaily
 	for rows.Next() {
+
 		report := models.ReportAssetDaily{}
 		err := rows.Scan(&report.AssetName, &report.Date, &report.TotalParked, &report.TotalRevenue)
 		if err != nil {
 			log.Println(err)
 			return nil, err
 		}
+		fmt.Println(report.AssetName)
 		reports = append(reports, &report)
 	}
 	return reports, nil
