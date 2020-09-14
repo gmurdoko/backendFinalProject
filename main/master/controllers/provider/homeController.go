@@ -2,8 +2,10 @@ package provider
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/provider/providerHomeUsecase"
+	"finalproject/main/middleware"
 	"finalproject/utils/response"
 	"log"
 	"net/http"
@@ -18,10 +20,23 @@ type ProviderHomeHandler struct {
 func ProviderHomeController(r *mux.Router, service providerHomeUsecase.ProviderHome) {
 	providerHandler := ProviderHomeHandler{providerHomeUsecase: service}
 	provider := r.PathPrefix("/provider").Subrouter()
+
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		provider.Use(middleware.TokenValidationMiddleware)
+		detailProviderHomeController(provider, providerHandler)
+	} else {
+		detailProviderHomeController(provider, providerHandler)
+	}
+
+}
+
+func detailProviderHomeController(provider *mux.Router, providerHandler ProviderHomeHandler) {
 	provider.HandleFunc("/saldo/{id}", providerHandler.GetProviderSaldo).Methods(http.MethodGet)
 	provider.HandleFunc("/asset", providerHandler.CreateProviderAsset).Methods(http.MethodPost)
 	provider.HandleFunc("/asset/review/{id}", providerHandler.GetAssetReview).Methods(http.MethodGet)
 }
+
 func (ph *ProviderHomeHandler) GetProviderSaldo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]

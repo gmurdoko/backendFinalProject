@@ -2,6 +2,7 @@ package user
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/reviewusecase"
 	"finalproject/main/middleware"
@@ -20,9 +21,19 @@ func ReviewController(r *mux.Router, service reviewusecase.ReviewUsecase) {
 	r.Use(middleware.ActivityLogMiddleware)
 
 	createReview := r.PathPrefix("/review").Subrouter()
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		createReview.Use(middleware.TokenValidationMiddleware)
+		detailReviewController(createReview, reviewHandler)
+	} else {
+		detailReviewController(createReview, reviewHandler)
+	}
+
+}
+
+func detailReviewController(createReview *mux.Router, reviewHandler ReviewHandler) {
 	createReview.HandleFunc("/review", reviewHandler.CreateReview).Methods(http.MethodPost)
 	createReview.HandleFunc("/review/status", reviewHandler.GetStatusReview).Queries("user_id", "{user_id}", "asset_id", "{asset_id}").Methods(http.MethodGet)
-
 }
 
 func (s *ReviewHandler) CreateReview(w http.ResponseWriter, r *http.Request) {

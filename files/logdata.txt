@@ -644,3 +644,14 @@
 2020-09-13 22:24:27 Accessing path /listassets/2d03fae0-c541-4976-a29c-af56d2673e76 with application okhttp/4.3.1
 2020-09-13 22:24:33 Accessing path /provider/photo/2d03fae0-c541-4976-a29c-af56d2673e76 with application okhttp/4.3.1
 2020-09-13 22:24:33 Accessing path /authProvider/2d03fae0-c541-4976-a29c-af56d2673e76 with application okhttp/4.3.1
+2020-09-14 13:43:09 Accessing path /provider/asset/review/fa11c5c0-cf3f-48d6-ba51-01f338327e7b with application PostmanRuntime/7.26.5
+2020-09-14 13:44:24 Accessing path /review/review/status?user_id=d0316bc3-0ca4-41c6-af49-1587e0d1ed00&asset_id=75c91b74-b22f-4813-8b99-9c02c04d95d4 with application PostmanRuntime/7.26.5
+2020-09-14 13:44:24 Accessing path /review/review/status?user_id=d0316bc3-0ca4-41c6-af49-1587e0d1ed00&asset_id=75c91b74-b22f-4813-8b99-9c02c04d95d4 with application PostmanRuntime/7.26.5
+2020-09-14 13:44:39 Accessing path /authUser/login with application PostmanRuntime/7.26.5
+2020-09-14 13:44:39 Accessing path /authUser/login with application PostmanRuntime/7.26.5
+2020-09-14 13:45:55 Accessing path /review/review/status?user_id=d0316bc3-0ca4-41c6-af49-1587e0d1ed00&asset_id=75c91b74-b22f-4813-8b99-9c02c04d95d4 with application PostmanRuntime/7.26.5
+2020-09-14 13:45:55 Accessing path /review/review/status?user_id=d0316bc3-0ca4-41c6-af49-1587e0d1ed00&asset_id=75c91b74-b22f-4813-8b99-9c02c04d95d4 with application PostmanRuntime/7.26.5
+2020-09-14 13:46:08 Accessing path /provider/asset/review/fa11c5c0-cf3f-48d6-ba51-01f338327e7b with application PostmanRuntime/7.26.5
+2020-09-14 13:46:08 Accessing path /provider/asset/review/fa11c5c0-cf3f-48d6-ba51-01f338327e7b with application PostmanRuntime/7.26.5
+2020-09-14 13:46:19 Accessing path /provider/asset/review/fa11c5c0-cf3f-48d6-ba51-01f338327e7b with application PostmanRuntime/7.26.5
+2020-09-14 13:46:19 Accessing path /provider/asset/review/fa11c5c0-cf3f-48d6-ba51-01f338327e7b with application PostmanRuntime/7.26.5

@@ -2,8 +2,10 @@ package admin
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/models"
 	accountmanagementusecase "finalproject/main/master/usecases/admin/accountManagement"
+	"finalproject/main/middleware"
 	"log"
 	"net/http"
 
@@ -17,6 +19,18 @@ type AccountManagementControllerHandler struct {
 func AccountManagerController(r *mux.Router, service accountmanagementusecase.AccountManagementUsecase) {
 	accountManagementHandler := AccountManagementControllerHandler{accountManagementUsecase: service}
 	accountManagement := r.PathPrefix("/accountmanagement").Subrouter()
+
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		accountManagement.Use(middleware.TokenValidationMiddleware)
+		detailAccountManagerController(accountManagement, accountManagementHandler)
+	} else {
+		detailAccountManagerController(accountManagement, accountManagementHandler)
+	}
+
+}
+
+func detailAccountManagerController(accountManagement *mux.Router, accountManagementHandler AccountManagementControllerHandler) {
 	accountManagement.HandleFunc("/deleteuser/{id}", accountManagementHandler.deleteUser).Methods(http.MethodPut)
 	accountManagement.HandleFunc("/deleteasset/{id}", accountManagementHandler.deleteAsset).Methods(http.MethodPut)
 	accountManagement.HandleFunc("/deleteprovider/{id}", accountManagementHandler.deleteProvider).Methods(http.MethodPut)
@@ -29,7 +43,6 @@ func AccountManagerController(r *mux.Router, service accountmanagementusecase.Ac
 	accountManagement.HandleFunc("/allassets", accountManagementHandler.GetAllAssets).Methods(http.MethodGet)
 	accountManagement.HandleFunc("/allassetsnotapproved", accountManagementHandler.GetAllAssetsNotApproved).Methods(http.MethodGet)
 	accountManagement.HandleFunc("/allreviews", accountManagementHandler.GetAllReviews).Methods(http.MethodGet)
-
 }
 
 func (s *AccountManagementControllerHandler) deleteUser(w http.ResponseWriter, r *http.Request) {

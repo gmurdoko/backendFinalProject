@@ -35,15 +35,6 @@ func WalletController(r *mux.Router, s walletusecase.WalletUsecase) {
 }
 
 func detailWalletController(wallets, wallet *mux.Router, walletHandler WalletHandler) {
-	//Jamak
-	// wallets.HandleFunc("", walletHandler.Listwallets).Queries("keyword", "{keyword}", "page", "{page}", "limit", "{limit}", "status", "{status}", "orderBy", "{orderBy}", "sort", "{sort}").Methods(http.MethodGet)
-	// wallets.HandleFunc("/available", walletHandler.ListAvailablewallets).Methods(http.MethodGet)
-	// wallets.HandleFunc("/booked", walletHandler.ListBookedwallets).Methods(http.MethodGet)
-	//Satuan
-	// wallet.HandleFunc("/{id}", walletHandler.wallet).Methods(http.MethodGet)
-	// wallet.HandleFunc("", walletHandler.Postwallet).Methods(http.MethodPost)
-	// wallet.HandleFunc("", walletHandler.Putwallet).Methods(http.MethodPut)
-	// wallet.HandleFunc("/{id}", walletHandler.Deletewallet).Methods(http.MethodDelete)
 	wallet.HandleFunc("/payment", walletHandler.TransactionPayment).Methods(http.MethodPost)
 }
 

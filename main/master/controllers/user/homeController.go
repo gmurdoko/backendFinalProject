@@ -2,8 +2,10 @@ package user
 
 import (
 	"encoding/json"
+	"finalproject/config"
 	"finalproject/main/master/models"
 	"finalproject/main/master/usecases/user/userHomeUsecase"
+	"finalproject/main/middleware"
 	"finalproject/utils/response"
 	"fmt"
 	"log"
@@ -21,6 +23,18 @@ type UserHomeHandler struct {
 func UserHomeController(r *mux.Router, service userHomeUsecase.UserHome) {
 	userHandler := UserHomeHandler{userUsecase: service}
 	user := r.PathPrefix("/user").Subrouter()
+
+	isAuthOn := config.AuthSwitch()
+	if isAuthOn {
+		user.Use(middleware.TokenValidationMiddleware)
+		detailUserHomeController(user, userHandler)
+	} else {
+		detailUserHomeController(user, userHandler)
+	}
+
+}
+
+func detailUserHomeController(user *mux.Router, userHandler UserHomeHandler) {
 	user.HandleFunc("/{id}", userHandler.UpdateUserData).Methods(http.MethodPut)
 	user.HandleFunc("/saldo/{id}", userHandler.GetSaldo).Methods(http.MethodGet)
 	user.HandleFunc("/saldo/{id}", userHandler.UpdateUserSaldoTopUp).Methods(http.MethodPut)
@@ -30,7 +44,6 @@ func UserHomeController(r *mux.Router, service userHomeUsecase.UserHome) {
 	user.HandleFunc("/ticket/{id}", userHandler.GetUserTicket).Methods(http.MethodGet)
 	user.HandleFunc("/ticket/status/{id}", userHandler.GetUserTicketById).Methods(http.MethodGet)
 }
-
 func (uh *UserHomeHandler) GetSaldo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id := params["id"]
