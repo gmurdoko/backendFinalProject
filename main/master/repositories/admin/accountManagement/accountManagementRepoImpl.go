@@ -39,6 +39,7 @@ func (s *AccountManagementRepoImpl) DeleteAsset(assetId string) error {
 	}
 	_, err = tx.Exec(query, assetId)
 	if err != nil {
+		log.Println(err)
 		tx.Rollback()
 		return err
 	}

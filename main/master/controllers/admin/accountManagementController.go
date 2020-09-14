@@ -54,7 +54,7 @@ func (s *AccountManagementControllerHandler) deleteUser(w http.ResponseWriter, r
 func (s *AccountManagementControllerHandler) deleteAsset(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	assetId := params["id"]
-	resp, err := s.accountManagementUsecase.DeleteUser(assetId)
+	resp, err := s.accountManagementUsecase.DeleteAsset(assetId)
 	if err != nil {
 		log.Println(err)
 	}
